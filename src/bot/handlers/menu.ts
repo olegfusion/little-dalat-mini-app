@@ -134,6 +134,23 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
   });
 }
 
+function formatItemButton(
+  name: string,
+  price: number,
+  currency: string,
+  qty: string,
+  maxChars: number = 28,
+): string {
+  const suffix = ` \u2014 ${price / 1000}${currency}${qty}`;
+  const maxName = Math.max(4, maxChars - suffix.length);
+
+  if (name.length <= maxName) return `${name}${suffix}`;
+
+  const left = Math.ceil(maxName * 0.55);
+  const right = maxName - left - 1;
+  return `${name.slice(0, left)}\u2026${name.slice(-right)}${suffix}`;
+}
+
 async function showItemPage(
   ctx: BotContext,
   categoryId: string,
@@ -147,8 +164,7 @@ async function showItemPage(
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
     const qty = cartItem ? ` ×${cartItem.quantity}` : '';
-    kb.text(name, `add_${item.id}`).primary().row();
-    kb.text(`➕ ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).success().row();
+    kb.text(formatItemButton(name, item.price, config.currency, qty), `add_${item.id}`).primary().row();
   }
 
   kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart').primary();
