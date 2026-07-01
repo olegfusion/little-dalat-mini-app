@@ -25,12 +25,9 @@ export function languageKeyboard() {
     .text('🇷🇺 Русский', 'lang_ru');
 }
 
-export function categoryKeyboard(lang: Language, mode?: OrderMode | null) {
+export function categoryKeyboard(lang: Language) {
   const kb = new InlineKeyboard();
-  const filtered = mode === 'delivery'
-    ? CATEGORIES.filter(c => c.id !== 'combos')
-    : CATEGORIES;
-  for (const cat of filtered) {
+  for (const cat of CATEGORIES) {
     const name = (cat as any)[langField(lang)] as string;
     if (name) kb.text(name, `cat_${cat.id}`).row();
   }

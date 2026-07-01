@@ -39,7 +39,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
         ? `\n📍 ${t('table', lang)}: ${ctx.session.tableNumber} | ${t('mode_dine_in', lang)}`
         : '';
       await ctx.editMessageText(`${t('select_category', lang)}${tableInfo}`, {
-        reply_markup: categoryKeyboard(lang, 'dine-in'),
+        reply_markup: categoryKeyboard(lang),
       });
     } else {
       ctx.session.step = 'choosing_mode';
@@ -74,7 +74,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     ctx.session.mode = mode;
     ctx.session.step = 'browsing';
     await ctx.editMessageText(t('select_category', ctx.session.language), {
-      reply_markup: categoryKeyboard(ctx.session.language, mode),
+      reply_markup: categoryKeyboard(ctx.session.language),
     });
     await ctx.answerCallbackQuery();
   });

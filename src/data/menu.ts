@@ -58,10 +58,6 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'ds-5', category: 'desserts_snacks', vietnamese: 'Snack', english: 'Snacks', russian: 'Снеки', price: 20000 },
   { id: 'ds-6', category: 'desserts_snacks', vietnamese: 'Hạt bí', english: 'Pumpkin Seeds', russian: 'Тыквенные семечки', price: 15000 },
   { id: 'ds-7', category: 'desserts_snacks', vietnamese: 'Hạt hướng dương', english: 'Sunflower Seeds', russian: 'Семечки подсолнуха', price: 12000 },
-  // FOOT SOAK & COMBOS
-  { id: 'cb-1', category: 'combos', vietnamese: 'Ngâm chân thảo mộc', english: 'Herbal Foot Soak (Herbs • Sea Salt • Warm Water • Flowers)', russian: 'Травяная ванночка для ног (Травы • Морская соль • Теплая вода • Цветы)', price: 40000 },
-  { id: 'cb-2', category: 'combos', vietnamese: 'COMBO 1 (Ngâm chân + đồ uống)', english: 'Foot Soak + Drink (10k off total bill)', russian: 'Ванночка для ног + напиток (скидка 10k)', price: 10000 },
-  { id: 'cb-3', category: 'combos', vietnamese: 'COMBO 2 (Ngâm chân + đồ uống + tráng miệng/ăn vặt)', english: 'Foot Soak + Drink + Dessert/Snack (15k off total bill)', russian: 'Ванночка для ног + напиток + десерт/закуска (скидка 15k)', price: 15000 },
 ];
 
 export function getItemsByCategory(categoryId: string): MenuItem[] {

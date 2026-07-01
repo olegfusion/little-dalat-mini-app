@@ -116,7 +116,7 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     ctx.session.currentPage = 0;
     ctx.session.itemsMessageId = null;
     await ctx.editMessageText(t('select_category', lang), {
-      reply_markup: categoryKeyboard(lang, ctx.session.mode),
+      reply_markup: categoryKeyboard(lang),
     });
     await ctx.answerCallbackQuery();
   });
