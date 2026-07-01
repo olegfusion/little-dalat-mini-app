@@ -25,7 +25,7 @@
   "place_order": "📝 Place Order",
   "enter_name": "📋 *Order Summary*\n\nWe need your details to complete the order.\n\n👤 *Please enter your name:*",
   "enter_phone": "Please enter your phone number:",
-  "enter_address": "📍 *Share your location:*\n• Tap the pink 📍 Share Location button below\n• Or tap 📎 → Location to drag the pin\n\n✏️ *Or type your address manually:*\n(default delivery fee: 15k VND)",
+  "enter_address": "📍 *Share your location:*\n• Tap the pink 📍 Share Location button below\n• Or tap 📎 → Location to drag the pin\n\n✏️ *Or type your address manually:*\n\n🎉 Free delivery for 5+ drinks & desserts!",
   "or_select_map": "Or select your location on the map:",
   "share_location": "📍 Share Location",
   "enter_manual": "✏️ Enter Address",
