@@ -91,7 +91,11 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
         reply_markup: paymentKeyboard(lang),
       });
-    } catch { /* ignore */ }
+    } catch {
+      await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
+        reply_markup: paymentKeyboard(lang),
+      });
+    }
   });
 
   bot.callbackQuery('edit_address', async (ctx) => {
@@ -99,7 +103,9 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     const address = ctx.session.deliveryAddress;
     await ctx.answerCallbackQuery();
     try {
-      await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`);
+      await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
+        reply_markup: { inline_keyboard: [] },
+      });
     } catch { /* ignore */ }
   });
 
