@@ -20,6 +20,4 @@ export const config = {
     maxRadius: 8, // km
   },
   currency: 'k',
-  googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || '',
-  googleMapsApiKey2: process.env.GOOGLE_MAPS_API_KEY2 || '',
 };

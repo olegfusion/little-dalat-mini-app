@@ -1,24 +1,20 @@
-import { config } from '../config';
-
-let currentKeyIndex = 0;
-const keys = [config.googleMapsApiKey, config.googleMapsApiKey2].filter(Boolean);
-
-async function googleGeocode(lat: number, lng: number): Promise<string | null> {
-  if (keys.length === 0) return null;
-  const key = keys[currentKeyIndex];
-  if (!key) return null;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&language=vi&key=${key}`;
+async function photonGeocode(lat: number, lng: number): Promise<string | null> {
+  const url = `https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}`;
   try {
     const res = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json() as any;
-    if (data.status === 'OVER_QUERY_LIMIT') {
-      currentKeyIndex = (currentKeyIndex + 1) % keys.length;
-      if (currentKeyIndex === 0) return null;
-      return googleGeocode(lat, lng);
-    }
-    if (data.status !== 'OK' || !data.results?.[0]) return null;
-    return data.results[0].formatted_address;
+    const feature = data.features?.[0]?.properties;
+    if (!feature) return null;
+    const parts: string[] = [];
+    if (feature.housenumber) parts.push(feature.housenumber);
+    if (feature.street) parts.push(feature.street);
+    if (feature.district) parts.push(feature.district);
+    else if (feature.locality) parts.push(feature.locality);
+    if (feature.city) parts.push(feature.city);
+    else if (feature.town) parts.push(feature.town);
+    if (parts.length < 2) return data.features[0].properties.name || null;
+    return parts.join(', ');
   } catch {
     return null;
   }
@@ -48,7 +44,7 @@ async function nominatimGeocode(lat: number, lng: number): Promise<string> {
 }
 
 export async function reverseGeocode(lat: number, lng: number): Promise<string> {
-  const googleResult = await googleGeocode(lat, lng);
-  if (googleResult) return googleResult;
+  const photonResult = await photonGeocode(lat, lng);
+  if (photonResult) return photonResult;
   return nominatimGeocode(lat, lng);
 }
