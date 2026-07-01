@@ -22,7 +22,7 @@
   "clear_cart": "🗑️ Clear Cart",
   "proceed_checkout": "✅ Checkout",
   "place_order": "📝 Place Order",
-  "enter_name": "Please enter your name:",
+  "enter_name": "📋 *Order Summary*\n\nWe need your details to complete the order.\n\n👤 *Please enter your name:*",
   "enter_phone": "Please enter your phone number:",
   "enter_address": "Please enter delivery address or share location:",
   "share_location": "📍 Share Location",

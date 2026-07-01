@@ -22,7 +22,7 @@
   "clear_cart": "🗑️ Xóa giỏ",
   "proceed_checkout": "✅ Thanh toán",
   "place_order": "📝 Đặt hàng",
-  "enter_name": "Vui lòng nhập tên của bạn:",
+  "enter_name": "📋 *Thông tin đơn hàng*\n\nChúng tôi cần thông tin của bạn để hoàn tất đơn hàng.\n\n👤 *Vui lòng nhập tên của bạn:*",
   "enter_phone": "Vui lòng nhập số điện thoại:",
   "enter_address": "Vui lòng nhập địa chỉ giao hàng hoặc chia sẻ vị trí:",
   "share_location": "📍 Chia sẻ vị trí",

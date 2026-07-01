@@ -17,7 +17,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     }
 
     ctx.session.step = 'checkout_name';
-    await ctx.reply(t('enter_name', lang));
+    await ctx.reply(t('enter_name', lang), { parse_mode: 'Markdown' });
     await ctx.answerCallbackQuery();
   });
 
