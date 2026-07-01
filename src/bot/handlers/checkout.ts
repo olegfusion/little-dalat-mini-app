@@ -213,12 +213,3 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
     reply_markup: confirmKb,
   });
 }
-
-function addressWithMapLink(ctx: BotContext): string {
-  const lang = ctx.session.language;
-  let text = `${t('current_address', lang)}: ${ctx.session.deliveryAddress}`;
-  if (ctx.session.deliveryLat && ctx.session.deliveryLng) {
-    text += `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}\n${t('gmaps_hint', lang)}`;
-  }
-  return text;
-}
