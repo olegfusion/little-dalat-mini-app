@@ -16,7 +16,8 @@ export function registerCartHandlers(bot: Bot<BotContext>): void {
       return;
     }
 
-    const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+    const fee = ctx.session.step === 'checkout_payment' ? ctx.session.deliveryFee : 0;
+    const text = buildCartText(cart, lang, fee);
     await ctx.editMessageText(text, {
       reply_markup: cartKeyboard(lang),
     });
@@ -30,7 +31,8 @@ export function registerCartHandlers(bot: Bot<BotContext>): void {
       await ctx.answerCallbackQuery(t('cart_empty', lang));
       return;
     }
-    const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+    const fee = ctx.session.step === 'checkout_payment' ? ctx.session.deliveryFee : 0;
+    const text = buildCartText(cart, lang, fee);
     await ctx.editMessageText(text, {
       reply_markup: new InlineKeyboard()
         .text(t('proceed_checkout', lang), 'checkout')
