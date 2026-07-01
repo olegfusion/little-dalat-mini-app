@@ -67,6 +67,11 @@
   "new_order": "🆕 Новый заказ",
   "new_order_prompt": "Хотите оформить ещё один заказ?",
   "payment_failed": "Ошибка оплаты. Попробуйте снова или выберите Наличные.",
+  "confirm_address": "✅ Подтвердить адрес",
+  "edit_address": "✏️ Изменить адрес",
+  "your_address": "Ваш адрес",
+  "address_edit_hint": "Если адрес выше не точен, отправьте правильный или нажмите «Подтвердить».",
+  "enter_address_edit": "✏️ Отправьте исправленный адрес:",
   "contact_msg": "📞 *Свяжитесь с нами*\n\n💬 WhatsApp: wa.me/84912066973\n💬 Zalo: zalo.me/84912066973\n✈️ Telegram: @littledalatbot\n\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00",
   "map_msg": "📍 *Наше местоположение*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00\n\nНажмите кнопку ниже, чтобы открыть Google Maps."
 }

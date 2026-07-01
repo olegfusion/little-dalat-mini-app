@@ -1,4 +1,4 @@
-import { Bot } from 'grammy';
+import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { t } from '../../locales';
 import { paymentKeyboard } from '../keyboards';
@@ -65,6 +65,35 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       });
       return;
     }
+
+    if (ctx.session.step === 'checkout_address_edit') {
+      ctx.session.deliveryAddress = ctx.message.text;
+      ctx.session.step = 'checkout_payment';
+      const cart = ctx.session.cart;
+      const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
+      await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
+      await ctx.reply(`${text}\n\n${t('choose_payment', ctx.session.language)}`, {
+        reply_markup: paymentKeyboard(ctx.session.language),
+      });
+      return;
+    }
+  });
+
+  bot.callbackQuery('confirm_address', async (ctx) => {
+    const lang = ctx.session.language;
+    ctx.session.step = 'checkout_payment';
+    const cart = ctx.session.cart;
+    const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+    await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
+      reply_markup: paymentKeyboard(lang),
+    });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('edit_address', async (ctx) => {
+    const lang = ctx.session.language;
+    await ctx.editMessageText(t('enter_address_edit', lang));
+    await ctx.answerCallbackQuery();
   });
 
   bot.on('message:location', async (ctx) => {
@@ -104,11 +133,12 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
   }
 
   ctx.session.deliveryFee = fee;
-  ctx.session.step = 'checkout_payment';
-  const cart = ctx.session.cart;
-  const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+  ctx.session.step = 'checkout_address_edit';
   await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
-  await ctx.reply(`${t('location_received', lang)} ✅\n${t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 })}\n\n${text}\n\n${t('choose_payment', lang)}`, {
-    reply_markup: paymentKeyboard(lang),
+  const confirmKb = new InlineKeyboard()
+    .text(t('confirm_address', lang), 'confirm_address')
+    .text(t('edit_address', lang), 'edit_address');
+  await ctx.reply(`${t('location_received', lang)} ✅\n${t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 })}\n\n📍 ${t('your_address', lang)}: ${ctx.session.deliveryAddress}\n\n${t('address_edit_hint', lang)}`, {
+    reply_markup: confirmKb,
   });
 }

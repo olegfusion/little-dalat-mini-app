@@ -6,7 +6,7 @@ export interface SessionData {
   mode: OrderMode | null;
   tableNumber: string | null;
   cart: CartItem[];
-  step: 'idle' | 'choosing_mode' | 'choosing_language' | 'browsing' | 'in_cart' | 'checkout_name' | 'checkout_phone' | 'checkout_address' | 'checkout_payment' | 'confirming';
+  step: 'idle' | 'choosing_mode' | 'choosing_language' | 'browsing' | 'in_cart' | 'checkout_name' | 'checkout_phone' | 'checkout_address' | 'checkout_address_edit' | 'checkout_payment' | 'confirming';
   customerName: string;
   customerPhone: string;
   deliveryAddress: string;
