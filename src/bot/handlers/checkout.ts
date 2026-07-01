@@ -41,6 +41,9 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
             one_time_keyboard: true,
           },
         });
+        await ctx.reply(t('or_select_map', ctx.session.language), {
+          reply_markup: new InlineKeyboard().url('🗺️ Google Maps', `https://www.google.com/maps?q=${config.shop.lat},${config.shop.lng}`),
+        });
       } else {
         ctx.session.step = 'checkout_payment';
         const cart = ctx.session.cart;

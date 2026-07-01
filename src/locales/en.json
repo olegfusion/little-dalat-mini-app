@@ -25,6 +25,7 @@
   "enter_name": "📋 *Order Summary*\n\nWe need your details to complete the order.\n\n👤 *Please enter your name:*",
   "enter_phone": "Please enter your phone number:",
   "enter_address": "Please enter delivery address or share location:",
+  "or_select_map": "Or select your location on the map:",
   "share_location": "📍 Share Location",
   "enter_manual": "✏️ Enter Address",
   "location_received": "✅ Location received!",

@@ -25,6 +25,7 @@
   "enter_name": "📋 *Thông tin đơn hàng*\n\nChúng tôi cần thông tin của bạn để hoàn tất đơn hàng.\n\n👤 *Vui lòng nhập tên của bạn:*",
   "enter_phone": "Vui lòng nhập số điện thoại:",
   "enter_address": "Vui lòng nhập địa chỉ giao hàng hoặc chia sẻ vị trí:",
+  "or_select_map": "Hoặc chọn vị trí trên bản đồ:",
   "share_location": "📍 Chia sẻ vị trí",
   "enter_manual": "✏️ Nhập địa chỉ",
   "location_received": "✅ Đã nhận vị trí của bạn!",
