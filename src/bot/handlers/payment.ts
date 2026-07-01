@@ -141,9 +141,16 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     }, 0);
     const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
     const text = `${t('total', lang)}: ${total / 1000}k`;
-    await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
-      reply_markup: paymentKeyboard(lang, ctx.session.mode),
-    });
+    try {
+      await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
+        reply_markup: paymentKeyboard(lang, ctx.session.mode),
+      });
+    } catch {
+      await ctx.deleteMessage().catch(() => {});
+      await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
+        reply_markup: paymentKeyboard(lang, ctx.session.mode),
+      });
+    }
     await ctx.answerCallbackQuery();
   });
 
