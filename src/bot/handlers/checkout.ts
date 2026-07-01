@@ -231,7 +231,7 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
     ? t('delivery_free', lang)
     : t('distance_check', lang, { km: km.toFixed(1), fee: ctx.session.deliveryFee / 1000 });
   const mapLink = ctx.session.deliveryLat && ctx.session.deliveryLng
-    ? `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}`
+    ? `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}\n${t('gmaps_hint', lang)}`
     : '';
   await ctx.reply(`${t('location_received', lang)} ✅\n${dm}\n\n📍 ${t('your_address', lang)}: ${ctx.session.deliveryAddress}${mapLink}\n\n${t('address_edit_hint', lang)}`, {
     reply_markup: confirmKb,
@@ -242,7 +242,7 @@ function addressWithMapLink(ctx: BotContext): string {
   const lang = ctx.session.language;
   let text = `${t('current_address', lang)}: ${ctx.session.deliveryAddress}`;
   if (ctx.session.deliveryLat && ctx.session.deliveryLng) {
-    text += `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}`;
+    text += `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}\n${t('gmaps_hint', lang)}`;
   }
   return text;
 }
