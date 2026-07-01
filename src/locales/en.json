@@ -64,6 +64,7 @@
   "next": "Next",
   "back": "◀ Back",
   "remove_item": "Remove",
+  "payment_failed": "Payment error. Please try again or choose Cash.",
   "contact_msg": "📞 *Contact us*\n\n💬 WhatsApp: wa.me/84912066973\n💬 Zalo: zalo.me/84912066973\n✈️ Telegram: @littledalatbot\n\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00",
   "map_msg": "📍 *Our location*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00\n\nTap the button below to open Google Maps.",
   "new_order": "🆕 New Order",

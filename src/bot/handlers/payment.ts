@@ -17,32 +17,36 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     }, 0);
     const total = subtotal + (ctx.session.deliveryFee || 0);
 
-    const order = createOrder({
-      chatId: ctx.chat!.id,
-      tableNumber: ctx.session.tableNumber,
-      mode: ctx.session.mode || 'dine-in',
-      items: cart,
-      total,
-      deliveryFee: ctx.session.deliveryFee || 0,
-      paymentMethod: 'qr',
-      customerName: ctx.session.customerName || '',
-      customerPhone: ctx.session.customerPhone || '',
-      deliveryAddress: ctx.session.deliveryAddress || '',
-      deliveryLat: ctx.session.deliveryLat || null,
-      deliveryLng: ctx.session.deliveryLng || null,
-      language: lang,
-    });
+    try {
+      const order = createOrder({
+        chatId: ctx.chat!.id,
+        tableNumber: ctx.session.tableNumber,
+        mode: ctx.session.mode || 'dine-in',
+        items: cart,
+        total,
+        deliveryFee: ctx.session.deliveryFee || 0,
+        paymentMethod: 'qr',
+        customerName: ctx.session.customerName || '',
+        customerPhone: ctx.session.customerPhone || '',
+        deliveryAddress: ctx.session.deliveryAddress || '',
+        deliveryLat: ctx.session.deliveryLat || null,
+        deliveryLng: ctx.session.deliveryLng || null,
+        language: lang,
+      });
 
-    ctx.session.pendingOrderId = order.id;
+      ctx.session.pendingOrderId = order.id;
 
-    const qr = generateVietQR(order.id, total);
+      const qr = generateVietQR(order.id, total);
 
-    await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 }));
+      await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 }));
 
-    await ctx.replyWithPhoto(qr.imageUrl, {
-      caption: t('payment_qr_waiting', lang),
-      reply_markup: paymentConfirmKeyboard(lang),
-    });
+      await ctx.replyWithPhoto(qr.imageUrl, {
+        caption: t('payment_qr_waiting', lang),
+        reply_markup: paymentConfirmKeyboard(lang),
+      });
+    } catch (e) {
+      await ctx.reply('⚠️ ' + t('payment_failed', lang));
+    }
 
     await ctx.answerCallbackQuery();
   });
