@@ -160,8 +160,8 @@ async function showItemPage(
     kb.text(`${name} — ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
   }
 
-  if (page > 0) kb.text('◀️', `page_${categoryId}_${page - 1}`);
-  if (page < chunks.length - 1) kb.text('▶️', `page_${categoryId}_${page + 1}`);
+  if (page > 0) kb.text(`◀️ ${t('prev', lang)}`, `page_${categoryId}_${page - 1}`);
+  if (page < chunks.length - 1) kb.text(`${t('next', lang)} ▶️`, `page_${categoryId}_${page + 1}`);
   if (page > 0 || page < chunks.length - 1) kb.row();
 
   kb.text(t('view_cart', lang), 'view_cart');

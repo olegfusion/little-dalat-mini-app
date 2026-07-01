@@ -60,6 +60,8 @@
   "paid": "Paid",
   "unpaid": "Unpaid",
   "choose_variant": "Choose variant",
+  "prev": "Prev",
+  "next": "Next",
   "back": "◀ Back",
   "remove_item": "Remove"
 }

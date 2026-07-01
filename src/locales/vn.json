@@ -60,6 +60,8 @@
   "paid": "Đã thanh toán",
   "unpaid": "Chưa thanh toán",
   "choose_variant": "Chọn phiên bản",
+  "prev": "Trước",
+  "next": "Tiếp",
   "back": "◀ Quay lại",
   "remove_item": "Xóa"
 }
