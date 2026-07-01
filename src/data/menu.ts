@@ -73,6 +73,9 @@ export function getItemById(id: string): MenuItem | undefined {
   return INITIAL_MENU_ITEMS.find(item => item.id === id);
 }
 
+const LANG_FIELD: Record<string, string> = { vn: 'vietnamese', en: 'english', ru: 'russian' };
+
 export function getItemName(item: MenuItem, lang: string): string {
-  return item[lang as keyof typeof item] as string || item.english;
+  const field = LANG_FIELD[lang] || 'english';
+  return (item as any)[field] as string || item.english;
 }

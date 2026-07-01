@@ -1,9 +1,9 @@
-import { Bot } from 'grammy';
+import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { getItemsByCategory, getItemById, getItemName } from '../../data/menu';
-import { itemActionKeyboard, categoryKeyboard } from '../keyboards';
+import { categoryKeyboard } from '../keyboards';
 import { t } from '../../locales';
-import { MenuItem } from '../../types';
+import { MenuItem, Language } from '../../types';
 import { config } from '../../config';
 
 export function registerMenuHandlers(bot: Bot<BotContext>): void {
@@ -17,27 +17,7 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
       return;
     }
 
-    const chunks: MenuItem[][] = [];
-    for (let i = 0; i < items.length; i += 10) {
-      chunks.push(items.slice(i, i + 10));
-    }
-
-    let chunkIndex = 0;
-    const chunk = chunks[0];
-
-    let text = `${t('items_in', lang)}:\n\n`;
-    for (const item of chunk) {
-      const name = getItemName(item, lang);
-      text += `• ${name} — ${item.price / 1000}${config.currency}\n`;
-    }
-
-    const kb = itemActionKeyboard(chunk[0].id, lang);
-    if (chunks.length > 1) {
-      kb.row().text('▶️', `page_${categoryId}_${chunkIndex + 1}`);
-    }
-    kb.row().text(t('back', lang), 'back_categories');
-
-    await ctx.editMessageText(text, { reply_markup: kb });
+    await showItemPage(ctx, categoryId, items, 0, lang);
     await ctx.answerCallbackQuery();
   });
 
@@ -54,11 +34,11 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     const existing = ctx.session.cart.find(c => c.menuItemId === itemId);
     if (existing) {
       existing.quantity++;
+      await ctx.answerCallbackQuery(`${getItemName(item, lang)} ×${existing.quantity} ✅`);
     } else {
       ctx.session.cart.push({ menuItemId: itemId, quantity: 1 });
+      await ctx.answerCallbackQuery(`${getItemName(item, lang)} ✅`);
     }
-
-    await ctx.answerCallbackQuery(t('added_to_cart', lang));
   });
 
   bot.callbackQuery('back_categories', async (ctx) => {
@@ -74,33 +54,50 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     const page = parseInt(ctx.match[2]);
     const lang = ctx.session.language;
     const items = getItemsByCategory(categoryId);
-    const chunks: MenuItem[][] = [];
-    for (let i = 0; i < items.length; i += 10) {
-      chunks.push(items.slice(i, i + 10));
-    }
 
-    if (page >= chunks.length) {
-      await ctx.answerCallbackQuery('No more items');
-      return;
-    }
-
-    const chunk = chunks[page];
-    let text = `${t('items_in', lang)}:\n\n`;
-    for (const item of chunk) {
-      const name = getItemName(item, lang);
-      text += `• ${name} — ${item.price / 1000}${config.currency}\n`;
-    }
-
-    const kb = itemActionKeyboard(chunk[0].id, lang);
-    if (page > 0) {
-      kb.text('◀️', `page_${categoryId}_${page - 1}`);
-    }
-    if (page < chunks.length - 1) {
-      kb.text('▶️', `page_${categoryId}_${page + 1}`);
-    }
-    kb.row().text(t('back', lang), 'back_categories');
-
-    await ctx.editMessageText(text, { reply_markup: kb });
+    await showItemPage(ctx, categoryId, items, page, lang);
     await ctx.answerCallbackQuery();
   });
+}
+
+async function showItemPage(
+  ctx: BotContext,
+  categoryId: string,
+  items: MenuItem[],
+  page: number,
+  lang: Language,
+): Promise<void> {
+  const perPage = 5;
+  const chunks: MenuItem[][] = [];
+  for (let i = 0; i < items.length; i += perPage) {
+    chunks.push(items.slice(i, i + perPage));
+  }
+
+  if (page >= chunks.length) {
+    await ctx.answerCallbackQuery('No more items');
+    return;
+  }
+
+  const chunk = chunks[page];
+  const kb = new InlineKeyboard();
+
+  for (const item of chunk) {
+    const name = getItemName(item, lang);
+    const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
+    const qty = cartItem ? ` [×${cartItem.quantity}]` : '';
+    kb.text(`${name} — ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
+  }
+
+  if (page > 0) kb.text('◀️', `page_${categoryId}_${page - 1}`);
+  if (page < chunks.length - 1) kb.text('▶️', `page_${categoryId}_${page + 1}`);
+  if (page > 0 || page < chunks.length - 1) kb.row();
+
+  kb.text(t('view_cart', lang), 'view_cart');
+  kb.text(t('back', lang), 'back_categories');
+
+  const text = page > 0
+    ? `${t('items_in', lang)} (${page + 1}/${chunks.length}):`
+    : `${t('items_in', lang)}:`;
+
+  await ctx.editMessageText(text, { reply_markup: kb });
 }

@@ -3,6 +3,12 @@ import { Language, OrderMode } from '../types';
 import { CATEGORIES } from '../data/categories';
 import { t } from '../locales';
 
+const LANG_FIELD: Record<Language, string> = { vn: 'vietnamese', en: 'english', ru: 'russian' };
+
+function langField(lang: Language): string {
+  return LANG_FIELD[lang] || 'english';
+}
+
 export function modeKeyboard(lang: Language) {
   return new InlineKeyboard()
     .text(t('btn_dine_in', lang), 'mode_dine-in')
@@ -25,8 +31,8 @@ export function categoryKeyboard(lang: Language, mode?: OrderMode | null) {
     ? CATEGORIES.filter(c => c.id !== 'combos')
     : CATEGORIES;
   for (const cat of filtered) {
-    const name = cat[lang as keyof typeof cat] as string;
-    kb.text(name, `cat_${cat.id}`).row();
+    const name = (cat as any)[langField(lang)] as string;
+    if (name) kb.text(name, `cat_${cat.id}`).row();
   }
   kb.text(t('view_cart', lang), 'view_cart');
   return kb;
