@@ -21,4 +21,5 @@ export const config = {
   },
   currency: 'k',
   goongApiKey: process.env.GOONG_API_KEY || '',
+  locationIqKey: process.env.LOCATIONIQ_API_KEY || '',
 };
