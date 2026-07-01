@@ -1,4 +1,4 @@
-import { Bot } from 'grammy';
+import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { getItemById, getItemName } from '../../data/menu';
 import { cartKeyboard } from '../keyboards';
@@ -19,6 +19,24 @@ export function registerCartHandlers(bot: Bot<BotContext>): void {
     const text = buildCartText(cart, lang, ctx.session.deliveryFee);
     await ctx.editMessageText(text, {
       reply_markup: cartKeyboard(lang),
+    });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('back_cart', async (ctx) => {
+    const lang = ctx.session.language;
+    const cart = ctx.session.cart;
+    if (cart.length === 0) {
+      await ctx.answerCallbackQuery(t('cart_empty', lang));
+      return;
+    }
+    const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+    await ctx.editMessageText(text, {
+      reply_markup: new InlineKeyboard()
+        .text(t('proceed_checkout', lang), 'checkout')
+        .text(t('clear_cart', lang), 'clear_cart')
+        .row()
+        .text(t('continue_shopping', lang), 'back_categories'),
     });
     await ctx.answerCallbackQuery();
   });

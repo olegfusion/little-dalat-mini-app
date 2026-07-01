@@ -1,4 +1,4 @@
-import { Bot } from 'grammy';
+import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { t } from '../../locales';
 import { paymentConfirmKeyboard, confirmOrderKeyboard } from '../keyboards';
@@ -81,6 +81,23 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       : t('order_dinein_msg', lang, { id: orderId, table: ctx.session.tableNumber || '?' });
 
     await ctx.reply(msg, { reply_markup: { remove_keyboard: true } });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('back_payment', async (ctx) => {
+    const lang = ctx.session.language;
+    const cart = ctx.session.cart;
+    const subtotal = cart.reduce((sum, ci) => {
+      const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
+      return sum + (item?.price || 0) * ci.quantity;
+    }, 0);
+    const total = subtotal + (ctx.session.deliveryFee || 0);
+    const text = `${t('total', lang)}: ${total / 1000}k`;
+    await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
+      reply_markup: new InlineKeyboard()
+        .text(t('btn_qr', lang), 'pay_qr')
+        .text(t('btn_cash', lang), 'pay_cash'),
+    });
     await ctx.answerCallbackQuery();
   });
 
