@@ -4,6 +4,7 @@ import { t } from '../../locales';
 import { paymentKeyboard } from '../keyboards';
 import { config } from '../../config';
 import { getDeliveryFee, haversineDistance } from '../../lib/distance';
+import { reverseGeocode } from '../../lib/geocode';
 import { buildCartText } from './cart';
 
 export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
@@ -102,6 +103,8 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       ctx.session.deliveryLat = loc.latitude;
       ctx.session.deliveryLng = loc.longitude;
       ctx.session.deliveryAddress = `${loc.latitude}, ${loc.longitude}`;
+      const address = await reverseGeocode(loc.latitude, loc.longitude);
+      ctx.session.deliveryAddress = address;
       await processDeliveryAddress(ctx);
     }
   });
