@@ -62,7 +62,7 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     }
 
     const qty = existing ? existing.quantity : 1;
-    await ctx.answerCallbackQuery(`✅ ${getItemName(item, lang)} — +1 (${qty} ${qty > 1 ? 'pcs' : 'pc'})`);
+    await ctx.answerCallbackQuery(`✅ ${getItemName(item, lang)} — +1 (${qty})`);
 
     const cat = ctx.session.currentCategory;
     if (cat) {
@@ -91,7 +91,7 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
 
     const variant = getItemVariantName(item, lang, variantIndex);
     const qty = existing ? existing.quantity : 1;
-    await ctx.answerCallbackQuery(`✅ ${getItemName(item, lang)} (${variant}) — +1 (${qty} ${qty > 1 ? 'pcs' : 'pc'})`);
+    await ctx.answerCallbackQuery(`✅ ${getItemName(item, lang)} (${variant}) — +1 (${qty})`);
 
     const cat = ctx.session.currentCategory;
     if (cat) {
@@ -142,19 +142,23 @@ async function showItemPage(
   lang: Language,
 ): Promise<void> {
   const kb = new InlineKeyboard();
+  const lines: string[] = [];
 
-  for (const item of items) {
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
     const name = getItemName(item, lang);
-    const shortened = name.length > 22 ? name.substring(0, 20) + '…' : name;
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
-    const qty = cartItem ? ` ×${cartItem.quantity}` : '';
-    kb.text(`${shortened} \u2014 ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
+    const qty = cartItem ? ` [×${cartItem.quantity}]` : '';
+    lines.push(`${i + 1}. ${name} — ${item.price / 1000}${config.currency}${qty}`);
+    kb.text(`+${i + 1}`, `add_${item.id}`);
+    if ((i + 1) % 4 === 0) kb.row();
   }
 
-  kb.text(t('view_cart', lang), 'view_cart');
+  if (items.length % 4 !== 0) kb.row();
+  kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
-  const text = `${t('items_in', lang)}:`;
+  const text = `${t('items_in', lang)}\n\n${lines.join('\n')}`;
 
   if (ctx.session.itemsMessageId) {
     await ctx.api.editMessageText(ctx.chat!.id, ctx.session.itemsMessageId, text, { reply_markup: kb });
