@@ -164,10 +164,10 @@ async function showItemPage(
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
     const qty = cartItem ? ` ×${cartItem.quantity}` : '';
-    kb.text(formatItemButton(name, item.price, config.currency, qty), `add_${item.id}`).primary().row();
+    kb.text(formatItemButton(name, item.price, config.currency, qty), `add_${item.id}`).row();
   }
 
-  kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart').primary();
+  kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
   const text = `${t('items_in', lang)}:`;
