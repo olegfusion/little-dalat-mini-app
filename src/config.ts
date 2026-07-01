@@ -4,8 +4,9 @@ dotenv.config();
 export const config = {
   botToken: process.env.BOT_TOKEN || '',
   staffChatId: process.env.STAFF_CHAT_ID || '',
-  ocbAccountNumber: process.env.OCB_ACCOUNT_NUMBER || '',
-  ocbBeneficiaryName: process.env.OCB_BENEFICIARY_NAME || 'Little Dalat',
+  bankCode: process.env.BANK_CODE || 'TCB',
+  bankAccountNumber: process.env.BANK_ACCOUNT_NUMBER || '',
+  bankBeneficiaryName: process.env.BANK_BENEFICIARY_NAME || 'Little Dalat',
   shop: {
     lat: Number(process.env.SHOP_LAT) || 12.245566,
     lng: Number(process.env.SHOP_LNG) || 109.192793,
