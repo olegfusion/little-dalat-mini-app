@@ -13,6 +13,10 @@ function applyFreeDelivery(cart: CartItem[], fee: number): number {
   return totalQty >= 5 ? -1 : fee;
 }
 
+function cartTotalQty(cart: CartItem[]): number {
+  return cart.reduce((sum, ci) => sum + ci.quantity, 0);
+}
+
 function feeLine(lang: Language, fee: number): string {
   if (fee === -1) return t('delivery_free', lang);
   return t('distance_check', lang, { km: '—', fee: fee / 1000 });
@@ -45,7 +49,11 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       ctx.session.customerPhone = ctx.message.text;
       if (ctx.session.mode === 'delivery') {
         ctx.session.step = 'checkout_address';
-        await ctx.reply(t('enter_address', ctx.session.language), {
+        const qty = cartTotalQty(ctx.session.cart);
+        let addressText = t('enter_address', ctx.session.language);
+        if (qty >= 5) addressText += `\n\n${t('free_delivery_active', ctx.session.language)}`;
+        const kb = new InlineKeyboard().text(`🛍️ ${t('continue_shopping', ctx.session.language)}`, 'back_categories');
+        await ctx.reply(addressText, {
           parse_mode: 'Markdown',
           reply_markup: {
             keyboard: [[{ text: t('share_location', ctx.session.language), request_location: true }]],
@@ -53,6 +61,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
             one_time_keyboard: true,
           },
         });
+        await ctx.reply('⬇️ ' + t('add_items_hint', ctx.session.language), { reply_markup: kb });
       } else if (ctx.session.mode === 'pickup') {
         ctx.session.step = 'checkout_pickup_time';
         await ctx.reply(t('choose_pickup_time', ctx.session.language), {
