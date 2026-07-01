@@ -1,6 +1,6 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
-import { getItemsByCategory, getItemById, getItemName } from '../../data/menu';
+import { getItemsByCategory, getItemById, getItemName, getItemVariantName } from '../../data/menu';
 import { categoryKeyboard } from '../keyboards';
 import { t } from '../../locales';
 import { MenuItem, Language } from '../../types';
@@ -33,6 +33,17 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
       return;
     }
 
+    if (item.variants) {
+      const kb = new InlineKeyboard();
+      item.variants[lang === 'vn' ? 'vn' : lang === 'ru' ? 'ru' : 'en'].forEach((v, i) => {
+        kb.text(v, `pick_${itemId}_${i}`).row();
+      });
+      kb.text(t('back', lang), 'back_item_page');
+      await ctx.editMessageText(`${getItemName(item, lang)}\n\n${t('choose_variant', lang)}:`, { reply_markup: kb });
+      await ctx.answerCallbackQuery();
+      return;
+    }
+
     const existing = ctx.session.cart.find(c => c.menuItemId === itemId);
     if (existing) {
       existing.quantity++;
@@ -48,6 +59,45 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
       const items = getItemsByCategory(cat);
       await showItemPage(ctx, cat, items, ctx.session.currentPage, lang);
     }
+  });
+
+  bot.callbackQuery(/^pick_(.+)_(\d+)$/, async (ctx) => {
+    const itemId = ctx.match[1];
+    const variantIndex = parseInt(ctx.match[2]);
+    const lang = ctx.session.language;
+    const item = getItemById(itemId);
+
+    if (!item) {
+      await ctx.answerCallbackQuery('Item not found');
+      return;
+    }
+
+    const existing = ctx.session.cart.find(c => c.menuItemId === itemId && c.variantIndex === variantIndex);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      ctx.session.cart.push({ menuItemId: itemId, quantity: 1, variantIndex });
+    }
+
+    const variant = getItemVariantName(item, lang, variantIndex);
+    const qty = existing ? existing.quantity : 1;
+    await ctx.answerCallbackQuery(`✅ ${getItemName(item, lang)} (${variant}) — +1 (${qty} ${qty > 1 ? 'pcs' : 'pc'})`);
+
+    const cat = ctx.session.currentCategory;
+    if (cat) {
+      const items = getItemsByCategory(cat);
+      await showItemPage(ctx, cat, items, ctx.session.currentPage, lang);
+    }
+  });
+
+  bot.callbackQuery('back_item_page', async (ctx) => {
+    const lang = ctx.session.language;
+    const cat = ctx.session.currentCategory;
+    if (cat) {
+      const items = getItemsByCategory(cat);
+      await showItemPage(ctx, cat, items, ctx.session.currentPage, lang);
+    }
+    await ctx.answerCallbackQuery();
   });
 
   bot.callbackQuery('back_categories', async (ctx) => {

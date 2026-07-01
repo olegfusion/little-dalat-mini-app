@@ -13,6 +13,11 @@ export interface MenuItem {
   english: string;
   russian: string;
   price: number; // in VND (e.g. 25000)
+  variants?: {
+    vn: string[];
+    en: string[];
+    ru: string[];
+  };
 }
 
 export type MenuCategory =
@@ -35,6 +40,7 @@ export interface CategoryInfo {
 export interface CartItem {
   menuItemId: string;
   quantity: number;
+  variantIndex?: number;
 }
 
 export interface Order {

@@ -1,9 +1,9 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
-import { getItemById, getItemName } from '../../data/menu';
+import { getItemById, getItemName, getItemVariantName } from '../../data/menu';
 import { cartKeyboard } from '../keyboards';
 import { t } from '../../locales';
-import { Language } from '../../types';
+import { Language, CartItem } from '../../types';
 import { config } from '../../config';
 
 export function registerCartHandlers(bot: Bot<BotContext>): void {
@@ -51,14 +51,17 @@ export function registerCartHandlers(bot: Bot<BotContext>): void {
   });
 }
 
-export function buildCartText(cart: { menuItemId: string; quantity: number }[], lang: Language, deliveryFee: number = 0): string {
+export function buildCartText(cart: CartItem[], lang: Language, deliveryFee: number = 0): string {
   let text = `🛒 ${t('cart_title', lang)}\n\n`;
   let subtotal = 0;
 
   for (const ci of cart) {
     const item = getItemById(ci.menuItemId);
     if (item) {
-      const name = getItemName(item, lang);
+      let name = getItemName(item, lang);
+      if (ci.variantIndex !== undefined && item.variants) {
+        name += ` (${getItemVariantName(item, lang, ci.variantIndex)})`;
+      }
       const lineTotal = item.price * ci.quantity;
       subtotal += lineTotal;
       text += `${name} x${ci.quantity} — ${lineTotal / 1000}${config.currency}\n`;

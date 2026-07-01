@@ -1,5 +1,5 @@
 import { Order, CartItem } from '../types';
-import { getItemById } from '../data/menu';
+import { getItemById, getItemVariantName } from '../data/menu';
 import { config } from '../config';
 
 export function formatOrderForStaff(order: Order): string {
@@ -32,7 +32,13 @@ export function formatOrderForStaff(order: Order): string {
   for (const ci of cartItems) {
     const menuItem = getItemById(ci.menuItemId);
     if (menuItem) {
-      text += `${menuItem.vietnamese} (${menuItem.english}) x${ci.quantity} — ${menuItem.price / 1000}k\n`;
+      let vnName = menuItem.vietnamese;
+      let enName = menuItem.english;
+      if (ci.variantIndex !== undefined && menuItem.variants) {
+        vnName += ` (${getItemVariantName(menuItem, 'vn', ci.variantIndex)})`;
+        enName += ` (${getItemVariantName(menuItem, 'en', ci.variantIndex)})`;
+      }
+      text += `${vnName} / ${enName} x${ci.quantity} — ${menuItem.price / 1000}k\n`;
     }
   }
 
