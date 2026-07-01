@@ -28,6 +28,7 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
 
     ctx.session.currentCategory = categoryId;
     ctx.session.currentPage = 0;
+    ctx.session.itemsMessageId = null;
     await showItemPage(ctx, categoryId, items, 0, lang);
     await ctx.answerCallbackQuery();
   });
@@ -113,6 +114,7 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     const lang = ctx.session.language;
     ctx.session.currentCategory = null;
     ctx.session.currentPage = 0;
+    ctx.session.itemsMessageId = null;
     await ctx.editMessageText(t('select_category', lang), {
       reply_markup: categoryKeyboard(lang, ctx.session.mode),
     });
@@ -171,5 +173,10 @@ async function showItemPage(
     ? `${t('items_in', lang)} (${page + 1}/${chunks.length}):`
     : `${t('items_in', lang)}:`;
 
-  await ctx.editMessageText(text, { reply_markup: kb });
+  if (ctx.session.itemsMessageId) {
+    await ctx.api.editMessageText(ctx.chat!.id, ctx.session.itemsMessageId, text, { reply_markup: kb });
+  } else {
+    const sent = await ctx.reply(text, { reply_markup: kb });
+    ctx.session.itemsMessageId = sent.message_id;
+  }
 }

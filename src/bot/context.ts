@@ -17,6 +17,7 @@ export interface SessionData {
   paymentMethod: 'qr' | 'cash' | undefined;
   currentCategory: string | null;
   currentPage: number;
+  itemsMessageId: number | null;
 }
 
 export type BotContext = Context & SessionFlavor<SessionData>;
@@ -38,5 +39,6 @@ export function initialSession(): SessionData {
     paymentMethod: undefined,
     currentCategory: null,
     currentPage: 0,
+    itemsMessageId: null,
   };
 }
