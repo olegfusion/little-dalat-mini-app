@@ -142,23 +142,19 @@ async function showItemPage(
   lang: Language,
 ): Promise<void> {
   const kb = new InlineKeyboard();
-  const lines: string[] = [];
 
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
+  for (const item of items) {
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
-    const qty = cartItem ? ` [×${cartItem.quantity}]` : '';
-    lines.push(`${i + 1}. ${name} — ${item.price / 1000}${config.currency}${qty}`);
-    kb.text(`+${i + 1}`, `add_${item.id}`);
-    if ((i + 1) % 4 === 0) kb.row();
+    const qty = cartItem ? ` ×${cartItem.quantity}` : '';
+    kb.text(name, `add_${item.id}`).row();
+    kb.text(`➕ ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
   }
 
-  if (items.length % 4 !== 0) kb.row();
   kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
-  const text = `${t('items_in', lang)}\n\n${lines.join('\n')}`;
+  const text = `${t('items_in', lang)}:`;
 
   if (ctx.session.itemsMessageId) {
     await ctx.api.editMessageText(ctx.chat!.id, ctx.session.itemsMessageId, text, { reply_markup: kb });
