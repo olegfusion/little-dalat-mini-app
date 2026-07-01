@@ -36,4 +36,5 @@ function initSchema(): void {
       created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
     );
   `);
+  try { db.exec('ALTER TABLE orders ADD COLUMN pickup_time INTEGER'); } catch { /* column already exists */ }
 }
