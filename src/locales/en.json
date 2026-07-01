@@ -28,7 +28,7 @@
   "share_location": "📍 Share Location",
   "enter_manual": "✏️ Enter Address",
   "location_received": "✅ Location received!",
-  "distance_check": "Distance: %km% km. Delivery fee: %fee%k",
+  "distance_check": "📍 Distance from our coffee shop to you: %km% km\n🚚 Delivery fee: %fee%k VND",
   "distance_too_far": "Sorry, we only deliver within %max% km radius.",
   "choose_payment": "Choose payment method:",
   "btn_qr": "💳 QR (Bank Transfer)",

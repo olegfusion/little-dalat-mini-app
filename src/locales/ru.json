@@ -28,7 +28,7 @@
   "share_location": "📍 Отправить геолокацию",
   "enter_manual": "✏️ Ввести адрес",
   "location_received": "✅ Местоположение получено!",
-  "distance_check": "Расстояние: %km% км. Доставка: %fee%k",
+  "distance_check": "📍 Расстояние от нашей кофейни до вас: %km% км\n🚚 Доставка: %fee%k VND",
   "distance_too_far": "Извините, мы доставляем только в радиусе %max% км.",
   "choose_payment": "Выберите способ оплаты:",
   "btn_qr": "💳 QR (Перевод)",

@@ -28,7 +28,7 @@
   "share_location": "📍 Chia sẻ vị trí",
   "enter_manual": "✏️ Nhập địa chỉ",
   "location_received": "✅ Đã nhận vị trí của bạn!",
-  "distance_check": "Khoảng cách: %km% km. Phí ship: %fee%k",
+  "distance_check": "📍 Khoảng cách từ quán đến bạn: %km% km\n🚚 Phí ship: %fee%k VND",
   "distance_too_far": "Xin lỗi, chúng tôi chỉ giao hàng trong bán kính %max% km.",
   "choose_payment": "Chọn phương thức thanh toán:",
   "btn_qr": "💳 QR (Chuyển khoản)",

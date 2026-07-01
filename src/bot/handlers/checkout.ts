@@ -59,7 +59,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       ctx.session.step = 'checkout_payment';
       const cart = ctx.session.cart;
       const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
-      await ctx.reply(`${text}\n\n${t('choose_payment', ctx.session.language)}`, {
+      await ctx.reply(`${t('location_received', ctx.session.language)}\n${t('distance_check', ctx.session.language, { km: '—', fee: ctx.session.deliveryFee / 1000 })}\n\n${text}\n\n${t('choose_payment', ctx.session.language)}`, {
         reply_markup: paymentKeyboard(ctx.session.language),
       });
       return;
@@ -81,26 +81,31 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
   const lang = ctx.session.language;
   const shop = config.shop;
 
-  if (ctx.session.deliveryLat && ctx.session.deliveryLng) {
-    const km = haversineDistance(shop.lat, shop.lng, ctx.session.deliveryLat, ctx.session.deliveryLng);
-    const fee = getDeliveryFee(km);
-
-    if (fee === null) {
-      await ctx.reply(t('distance_too_far', lang, { max: config.delivery.maxRadius }));
-      ctx.session.step = 'checkout_address';
-      return;
-    }
-
-    ctx.session.deliveryFee = fee;
-    await ctx.reply(t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 }));
-  } else {
+  if (!ctx.session.deliveryLat || !ctx.session.deliveryLng) {
     ctx.session.deliveryFee = config.delivery.feeWithin4km;
+    ctx.session.step = 'checkout_payment';
+    const cart = ctx.session.cart;
+    const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+    await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
+      reply_markup: paymentKeyboard(lang),
+    });
+    return;
   }
 
+  const km = haversineDistance(shop.lat, shop.lng, ctx.session.deliveryLat, ctx.session.deliveryLng);
+  const fee = getDeliveryFee(km);
+
+  if (fee === null) {
+    await ctx.reply(t('distance_too_far', lang, { max: config.delivery.maxRadius }));
+    ctx.session.step = 'checkout_address';
+    return;
+  }
+
+  ctx.session.deliveryFee = fee;
   ctx.session.step = 'checkout_payment';
   const cart = ctx.session.cart;
   const text = buildCartText(cart, lang, ctx.session.deliveryFee);
-  await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
+  await ctx.reply(`${t('location_received', lang)} ✅\n${t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 })}\n\n${text}\n\n${t('choose_payment', lang)}`, {
     reply_markup: paymentKeyboard(lang),
   });
 }
