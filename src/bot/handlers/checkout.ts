@@ -94,15 +94,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
   bot.callbackQuery('edit_address', async (ctx) => {
     const lang = ctx.session.language;
     const address = ctx.session.deliveryAddress;
-    const lat = ctx.session.deliveryLat;
-    const lng = ctx.session.deliveryLng;
-    const mapUrl = lat && lng
-      ? `https://www.google.com/maps?q=${lat},${lng}`
-      : `https://www.google.com/maps?q=${encodeURIComponent(address)}`;
-    const kb = new InlineKeyboard().url(t('pick_on_map', lang), mapUrl);
-    await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}`, {
-      reply_markup: kb,
-    });
+    await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`);
     await ctx.answerCallbackQuery();
   });
 
