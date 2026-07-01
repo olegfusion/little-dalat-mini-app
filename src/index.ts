@@ -6,6 +6,10 @@ getDb();
 
 const bot = createBot();
 
+bot.catch((err) => {
+  console.error('Bot error:', (err.error as any).message || err.error);
+});
+
 bot.api.setMyCommands([
   { command: 'start', description: '🆕 New Order' },
   { command: 'contact', description: '📞 Contact Us' },

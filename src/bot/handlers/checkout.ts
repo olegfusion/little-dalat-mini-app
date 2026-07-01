@@ -116,7 +116,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     const text = buildCartText(cart, lang, 0);
     await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
       reply_markup: paymentKeyboard(lang, 'pickup'),
-    });
+    }).catch(() => {});
     await ctx.answerCallbackQuery();
   });
 
