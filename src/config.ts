@@ -12,6 +12,7 @@ export const config = {
     lng: Number(process.env.SHOP_LNG) || 109.192793,
     address: process.env.SHOP_ADDRESS || '02 Thi Sách, Phước Hòa, Nha Trang',
     phone: process.env.SHOP_PHONE || '0912066973',
+    mapsUrl: process.env.SHOP_MAPS_URL || 'https://maps.app.goo.gl/KNe9dhQ7hBeztfmP7',
   },
   delivery: {
     feeWithin4km: 15000,

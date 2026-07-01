@@ -17,7 +17,7 @@ function formatPickupTime(minutes: number | null, lang: Language): string {
 function afterOrderKeyboard(mode: string | null, lang: Language) {
   const kb = new InlineKeyboard().text(t('new_order', lang), 'start_new_order');
   if (mode === 'pickup') {
-    kb.row().url('🗺️ ' + t('get_directions', lang), `https://www.google.com/maps/dir/?api=1&destination=${config.shop.lat},${config.shop.lng}`);
+    kb.row().url('🗺️ ' + t('get_directions', lang), config.shop.mapsUrl);
   }
   return kb;
 }
