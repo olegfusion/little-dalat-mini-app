@@ -8,5 +8,5 @@ export const CATEGORIES: CategoryInfo[] = [
   { id: 'other_drinks', vietnamese: 'ĐỒ UỐNG KHÁC', english: 'OTHER DRINKS', russian: 'ДРУГИЕ НАПИТКИ', imageUrl: 'https://images.unsplash.com/photo-1544145945-f904cced88a3?w=600' },
   { id: 'fruit_tea', vietnamese: 'TRÀ TRÁI CÂY', english: 'FRUIT TEA', russian: 'ФРУКТОВЫЙ ЧАЙ', imageUrl: 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?w=600' },
   { id: 'desserts_snacks', vietnamese: 'TRÁNG MIỆNG & ĂN VẶT', english: 'DESSERTS & SNACKS', russian: 'ДЕСЕРТЫ И ЗАКУСКИ', imageUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600' },
-  { id: 'combos', vietnamese: 'NGÂM CHÂN & COMBO', english: 'FOOT SOAK & COMBOS', russian: 'КОМБО ПРЕДЛОЖЕНИЯ И ВАННОЧКИ', imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600' },
+  { id: 'combos', vietnamese: 'NGÂM CHÂN', english: 'FOOT SOAK', russian: 'ВАННОЧКИ ДЛЯ НОГ', imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600' },
 ];
