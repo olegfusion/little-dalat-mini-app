@@ -147,11 +147,11 @@ async function showItemPage(
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
     const qty = cartItem ? ` ×${cartItem.quantity}` : '';
-    kb.text(name, `add_${item.id}`).row();
-    kb.text(`➕ ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
+    kb.text(name, `add_${item.id}`).primary().row();
+    kb.text(`➕ ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).success().row();
   }
 
-  kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
+  kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart').primary();
   kb.text(t('back', lang), 'back_categories');
 
   const text = `${t('items_in', lang)}:`;
