@@ -100,7 +100,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
   });
 
   bot.on('message:location', async (ctx) => {
-    if (ctx.session.step === 'checkout_address') {
+    if (ctx.session.step === 'checkout_address' || ctx.session.step === 'checkout_address_edit') {
       const loc = ctx.message.location;
       ctx.session.deliveryLat = loc.latitude;
       ctx.session.deliveryLng = loc.longitude;
