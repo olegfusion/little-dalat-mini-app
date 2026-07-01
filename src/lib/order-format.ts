@@ -12,6 +12,9 @@ export function formatOrderForStaff(order: Order): string {
     text += `📍 Bàn (Table) ${order.tableNumber || '?'} — Tại quán (Dine-in)\n`;
   } else if (order.mode === 'pickup') {
     text += `🛍️ Mang đi (Pickup)\n`;
+    if (order.pickupTime) {
+      text += `⏱ Lấy hàng sau (Pickup in): ${order.pickupTime} phút (min)\n`;
+    }
   } else {
     text += `🚚 Giao hàng (Delivery)\n`;
     text += `📍 ${order.deliveryAddress}\n`;

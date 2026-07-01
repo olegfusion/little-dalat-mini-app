@@ -59,6 +59,7 @@ export interface Order {
   deliveryAddress: string;
   deliveryLat: number | null;
   deliveryLng: number | null;
+  pickupTime: number | null;
   language: Language;
   createdAt: string;
 }

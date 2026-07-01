@@ -6,13 +6,14 @@ export interface SessionData {
   mode: OrderMode | null;
   tableNumber: string | null;
   cart: CartItem[];
-  step: 'idle' | 'choosing_mode' | 'choosing_language' | 'browsing' | 'in_cart' | 'checkout_name' | 'checkout_phone' | 'checkout_address' | 'checkout_address_edit' | 'checkout_payment' | 'confirming';
+  step: 'idle' | 'choosing_mode' | 'choosing_language' | 'browsing' | 'in_cart' | 'checkout_name' | 'checkout_phone' | 'checkout_address' | 'checkout_address_edit' | 'checkout_pickup_time' | 'checkout_payment' | 'confirming';
   customerName: string;
   customerPhone: string;
   deliveryAddress: string;
   deliveryLat: number | null;
   deliveryLng: number | null;
   deliveryFee: number;
+  pickupTime: number | null;
   pendingOrderId: number | undefined;
   paymentMethod: 'qr' | 'cash' | undefined;
   currentCategory: string | null;
@@ -35,6 +36,7 @@ export function initialSession(): SessionData {
     deliveryLat: null,
     deliveryLng: null,
     deliveryFee: 0,
+    pickupTime: null,
     pendingOrderId: undefined,
     paymentMethod: undefined,
     currentCategory: null,

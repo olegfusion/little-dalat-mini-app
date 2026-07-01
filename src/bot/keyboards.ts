@@ -53,10 +53,26 @@ export function cartKeyboard(lang: Language) {
     .text(t('continue_shopping', lang), 'back_categories');
 }
 
-export function paymentKeyboard(lang: Language) {
-  return new InlineKeyboard()
-    .text(t('btn_qr', lang), 'pay_qr')
-    .text(t('btn_cash', lang), 'pay_cash');
+export function paymentKeyboard(lang: Language, mode?: OrderMode | null) {
+  const kb = new InlineKeyboard().text(t('btn_qr', lang), 'pay_qr');
+  if (mode !== 'delivery') {
+    kb.text(t('btn_cash', lang), 'pay_cash');
+  }
+  return kb;
+}
+
+const PICKUP_TIMES = [5, 10, 15, 20, 30, 45, 60, 120, 180, 240];
+
+export function pickupTimeKeyboard(lang: Language) {
+  const kb = new InlineKeyboard();
+  for (let i = 0; i < PICKUP_TIMES.length; i += 2) {
+    kb.text(t(`pickup_time_${PICKUP_TIMES[i]}`, lang), `pickup_time_${PICKUP_TIMES[i]}`);
+    if (PICKUP_TIMES[i + 1] !== undefined) {
+      kb.text(t(`pickup_time_${PICKUP_TIMES[i + 1]}`, lang), `pickup_time_${PICKUP_TIMES[i + 1]}`);
+    }
+    kb.row();
+  }
+  return kb;
 }
 
 export function paymentConfirmKeyboard(lang: Language) {

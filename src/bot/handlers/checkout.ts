@@ -1,7 +1,7 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { t } from '../../locales';
-import { paymentKeyboard } from '../keyboards';
+import { paymentKeyboard, pickupTimeKeyboard } from '../keyboards';
 import { config } from '../../config';
 import { getDeliveryFee, haversineDistance } from '../../lib/distance';
 import { reverseGeocode } from '../../lib/geocode';
@@ -53,12 +53,18 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
             one_time_keyboard: true,
           },
         });
+      } else if (ctx.session.mode === 'pickup') {
+        ctx.session.step = 'checkout_pickup_time';
+        await ctx.reply(t('choose_pickup_time', ctx.session.language), {
+          parse_mode: 'Markdown',
+          reply_markup: pickupTimeKeyboard(ctx.session.language),
+        });
       } else {
         ctx.session.step = 'checkout_payment';
         const cart = ctx.session.cart;
         const text = buildCartText(cart, ctx.session.language, 0);
         await ctx.reply(`${text}\n\n${t('choose_payment', ctx.session.language)}`, {
-          reply_markup: paymentKeyboard(ctx.session.language),
+          reply_markup: paymentKeyboard(ctx.session.language, ctx.session.mode),
         });
       }
       return;
@@ -74,7 +80,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
       await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
       await ctx.reply(`${t('location_received', ctx.session.language)}\n${feeLine(ctx.session.language, ctx.session.deliveryFee)}\n\n${text}\n\n${t('choose_payment', ctx.session.language)}`, {
-        reply_markup: paymentKeyboard(ctx.session.language),
+        reply_markup: paymentKeyboard(ctx.session.language, ctx.session.mode),
       });
       return;
     }
@@ -86,10 +92,23 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
       await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
       await ctx.reply(`${text}\n\n${t('choose_payment', ctx.session.language)}`, {
-        reply_markup: paymentKeyboard(ctx.session.language),
+        reply_markup: paymentKeyboard(ctx.session.language, ctx.session.mode),
       });
       return;
     }
+  });
+
+  bot.callbackQuery(/^pickup_time_\d+$/, async (ctx) => {
+    const lang = ctx.session.language;
+    const minutes = parseInt(ctx.callbackQuery.data!.split('_').pop()!, 10);
+    ctx.session.pickupTime = minutes;
+    ctx.session.step = 'checkout_payment';
+    const cart = ctx.session.cart;
+    const text = buildCartText(cart, lang, 0);
+    await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
+      reply_markup: paymentKeyboard(lang, 'pickup'),
+    });
+    await ctx.answerCallbackQuery();
   });
 
   bot.callbackQuery('confirm_address', async (ctx) => {
@@ -100,11 +119,11 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     await ctx.answerCallbackQuery();
     try {
       await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
-        reply_markup: paymentKeyboard(lang),
+        reply_markup: paymentKeyboard(lang, ctx.session.mode),
       });
     } catch {
       await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
-        reply_markup: paymentKeyboard(lang),
+        reply_markup: paymentKeyboard(lang, ctx.session.mode),
       });
     }
   });
@@ -144,7 +163,7 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
     const text = buildCartText(cart, lang, ctx.session.deliveryFee);
     await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
     await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
-      reply_markup: paymentKeyboard(lang),
+      reply_markup: paymentKeyboard(lang, ctx.session.mode),
     });
     return;
   }

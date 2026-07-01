@@ -31,6 +31,7 @@ function initSchema(): void {
       delivery_address TEXT NOT NULL DEFAULT '',
       delivery_lat REAL,
       delivery_lng REAL,
+      pickup_time INTEGER,
       language TEXT NOT NULL DEFAULT 'vn',
       created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
     );

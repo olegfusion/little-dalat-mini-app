@@ -14,12 +14,13 @@ export function createOrder(data: {
   deliveryAddress: string;
   deliveryLat: number | null;
   deliveryLng: number | null;
+  pickupTime: number | null;
   language: Language;
 }): Order {
   const db = getDb();
   const stmt = db.prepare(`
-    INSERT INTO orders (chat_id, table_number, mode, items, total, delivery_fee, payment_method, customer_name, customer_phone, delivery_address, delivery_lat, delivery_lng, language)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO orders (chat_id, table_number, mode, items, total, delivery_fee, payment_method, customer_name, customer_phone, delivery_address, delivery_lat, delivery_lng, pickup_time, language)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const result = stmt.run(
     data.chatId,
@@ -34,6 +35,7 @@ export function createOrder(data: {
     data.deliveryAddress,
     data.deliveryLat,
     data.deliveryLng,
+    data.pickupTime,
     data.language
   );
   return getOrderById(result.lastInsertRowid as number)!;
@@ -72,6 +74,7 @@ function mapRow(row: any): Order {
     deliveryAddress: row.delivery_address,
     deliveryLat: row.delivery_lat,
     deliveryLng: row.delivery_lng,
+    pickupTime: row.pickup_time ?? null,
     language: row.language,
     createdAt: row.created_at,
   };

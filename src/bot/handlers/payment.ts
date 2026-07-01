@@ -1,11 +1,17 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { t } from '../../locales';
-import { paymentConfirmKeyboard, confirmOrderKeyboard, modeKeyboard } from '../keyboards';
+import { paymentKeyboard, paymentConfirmKeyboard, confirmOrderKeyboard, modeKeyboard } from '../keyboards';
 import { generateVietQR } from '../../lib/vietqr';
 import { createOrder, getOrderById, updateOrderStatus } from '../../db/orders';
 import { notifyStaff } from '../../staff/notify';
 import { INITIAL_MENU_ITEMS } from '../../data/menu';
+import { Language } from '../../types';
+
+function formatPickupTime(minutes: number | null, lang: Language): string {
+  if (!minutes) return '';
+  return t(`pickup_time_${minutes}`, lang);
+}
 
 export function registerPaymentHandlers(bot: Bot<BotContext>): void {
   bot.callbackQuery('pay_qr', async (ctx) => {
@@ -31,6 +37,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
         deliveryAddress: ctx.session.deliveryAddress || '',
         deliveryLat: ctx.session.deliveryLat || null,
         deliveryLng: ctx.session.deliveryLng || null,
+        pickupTime: ctx.session.pickupTime,
         language: lang,
       });
 
@@ -78,10 +85,11 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     ctx.session.deliveryFee = 0;
 
     const mode = ctx.session.mode;
+    const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
     const msg = mode === 'delivery'
       ? t('order_delivery_msg', lang, { id: orderId })
       : mode === 'pickup'
-      ? t('order_pickup_msg', lang, { id: orderId })
+      ? t('order_pickup_msg', lang, { id: orderId, time: pickupTimeStr })
       : t('order_dinein_msg', lang, { id: orderId, table: ctx.session.tableNumber || '?' });
 
     await ctx.reply(msg, { parse_mode: 'Markdown' });
@@ -116,9 +124,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
     const text = `${t('total', lang)}: ${total / 1000}k`;
     await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
-      reply_markup: new InlineKeyboard()
-        .text(t('btn_qr', lang), 'pay_qr')
-        .text(t('btn_cash', lang), 'pay_cash'),
+      reply_markup: paymentKeyboard(lang, ctx.session.mode),
     });
     await ctx.answerCallbackQuery();
   });
@@ -145,6 +151,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       deliveryAddress: ctx.session.deliveryAddress || '',
       deliveryLat: ctx.session.deliveryLat || null,
       deliveryLng: ctx.session.deliveryLng || null,
+      pickupTime: ctx.session.pickupTime,
       language: lang,
     });
 
@@ -154,10 +161,11 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     ctx.session.deliveryFee = 0;
 
     const mode = ctx.session.mode;
+    const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
     const msg = mode === 'delivery'
       ? t('order_delivery_msg', lang, { id: order.id })
       : mode === 'pickup'
-      ? t('order_pickup_msg', lang, { id: order.id })
+      ? t('order_pickup_msg', lang, { id: order.id, time: pickupTimeStr })
       : t('order_dinein_msg', lang, { id: order.id, table: ctx.session.tableNumber || '?' });
 
     await ctx.reply(msg, { parse_mode: 'Markdown' });
