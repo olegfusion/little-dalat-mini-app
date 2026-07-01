@@ -95,6 +95,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     ctx.session.step = 'choosing_mode';
     ctx.session.currentCategory = null;
     ctx.session.currentPage = 0;
+    ctx.session.itemsMessageId = null;
     await ctx.editMessageText(t('start_choose_mode', lang), {
       reply_markup: modeKeyboard(lang),
     });
