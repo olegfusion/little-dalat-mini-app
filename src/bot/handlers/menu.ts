@@ -141,37 +141,19 @@ async function showItemPage(
   page: number,
   lang: Language,
 ): Promise<void> {
-  const perPage = 12;
-  const chunks: MenuItem[][] = [];
-  for (let i = 0; i < items.length; i += perPage) {
-    chunks.push(items.slice(i, i + perPage));
-  }
-
-  if (page >= chunks.length) {
-    await ctx.answerCallbackQuery('No more items');
-    return;
-  }
-
-  const chunk = chunks[page];
   const kb = new InlineKeyboard();
 
-  for (const item of chunk) {
+  for (const item of items) {
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
     const qty = cartItem ? ` [×${cartItem.quantity}]` : '';
     kb.text(`${name} — ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
   }
 
-  if (page > 0) kb.text(`◀️ ${t('prev', lang)}`, `page_${categoryId}_${page - 1}`);
-  if (page < chunks.length - 1) kb.text(`${t('next', lang)} ▶️`, `page_${categoryId}_${page + 1}`);
-  if (page > 0 || page < chunks.length - 1) kb.row();
-
   kb.text(t('view_cart', lang), 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
-  const text = page > 0
-    ? `${t('items_in', lang)} (${page + 1}/${chunks.length}):`
-    : `${t('items_in', lang)}:`;
+  const text = `${t('items_in', lang)}:`;
 
   if (ctx.session.itemsMessageId) {
     await ctx.api.editMessageText(ctx.chat!.id, ctx.session.itemsMessageId, text, { reply_markup: kb });
