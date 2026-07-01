@@ -1,0 +1,106 @@
+import { Bot } from 'grammy';
+import { BotContext } from '../context';
+import { t } from '../../locales';
+import { paymentKeyboard } from '../keyboards';
+import { config } from '../../config';
+import { getDeliveryFee, haversineDistance } from '../../lib/distance';
+import { buildCartText } from './cart';
+
+export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
+  bot.callbackQuery('checkout', async (ctx) => {
+    const lang = ctx.session.language;
+    const cart = ctx.session.cart;
+
+    if (cart.length === 0) {
+      await ctx.answerCallbackQuery(t('cart_empty', lang));
+      return;
+    }
+
+    ctx.session.step = 'checkout_name';
+    await ctx.reply(t('enter_name', lang));
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.on('message:text', async (ctx) => {
+    if (ctx.session.step === 'checkout_name') {
+      ctx.session.customerName = ctx.message.text;
+      ctx.session.step = 'checkout_phone';
+      await ctx.reply(t('enter_phone', ctx.session.language));
+      return;
+    }
+
+    if (ctx.session.step === 'checkout_phone') {
+      ctx.session.customerPhone = ctx.message.text;
+      if (ctx.session.mode === 'delivery') {
+        ctx.session.step = 'checkout_address';
+        await ctx.reply(t('enter_address', ctx.session.language), {
+          reply_markup: {
+            keyboard: [[{ text: t('share_location', ctx.session.language), request_location: true }]],
+            resize_keyboard: true,
+            one_time_keyboard: true,
+          },
+        });
+      } else {
+        ctx.session.step = 'checkout_payment';
+        const cart = ctx.session.cart;
+        const text = buildCartText(cart, ctx.session.language, 0);
+        await ctx.reply(`${text}\n\n${t('choose_payment', ctx.session.language)}`, {
+          reply_markup: paymentKeyboard(ctx.session.language),
+        });
+      }
+      return;
+    }
+
+    if (ctx.session.step === 'checkout_address') {
+      ctx.session.deliveryAddress = ctx.message.text;
+      ctx.session.deliveryLat = null;
+      ctx.session.deliveryLng = null;
+      ctx.session.deliveryFee = config.delivery.feeWithin4km;
+      ctx.session.step = 'checkout_payment';
+      const cart = ctx.session.cart;
+      const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
+      await ctx.reply(`${text}\n\n${t('choose_payment', ctx.session.language)}`, {
+        reply_markup: paymentKeyboard(ctx.session.language),
+      });
+      return;
+    }
+  });
+
+  bot.on('message:location', async (ctx) => {
+    if (ctx.session.step === 'checkout_address') {
+      const loc = ctx.message.location;
+      ctx.session.deliveryLat = loc.latitude;
+      ctx.session.deliveryLng = loc.longitude;
+      ctx.session.deliveryAddress = `${loc.latitude}, ${loc.longitude}`;
+      await processDeliveryAddress(ctx);
+    }
+  });
+}
+
+async function processDeliveryAddress(ctx: BotContext): Promise<void> {
+  const lang = ctx.session.language;
+  const shop = config.shop;
+
+  if (ctx.session.deliveryLat && ctx.session.deliveryLng) {
+    const km = haversineDistance(shop.lat, shop.lng, ctx.session.deliveryLat, ctx.session.deliveryLng);
+    const fee = getDeliveryFee(km);
+
+    if (fee === null) {
+      await ctx.reply(t('distance_too_far', lang, { max: config.delivery.maxRadius }));
+      ctx.session.step = 'checkout_address';
+      return;
+    }
+
+    ctx.session.deliveryFee = fee;
+    await ctx.reply(t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 }));
+  } else {
+    ctx.session.deliveryFee = config.delivery.feeWithin4km;
+  }
+
+  ctx.session.step = 'checkout_payment';
+  const cart = ctx.session.cart;
+  const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+  await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
+    reply_markup: paymentKeyboard(lang),
+  });
+}

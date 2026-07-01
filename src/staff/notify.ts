@@ -1,9 +1,10 @@
 import { Bot } from 'grammy';
+import { BotContext } from '../bot/context';
 import { config } from '../config';
 import { formatOrderForStaff } from '../lib/order-format';
 import { Order } from '../types';
 
-export async function notifyStaff(bot: Bot, order: Order): Promise<void> {
+export async function notifyStaff(bot: Bot<BotContext>, order: Order): Promise<void> {
   if (!config.staffChatId) {
     console.warn('STAFF_CHAT_ID not configured — skipping staff notification');
     return;
