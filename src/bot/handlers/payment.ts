@@ -17,13 +17,15 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
   bot.callbackQuery('pay_qr', async (ctx) => {
     const lang = ctx.session.language;
     const cart = ctx.session.cart;
-    const subtotal = cart.reduce((sum, ci) => {
-      const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
-      return sum + (item?.price || 0) * ci.quantity;
-    }, 0);
-    const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
+    await ctx.answerCallbackQuery();
 
     try {
+      const subtotal = cart.reduce((sum, ci) => {
+        const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
+        return sum + (item?.price || 0) * ci.quantity;
+      }, 0);
+      const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
+
       const order = createOrder({
         chatId: ctx.chat!.id,
         tableNumber: ctx.session.tableNumber,
@@ -45,27 +47,22 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
 
       const qr = generateVietQR(order.id, total);
 
-      try {
-        await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 }));
-      } catch {
-        await ctx.reply(t('payment_qr_info', lang, { amount: total / 1000 }));
-      }
+      await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 })).catch(() =>
+        ctx.reply(t('payment_qr_info', lang, { amount: total / 1000 }))
+      );
 
-      try {
-        await ctx.replyWithPhoto(qr.imageUrl, {
-          caption: t('payment_qr_waiting', lang),
+      await ctx.replyWithPhoto(qr.imageUrl, {
+        caption: t('payment_qr_waiting', lang),
+        reply_markup: paymentConfirmKeyboard(lang),
+      }).catch(() =>
+        ctx.reply(t('payment_qr_waiting', lang), {
           reply_markup: paymentConfirmKeyboard(lang),
-        });
-      } catch {
-        await ctx.reply(t('payment_qr_waiting', lang), {
-          reply_markup: paymentConfirmKeyboard(lang),
-        });
-      }
+        }).catch(() => {})
+      );
     } catch (e) {
-      await ctx.reply('⚠️ ' + t('payment_failed', lang));
+      console.error('pay_qr error:', e);
+      await ctx.reply('⚠️ ' + t('payment_failed', lang)).catch(() => {});
     }
-
-    await ctx.answerCallbackQuery();
   });
 
   bot.callbackQuery('pay_cash', async (ctx) => {
