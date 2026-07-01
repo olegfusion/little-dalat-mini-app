@@ -35,6 +35,7 @@ export interface CategoryInfo {
   vietnamese: string;
   english: string;
   russian: string;
+  imageUrl: string;
 }
 
 export interface CartItem {

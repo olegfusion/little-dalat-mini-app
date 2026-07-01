@@ -1,4 +1,4 @@
-import { Bot } from 'grammy';
+import { Bot, InputFile } from 'grammy';
 import { BotContext } from '../context';
 import { modeKeyboard, languageKeyboard, categoryKeyboard } from '../keyboards';
 import { t } from '../../locales';
@@ -14,6 +14,13 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     }
     ctx.session.cart = [];
     ctx.session.step = 'choosing_language';
+
+    try {
+      await ctx.replyWithPhoto(new InputFile('logo.png'), {
+        caption: `☕ *Little Dalat Coffee & Tea*\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00 📞 0912066973`,
+        parse_mode: 'Markdown',
+      });
+    } catch { /* fallback: no logo */ }
 
     await ctx.reply(t('choose_language', 'en'), {
       reply_markup: languageKeyboard(),

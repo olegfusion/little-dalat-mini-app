@@ -80,7 +80,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       ? t('order_pickup_msg', lang, { id: orderId })
       : t('order_dinein_msg', lang, { id: orderId, table: ctx.session.tableNumber || '?' });
 
-    await ctx.reply(msg, { reply_markup: { remove_keyboard: true } });
+    await ctx.reply(msg, { reply_markup: { remove_keyboard: true }, parse_mode: 'Markdown' });
     await ctx.answerCallbackQuery();
   });
 
@@ -138,7 +138,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       ? t('order_pickup_msg', lang, { id: order.id })
       : t('order_dinein_msg', lang, { id: order.id, table: ctx.session.tableNumber || '?' });
 
-    await ctx.reply(msg, { reply_markup: { remove_keyboard: true } });
+    await ctx.reply(msg, { reply_markup: { remove_keyboard: true }, parse_mode: 'Markdown' });
     await ctx.answerCallbackQuery();
   });
 }

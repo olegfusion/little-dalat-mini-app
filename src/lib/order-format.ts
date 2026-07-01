@@ -55,6 +55,7 @@ export function formatOrderForStaff(order: Order): string {
   text += `⏰ ${order.createdAt}\n`;
   if (order.customerName) text += `👤 ${order.customerName}\n`;
   if (order.customerPhone) text += `📞 ${order.customerPhone}\n`;
+  text += `💬 tg://user?id=${order.chatId}\n`;
 
   return text;
 }

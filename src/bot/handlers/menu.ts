@@ -1,6 +1,7 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { getItemsByCategory, getItemById, getItemName, getItemVariantName } from '../../data/menu';
+import { CATEGORIES } from '../../data/categories';
 import { categoryKeyboard } from '../keyboards';
 import { t } from '../../locales';
 import { MenuItem, Language } from '../../types';
@@ -15,6 +16,14 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     if (items.length === 0) {
       await ctx.answerCallbackQuery('No items in this category');
       return;
+    }
+
+    const cat = CATEGORIES.find(c => c.id === categoryId);
+    if (cat) {
+      const catName = (cat as any)[lang === 'vn' ? 'vietnamese' : lang === 'ru' ? 'russian' : 'english'] as string;
+      try {
+        await ctx.replyWithPhoto(cat.imageUrl, { caption: `📌 *${catName}*`, parse_mode: 'Markdown' });
+      } catch { /* image failed */ }
     }
 
     ctx.session.currentCategory = categoryId;
