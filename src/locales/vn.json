@@ -91,6 +91,8 @@
   "your_address": "Địa chỉ của bạn",
   "address_edit_hint": "Nếu địa chỉ trên chưa chính xác, hãy gửi địa chỉ đúng hoặc nhấn Xác nhận để tiếp tục.",
   "enter_address_edit": "Gửi địa chỉ đã sửa:",
+  "edit_inline": "✏️ Sửa tại chỗ",
+  "type_manually": "⌨️ Nhập thủ công",
   "current_address": "📍 Địa chỉ hiện tại",
   "pick_on_map": "🗺️ Chọn trên bản đồ",
   "map_hint": "💡 Nhấn 📎 → Vị trí để mở bản đồ và kéo thả pin đến vị trí mong muốn.",

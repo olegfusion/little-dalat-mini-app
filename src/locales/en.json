@@ -88,6 +88,8 @@
   "address_edit_hint": "If the address above is not exact, send the correct address or tap Confirm to proceed.",
   "free_delivery_active": "🎉 Free delivery is already active for you!",
   "enter_address_edit": "Send the corrected address:",
+  "edit_inline": "✏️ Edit in place",
+  "type_manually": "⌨️ Type manually",
   "current_address": "📍 Current address",
   "pick_on_map": "🗺️ Select on Map",
   "map_hint": "💡 Tap 📎 attachment icon → Location to open a map where you can drag the pin to any spot.",

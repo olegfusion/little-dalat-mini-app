@@ -142,10 +142,35 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     const address = ctx.session.deliveryAddress;
     await ctx.answerCallbackQuery();
     try {
-      await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
+      await ctx.editMessageText(`✏️ ${t('enter_address_edit', lang)}`, {
+        reply_markup: new InlineKeyboard()
+          .switchInlineCurrent(t('edit_inline', lang), address)
+          .row()
+          .text(t('type_manually', lang), 'type_address'),
+      });
+    } catch { /* ignore */ }
+  });
+
+  bot.callbackQuery('type_address', async (ctx) => {
+    const lang = ctx.session.language;
+    await ctx.answerCallbackQuery();
+    try {
+      await ctx.editMessageText(`${t('current_address', lang)}: ${ctx.session.deliveryAddress}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
         reply_markup: { inline_keyboard: [] },
       });
     } catch { /* ignore */ }
+  });
+
+  bot.inlineQuery(/.*/, async (ctx) => {
+    const query = ctx.inlineQuery.query.trim();
+    if (!query) return;
+    await ctx.answerInlineQuery([{
+      type: 'article',
+      id: 'send',
+      title: `📍 ${query.substring(0, 100)}`,
+      description: '✅ Tap to confirm address',
+      input_message_content: { message_text: query },
+    }], { cache_time: 0 });
   });
 
   bot.on('message:location', async (ctx) => {
