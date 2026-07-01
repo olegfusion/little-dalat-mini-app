@@ -142,21 +142,9 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     const address = ctx.session.deliveryAddress;
     await ctx.answerCallbackQuery();
     try {
-      await ctx.editMessageText(`✏️ ${t('enter_address_edit', lang)}`, {
-        reply_markup: new InlineKeyboard()
-          .switchInlineCurrent(t('edit_inline', lang), address)
-          .row()
-          .text(t('type_manually', lang), 'type_address'),
-      });
-    } catch { /* ignore */ }
-  });
-
-  bot.callbackQuery('type_address', async (ctx) => {
-    const lang = ctx.session.language;
-    await ctx.answerCallbackQuery();
-    try {
       await ctx.editMessageText(`${addressWithMapLink(ctx)}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
-        reply_markup: { inline_keyboard: [] },
+        reply_markup: new InlineKeyboard()
+          .switchInlineCurrent(t('edit_inline', lang), address),
       });
     } catch { /* ignore */ }
   });
