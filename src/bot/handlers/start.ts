@@ -65,7 +65,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     const lat = config.shop.lat;
     const lng = config.shop.lng;
     await ctx.reply(t('map_msg', lang, { lat, lng }), {
-      reply_markup: new InlineKeyboard().url('🗺️ Google Maps', `https://www.google.com/maps?q=${lat},${lng}`),
+      reply_markup: new InlineKeyboard().url('🗺️ Google Maps', config.shop.mapsUrl),
     });
   });
 
