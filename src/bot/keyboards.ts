@@ -28,7 +28,7 @@ export function categoryKeyboard(lang: Language, mode?: OrderMode | null) {
     const name = cat[lang as keyof typeof cat] as string;
     kb.text(name, `cat_${cat.id}`).row();
   }
-  kb.text(t('view_cart', lang), 'view_cart').row();
+  kb.text(t('view_cart', lang), 'view_cart');
   return kb;
 }
 
