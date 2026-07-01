@@ -86,17 +86,21 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     ctx.session.step = 'checkout_payment';
     const cart = ctx.session.cart;
     const text = buildCartText(cart, lang, ctx.session.deliveryFee);
-    await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
-      reply_markup: paymentKeyboard(lang),
-    });
     await ctx.answerCallbackQuery();
+    try {
+      await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
+        reply_markup: paymentKeyboard(lang),
+      });
+    } catch { /* ignore */ }
   });
 
   bot.callbackQuery('edit_address', async (ctx) => {
     const lang = ctx.session.language;
     const address = ctx.session.deliveryAddress;
-    await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`);
     await ctx.answerCallbackQuery();
+    try {
+      await ctx.editMessageText(`${t('current_address', lang)}: ${address}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`);
+    } catch { /* ignore */ }
   });
 
   bot.on('message:location', async (ctx) => {
