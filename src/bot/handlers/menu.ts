@@ -134,23 +134,6 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
   });
 }
 
-function formatItemButton(
-  name: string,
-  price: number,
-  currency: string,
-  qty: string,
-  maxChars: number = 28,
-): string {
-  const suffix = ` \u2014 ${price / 1000}${currency}${qty}`;
-  const maxName = Math.max(4, maxChars - suffix.length);
-
-  if (name.length <= maxName) return `${name}${suffix}`;
-
-  const left = Math.ceil(maxName * 0.55);
-  const right = maxName - left - 1;
-  return `${name.slice(0, left)}\u2026${name.slice(-right)}${suffix}`;
-}
-
 async function showItemPage(
   ctx: BotContext,
   categoryId: string,
@@ -160,17 +143,21 @@ async function showItemPage(
 ): Promise<void> {
   const kb = new InlineKeyboard();
 
+  let maxLen = 0;
   for (const item of items) {
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
     const qty = cartItem ? ` ×${cartItem.quantity}` : '';
-    kb.text(formatItemButton(name, item.price, config.currency, qty), `add_${item.id}`).row();
+    const label = `${name} \u2014 ${item.price / 1000}${config.currency}${qty}`;
+    if (label.length > maxLen) maxLen = label.length;
+    kb.text(label, `add_${item.id}`).row();
   }
 
   kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
-  const text = `${t('items_in', lang)}:`;
+  const spacer = '\n\u2800'.repeat(maxLen);
+  const text = `${t('items_in', lang)}:${spacer}`;
 
   if (ctx.session.itemsMessageId) {
     await ctx.api.editMessageText(ctx.chat!.id, ctx.session.itemsMessageId, text, { reply_markup: kb });
