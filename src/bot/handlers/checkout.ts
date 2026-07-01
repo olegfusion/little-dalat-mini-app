@@ -137,18 +137,6 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     }
   });
 
-  bot.callbackQuery('edit_address', async (ctx) => {
-    const lang = ctx.session.language;
-    const address = ctx.session.deliveryAddress;
-    await ctx.answerCallbackQuery();
-    try {
-      await ctx.editMessageText(`${addressWithMapLink(ctx)}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
-        reply_markup: new InlineKeyboard()
-          .switchInlineCurrent(t('edit_inline', lang), address),
-      });
-    } catch { /* ignore */ }
-  });
-
   bot.inlineQuery(/.*/, async (ctx) => {
     const query = ctx.inlineQuery.query.trim();
     if (!query) return;
@@ -214,7 +202,7 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
   await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
   const confirmKb = new InlineKeyboard()
     .text(t('confirm_address', lang), 'confirm_address')
-    .text(t('edit_address', lang), 'edit_address');
+    .switchInlineCurrent(t('edit_address', lang), ctx.session.deliveryAddress);
   const dm = ctx.session.deliveryFee === -1
     ? t('delivery_free', lang)
     : t('distance_check', lang, { km: km.toFixed(1), fee: ctx.session.deliveryFee / 1000 });
