@@ -2,26 +2,29 @@ import { config } from '../config';
 
 async function locationIqGeocode(lat: number, lng: number): Promise<string | null> {
   if (!config.locationIqKey) return null;
-  const url = `https://us1.locationiq.com/v1/reverse?key=${config.locationIqKey}&lat=${lat}&lon=${lng}&format=json&accept-language=vi`;
+  const url = `https://us1.locationiq.com/v1/reverse?key=${config.locationIqKey}&lat=${lat}&lon=${lng}&format=json&addressdetails=1&normalizeaddress=1&accept-language=vi`;
   try {
     const res = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json() as any;
     if (data.error) return null;
-    if (data.display_name) return data.display_name;
+    const displayName = data.display_name || '';
+    const parts = displayName.split(',').filter((s: string) => s.trim());
     const a = data.address;
-    if (!a) return null;
-    const parts: string[] = [];
-    if (a.house_number) parts.push(a.house_number);
-    if (a.road) parts.push(a.road);
-    if (a.quarter) parts.push(a.quarter);
-    else if (a.suburb) parts.push(a.suburb);
-    else if (a.neighbourhood) parts.push(a.neighbourhood);
-    if (a.city) parts.push(a.city);
-    else if (a.town) parts.push(a.town);
-    else if (a.village) parts.push(a.village);
-    if (parts.length >= 2) return parts.join(', ');
-    return data.display_name || null;
+    if (parts.length >= 3) return displayName;
+    if (a) {
+      const built: string[] = [];
+      if (a.house_number) built.push(a.house_number);
+      if (a.road) built.push(a.road);
+      if (a.quarter) built.push(a.quarter);
+      else if (a.suburb) built.push(a.suburb);
+      else if (a.neighbourhood) built.push(a.neighbourhood);
+      if (a.city) built.push(a.city);
+      else if (a.town) built.push(a.town);
+      else if (a.village) built.push(a.village);
+      if (built.length >= 2) return built.join(', ');
+    }
+    return parts.length >= 2 ? displayName : null;
   } catch {
     return null;
   }
