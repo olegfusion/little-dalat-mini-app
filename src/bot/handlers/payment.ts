@@ -67,7 +67,9 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
 
   bot.callbackQuery('pay_cash', async (ctx) => {
     const lang = ctx.session.language;
-    await ctx.editMessageText(t('payment_cash_info', lang), {
+    const mode = ctx.session.mode || 'dine-in';
+    const key = mode === 'delivery' ? 'payment_cash_delivery' : mode === 'pickup' ? 'payment_cash_pickup' : 'payment_cash_dinein';
+    await ctx.editMessageText(t(key, lang), {
       reply_markup: confirmOrderKeyboard(lang),
     });
     await ctx.answerCallbackQuery();
