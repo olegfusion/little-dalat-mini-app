@@ -67,7 +67,7 @@ async function showItemPage(
   page: number,
   lang: Language,
 ): Promise<void> {
-  const perPage = 5;
+  const perPage = 12;
   const chunks: MenuItem[][] = [];
   for (let i = 0; i < items.length; i += perPage) {
     chunks.push(items.slice(i, i + perPage));
