@@ -35,6 +35,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       if (ctx.session.mode === 'delivery') {
         ctx.session.step = 'checkout_address';
         await ctx.reply(t('enter_address', ctx.session.language), {
+          parse_mode: 'Markdown',
           reply_markup: {
             keyboard: [[{ text: t('share_location', ctx.session.language), request_location: true }]],
             resize_keyboard: true,
