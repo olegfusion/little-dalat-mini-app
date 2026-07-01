@@ -6,6 +6,12 @@ getDb();
 
 const bot = createBot();
 
+bot.api.setMyCommands([
+  { command: 'start', description: '🆕 New Order' },
+  { command: 'contact', description: '📞 Contact Us' },
+  { command: 'map', description: '📍 Our Location' },
+]);
+
 bot.start({
   onStart: (info) => {
     console.log(`Little Dalat Bot started as @${info.username}`);

@@ -6,12 +6,6 @@ import { Language } from '../../types';
 import { config } from '../../config';
 
 export function registerStartHandler(bot: Bot<BotContext>): void {
-  bot.api.setMyCommands([
-    { command: 'start', description: '🆕 New Order' },
-    { command: 'contact', description: '📞 Contact Us' },
-    { command: 'map', description: '📍 Our Location' },
-  ]);
-
   bot.command('start', async (ctx) => {
     const raw = ctx.message?.text || '';
     const match = raw.match(/\/start\s+table_(\d+)/i);

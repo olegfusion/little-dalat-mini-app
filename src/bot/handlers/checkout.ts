@@ -59,6 +59,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       ctx.session.step = 'checkout_payment';
       const cart = ctx.session.cart;
       const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
+      await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
       await ctx.reply(`${t('location_received', ctx.session.language)}\n${t('distance_check', ctx.session.language, { km: '—', fee: ctx.session.deliveryFee / 1000 })}\n\n${text}\n\n${t('choose_payment', ctx.session.language)}`, {
         reply_markup: paymentKeyboard(ctx.session.language),
       });
@@ -86,6 +87,7 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
     ctx.session.step = 'checkout_payment';
     const cart = ctx.session.cart;
     const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+    await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
     await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
       reply_markup: paymentKeyboard(lang),
     });
@@ -105,6 +107,7 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
   ctx.session.step = 'checkout_payment';
   const cart = ctx.session.cart;
   const text = buildCartText(cart, lang, ctx.session.deliveryFee);
+  await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
   await ctx.reply(`${t('location_received', lang)} ✅\n${t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 })}\n\n${text}\n\n${t('choose_payment', lang)}`, {
     reply_markup: paymentKeyboard(lang),
   });
