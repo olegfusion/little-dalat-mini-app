@@ -74,6 +74,9 @@ export function buildCartText(cart: CartItem[], lang: Language, deliveryFee: num
   if (deliveryFee > 0) {
     text += `${t('delivery_fee', lang)}: ${deliveryFee / 1000}${config.currency}\n`;
     text += `${t('grand_total', lang)}: ${(subtotal + deliveryFee) / 1000}${config.currency}\n`;
+  } else if (deliveryFee === -1) {
+    text += `${t('delivery_free', lang)}\n`;
+    text += `${t('grand_total', lang)}: ${subtotal / 1000}${config.currency}\n`;
   }
 
   return text;

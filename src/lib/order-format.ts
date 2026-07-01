@@ -24,6 +24,8 @@ export function formatOrderForStaff(order: Order): string {
     if (order.customerPhone) text += `📞 ${order.customerPhone}\n`;
     if (order.deliveryFee > 0) {
       text += `💵 Phí ship (Delivery fee): ${order.deliveryFee / 1000}k\n`;
+    } else if (order.deliveryFee === -1) {
+      text += `🚚 Giao hàng miễn phí (Free delivery)\n`;
     }
   }
 

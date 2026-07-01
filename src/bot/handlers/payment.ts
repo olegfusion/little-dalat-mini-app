@@ -15,7 +15,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
       return sum + (item?.price || 0) * ci.quantity;
     }, 0);
-    const total = subtotal + (ctx.session.deliveryFee || 0);
+    const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
 
     try {
       const order = createOrder({
@@ -113,7 +113,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
       return sum + (item?.price || 0) * ci.quantity;
     }, 0);
-    const total = subtotal + (ctx.session.deliveryFee || 0);
+    const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
     const text = `${t('total', lang)}: ${total / 1000}k`;
     await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
       reply_markup: new InlineKeyboard()
@@ -130,7 +130,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
       return sum + (item?.price || 0) * ci.quantity;
     }, 0);
-    const total = subtotal + (ctx.session.deliveryFee || 0);
+    const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
 
     const order = createOrder({
       chatId: ctx.chat!.id,

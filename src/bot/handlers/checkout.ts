@@ -6,6 +6,17 @@ import { config } from '../../config';
 import { getDeliveryFee, haversineDistance } from '../../lib/distance';
 import { reverseGeocode } from '../../lib/geocode';
 import { buildCartText } from './cart';
+import { CartItem, Language } from '../../types';
+
+function applyFreeDelivery(cart: CartItem[], fee: number): number {
+  const totalQty = cart.reduce((sum, ci) => sum + ci.quantity, 0);
+  return totalQty >= 5 ? -1 : fee;
+}
+
+function feeLine(lang: Language, fee: number): string {
+  if (fee === -1) return t('delivery_free', lang);
+  return t('distance_check', lang, { km: '—', fee: fee / 1000 });
+}
 
 export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
   bot.callbackQuery('checkout', async (ctx) => {
@@ -57,12 +68,12 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       ctx.session.deliveryAddress = ctx.message.text;
       ctx.session.deliveryLat = null;
       ctx.session.deliveryLng = null;
-      ctx.session.deliveryFee = config.delivery.feeWithin4km;
+      ctx.session.deliveryFee = applyFreeDelivery(ctx.session.cart, config.delivery.feeWithin4km);
       ctx.session.step = 'checkout_payment';
       const cart = ctx.session.cart;
       const text = buildCartText(cart, ctx.session.language, ctx.session.deliveryFee);
       await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
-      await ctx.reply(`${t('location_received', ctx.session.language)}\n${t('distance_check', ctx.session.language, { km: '—', fee: ctx.session.deliveryFee / 1000 })}\n\n${text}\n\n${t('choose_payment', ctx.session.language)}`, {
+      await ctx.reply(`${t('location_received', ctx.session.language)}\n${feeLine(ctx.session.language, ctx.session.deliveryFee)}\n\n${text}\n\n${t('choose_payment', ctx.session.language)}`, {
         reply_markup: paymentKeyboard(ctx.session.language),
       });
       return;
@@ -127,7 +138,7 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
   const shop = config.shop;
 
   if (!ctx.session.deliveryLat || !ctx.session.deliveryLng) {
-    ctx.session.deliveryFee = config.delivery.feeWithin4km;
+    ctx.session.deliveryFee = applyFreeDelivery(ctx.session.cart, config.delivery.feeWithin4km);
     ctx.session.step = 'checkout_payment';
     const cart = ctx.session.cart;
     const text = buildCartText(cart, lang, ctx.session.deliveryFee);
@@ -147,13 +158,16 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
     return;
   }
 
-  ctx.session.deliveryFee = fee;
+  ctx.session.deliveryFee = applyFreeDelivery(ctx.session.cart, fee);
   ctx.session.step = 'checkout_address_edit';
   await ctx.reply('✅', { reply_markup: { remove_keyboard: true } });
   const confirmKb = new InlineKeyboard()
     .text(t('confirm_address', lang), 'confirm_address')
     .text(t('edit_address', lang), 'edit_address');
-  await ctx.reply(`${t('location_received', lang)} ✅\n${t('distance_check', lang, { km: km.toFixed(1), fee: fee / 1000 })}\n\n📍 ${t('your_address', lang)}: ${ctx.session.deliveryAddress}\n\n${t('address_edit_hint', lang)}`, {
+  const dm = ctx.session.deliveryFee === -1
+    ? t('delivery_free', lang)
+    : t('distance_check', lang, { km: km.toFixed(1), fee: ctx.session.deliveryFee / 1000 });
+  await ctx.reply(`${t('location_received', lang)} ✅\n${dm}\n\n📍 ${t('your_address', lang)}: ${ctx.session.deliveryAddress}\n\n${t('address_edit_hint', lang)}`, {
     reply_markup: confirmKb,
   });
 }

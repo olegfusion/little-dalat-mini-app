@@ -18,6 +18,7 @@
   "item_line": "%name% x%qty% — %price%k",
   "total": "Сумма",
   "delivery_fee": "Доставка",
+  "delivery_free": "🚚 Доставка: Бесплатно",
   "grand_total": "Итого",
   "clear_cart": "🗑️ Очистить",
   "proceed_checkout": "✅ Оформить",

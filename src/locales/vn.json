@@ -18,6 +18,7 @@
   "item_line": "%name% x%qty% — %price%k",
   "total": "Tổng cộng",
   "delivery_fee": "Phí ship",
+  "delivery_free": "🚚 Giao hàng: Miễn phí",
   "grand_total": "Thành tiền",
   "clear_cart": "🗑️ Xóa giỏ",
   "proceed_checkout": "✅ Thanh toán",

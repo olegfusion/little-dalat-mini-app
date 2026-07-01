@@ -18,6 +18,7 @@
   "item_line": "%name% x%qty% — %price%k",
   "total": "Total",
   "delivery_fee": "Delivery Fee",
+  "delivery_free": "🚚 Delivery: Free",
   "grand_total": "Grand Total",
   "clear_cart": "🗑️ Clear Cart",
   "proceed_checkout": "✅ Checkout",
