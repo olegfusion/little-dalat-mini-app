@@ -45,12 +45,22 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
 
       const qr = generateVietQR(order.id, total);
 
-      await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 }));
+      try {
+        await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 }));
+      } catch {
+        await ctx.reply(t('payment_qr_info', lang, { amount: total / 1000 }));
+      }
 
-      await ctx.replyWithPhoto(qr.imageUrl, {
-        caption: t('payment_qr_waiting', lang),
-        reply_markup: paymentConfirmKeyboard(lang),
-      });
+      try {
+        await ctx.replyWithPhoto(qr.imageUrl, {
+          caption: t('payment_qr_waiting', lang),
+          reply_markup: paymentConfirmKeyboard(lang),
+        });
+      } catch {
+        await ctx.reply(t('payment_qr_waiting', lang), {
+          reply_markup: paymentConfirmKeyboard(lang),
+        });
+      }
     } catch (e) {
       await ctx.reply('⚠️ ' + t('payment_failed', lang));
     }
