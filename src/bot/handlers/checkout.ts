@@ -159,6 +159,16 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       await processDeliveryAddress(ctx);
     }
   });
+
+  bot.on('message:venue', async (ctx) => {
+    if (ctx.session.step === 'checkout_address' || ctx.session.step === 'checkout_address_edit') {
+      const venue = ctx.message.venue;
+      ctx.session.deliveryLat = venue.location.latitude;
+      ctx.session.deliveryLng = venue.location.longitude;
+      ctx.session.deliveryAddress = venue.address || venue.title || `${venue.location.latitude}, ${venue.location.longitude}`;
+      await processDeliveryAddress(ctx);
+    }
+  });
 }
 
 async function processDeliveryAddress(ctx: BotContext): Promise<void> {
