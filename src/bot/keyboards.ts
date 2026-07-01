@@ -55,6 +55,7 @@ export function paymentKeyboard(lang: Language, mode?: OrderMode | null) {
   if (mode !== 'delivery') {
     kb.text(t('btn_cash', lang), 'pay_cash');
   }
+  kb.row().text(t('back', lang), 'back_cart');
   return kb;
 }
 
