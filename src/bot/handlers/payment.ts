@@ -7,10 +7,19 @@ import { createOrder, getOrderById, updateOrderStatus } from '../../db/orders';
 import { notifyStaff } from '../../staff/notify';
 import { INITIAL_MENU_ITEMS } from '../../data/menu';
 import { Language } from '../../types';
+import { config } from '../../config';
 
 function formatPickupTime(minutes: number | null, lang: Language): string {
   if (!minutes) return '';
   return t(`pickup_time_${minutes}`, lang);
+}
+
+function afterOrderKeyboard(mode: string | null, lang: Language) {
+  const kb = new InlineKeyboard().text(t('new_order', lang), 'start_new_order');
+  if (mode === 'pickup') {
+    kb.row().url('🗺️ ' + t('get_directions', lang), `https://www.google.com/maps/dir/?api=1&destination=${config.shop.lat},${config.shop.lng}`);
+  }
+  return kb;
 }
 
 export function registerPaymentHandlers(bot: Bot<BotContext>): void {
@@ -103,7 +112,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
 
     await ctx.reply(msg, { parse_mode: 'Markdown' });
     await ctx.reply(t('new_order_prompt', lang), {
-      reply_markup: new InlineKeyboard().text(t('new_order', lang), 'start_new_order'),
+      reply_markup: afterOrderKeyboard(ctx.session.mode, lang),
     });
     await ctx.answerCallbackQuery();
   });
@@ -179,7 +188,7 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
 
     await ctx.reply(msg, { parse_mode: 'Markdown' });
     await ctx.reply(t('new_order_prompt', lang), {
-      reply_markup: new InlineKeyboard().text(t('new_order', lang), 'start_new_order'),
+      reply_markup: afterOrderKeyboard(ctx.session.mode, lang),
     });
     await ctx.answerCallbackQuery();
   });
