@@ -1,5 +1,6 @@
 import { Order, CartItem } from '../types';
 import { getItemById } from '../data/menu';
+import { config } from '../config';
 
 export function formatOrderForStaff(order: Order): string {
   const cartItems: CartItem[] = JSON.parse(order.items);
@@ -14,6 +15,12 @@ export function formatOrderForStaff(order: Order): string {
   } else {
     text += `🚚 Giao hàng (Delivery)\n`;
     text += `📍 ${order.deliveryAddress}\n`;
+    if (order.deliveryLat && order.deliveryLng) {
+      text += `🗺️ https://www.google.com/maps/dir/?api=1&origin=${config.shop.lat},${config.shop.lng}&destination=${order.deliveryLat},${order.deliveryLng}\n`;
+    } else {
+      const q = encodeURIComponent(order.deliveryAddress);
+      text += `🗺️ https://www.google.com/maps?q=${q}\n`;
+    }
     if (order.customerPhone) text += `📞 ${order.customerPhone}\n`;
     if (order.deliveryFee > 0) {
       text += `💵 Phí ship (Delivery fee): ${order.deliveryFee / 1000}k\n`;
