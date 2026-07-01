@@ -2,7 +2,7 @@ import { config } from '../config';
 
 async function locationIqGeocode(lat: number, lng: number): Promise<string | null> {
   if (!config.locationIqKey) return null;
-  const url = `https://us1.locationiq.com/v1/reverse?key=${config.locationIqKey}&lat=${lat}&lon=${lng}&format=json&addressdetails=1&normalizeaddress=1&accept-language=vi`;
+  const url = `https://us1.locationiq.com/v1/reverse?key=${config.locationIqKey}&lat=${lat}&lon=${lng}&format=json&addressdetails=1&accept-language=vi`;
   try {
     const res = await fetch(url);
     if (!res.ok) return null;
@@ -10,8 +10,8 @@ async function locationIqGeocode(lat: number, lng: number): Promise<string | nul
     if (data.error) return null;
     const displayName = data.display_name || '';
     const parts = displayName.split(',').filter((s: string) => s.trim());
-    const a = data.address;
     if (parts.length >= 3) return displayName;
+    const a = data.address;
     if (a) {
       const built: string[] = [];
       if (a.house_number) built.push(a.house_number);
@@ -22,6 +22,7 @@ async function locationIqGeocode(lat: number, lng: number): Promise<string | nul
       if (a.city) built.push(a.city);
       else if (a.town) built.push(a.town);
       else if (a.village) built.push(a.village);
+      if (built.length >= 3) return built.join(', ');
       if (built.length >= 2) return built.join(', ');
     }
     return parts.length >= 2 ? displayName : null;
