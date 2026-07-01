@@ -145,9 +145,10 @@ async function showItemPage(
 
   for (const item of items) {
     const name = getItemName(item, lang);
+    const shortened = name.length > 22 ? name.substring(0, 20) + '…' : name;
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
-    const qty = cartItem ? ` [×${cartItem.quantity}]` : '';
-    kb.text(`${name} — ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
+    const qty = cartItem ? ` ×${cartItem.quantity}` : '';
+    kb.text(`${shortened} \u2014 ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
   }
 
   kb.text(t('view_cart', lang), 'view_cart');
