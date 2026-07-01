@@ -15,6 +15,8 @@ export interface SessionData {
   deliveryFee: number;
   pendingOrderId: number | undefined;
   paymentMethod: 'qr' | 'cash' | undefined;
+  currentCategory: string | null;
+  currentPage: number;
 }
 
 export type BotContext = Context & SessionFlavor<SessionData>;
@@ -34,5 +36,7 @@ export function initialSession(): SessionData {
     deliveryFee: 0,
     pendingOrderId: undefined,
     paymentMethod: undefined,
+    currentCategory: null,
+    currentPage: 0,
   };
 }

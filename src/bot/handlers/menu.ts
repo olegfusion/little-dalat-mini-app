@@ -17,6 +17,8 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
       return;
     }
 
+    ctx.session.currentCategory = categoryId;
+    ctx.session.currentPage = 0;
     await showItemPage(ctx, categoryId, items, 0, lang);
     await ctx.answerCallbackQuery();
   });
@@ -34,15 +36,24 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     const existing = ctx.session.cart.find(c => c.menuItemId === itemId);
     if (existing) {
       existing.quantity++;
-      await ctx.answerCallbackQuery(`${getItemName(item, lang)} ×${existing.quantity} ✅`);
     } else {
       ctx.session.cart.push({ menuItemId: itemId, quantity: 1 });
-      await ctx.answerCallbackQuery(`${getItemName(item, lang)} ✅`);
+    }
+
+    const qty = existing ? existing.quantity : 1;
+    await ctx.answerCallbackQuery(`✅ ${getItemName(item, lang)} — +1 (${qty} ${qty > 1 ? 'pcs' : 'pc'})`);
+
+    const cat = ctx.session.currentCategory;
+    if (cat) {
+      const items = getItemsByCategory(cat);
+      await showItemPage(ctx, cat, items, ctx.session.currentPage, lang);
     }
   });
 
   bot.callbackQuery('back_categories', async (ctx) => {
     const lang = ctx.session.language;
+    ctx.session.currentCategory = null;
+    ctx.session.currentPage = 0;
     await ctx.editMessageText(t('select_category', lang), {
       reply_markup: categoryKeyboard(lang, ctx.session.mode),
     });
@@ -55,6 +66,8 @@ export function registerMenuHandlers(bot: Bot<BotContext>): void {
     const lang = ctx.session.language;
     const items = getItemsByCategory(categoryId);
 
+    ctx.session.currentCategory = categoryId;
+    ctx.session.currentPage = page;
     await showItemPage(ctx, categoryId, items, page, lang);
     await ctx.answerCallbackQuery();
   });
