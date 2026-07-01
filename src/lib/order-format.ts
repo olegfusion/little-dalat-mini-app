@@ -9,7 +9,7 @@ export function formatOrderForStaff(order: Order): string {
   text += `─────────────────────\n`;
 
   if (order.mode === 'dine-in') {
-    text += `📍 Bàn (Table) ${order.tableNumber || '?'} — Tại quán (Dine-in)\n`;
+    if (order.tableNumber) text += `📍 Bàn (Table) ${order.tableNumber} — Tại quán (Dine-in)\n`;
   } else if (order.mode === 'pickup') {
     text += `🛍️ Mang đi (Pickup)\n`;
     if (order.pickupTime) {

@@ -54,7 +54,7 @@ export function registerCartHandlers(bot: Bot<BotContext>): void {
 }
 
 export function buildCartText(cart: CartItem[], lang: Language, deliveryFee: number = 0): string {
-  let text = `🛒 ${t('cart_title', lang)}\n\n`;
+  let text = `${t('cart_title', lang)}\n\n`;
   let subtotal = 0;
 
   for (const ci of cart) {

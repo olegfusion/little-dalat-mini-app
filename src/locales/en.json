@@ -43,7 +43,8 @@
   "payment_cash_pickup": "💵 You'll pay when you pick up your order at the cafe.",
   "payment_cash_delivery": "💵 You'll pay upon receiving when staff delivers your order.",
   "order_confirmed": "✅ Order #%id% has been confirmed!",
-  "order_dinein_msg": "━━━━━━━━━━━━━━━━━━\n☕ *ORDER #%id% CONFIRMED*\n━━━━━━━━━━━━━━━━━━\n\n🪑 *Table:* %table%\n\nYour drinks will be brought to your table shortly.\nThank you for choosing Little Dalat! 💚\n\n━━━━━━━━━━━━━━━━━━\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973",
+  "order_dinein_msg": "━━━━━━━━━━━━━━━━━━\n☕ *ORDER #%id% CONFIRMED*\n━━━━━━━━━━━━━━━━━━\n\n%table_line%Your drinks will be brought to your table shortly.\nThank you for choosing Little Dalat! 💚\n\n━━━━━━━━━━━━━━━━━━\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973",
+  "table_label": "Table",
   "order_pickup_msg": "━━━━━━━━━━━━━━━━━━\n☕ *ORDER #%id% CONFIRMED*\n━━━━━━━━━━━━━━━━━━\n\n🛍️ *Pickup*\n\nYour order is being prepared. Please come to the cafe to pick up.\n\n⏱ Pickup time: %time%\n\nThank you for choosing Little Dalat! 💚\n\n━━━━━━━━━━━━━━━━━━\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973",
   "choose_pickup_time": "⏱ *When will you come to pick up?*",
   "pickup_time_5": "5 min",
@@ -93,6 +94,6 @@
   "contact_msg": "📞 *Contact us*\n\n💬 WhatsApp: wa.me/84912066973\n💬 Zalo: zalo.me/84912066973\n✈️ Telegram: @littledalatbot\n\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30",
   "map_msg": "📍 *Our location*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30\n\nTap the button below to open Google Maps.",
   "new_order": "🆕 New Order",
-  "get_directions": "🗺️ Get Directions in Google Maps",
+  "get_directions": "Get Directions in Google Maps",
   "new_order_prompt": "Would you like to place another order?"
 }

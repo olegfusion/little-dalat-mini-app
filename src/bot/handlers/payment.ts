@@ -103,12 +103,18 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     ctx.session.deliveryFee = 0;
 
     const mode = ctx.session.mode;
-    const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
-    const msg = mode === 'delivery'
-      ? t('order_delivery_msg', lang, { id: orderId })
-      : mode === 'pickup'
-      ? t('order_pickup_msg', lang, { id: orderId, time: pickupTimeStr })
-      : t('order_dinein_msg', lang, { id: orderId, table: ctx.session.tableNumber || '?' });
+    let msg: string;
+    if (mode === 'delivery') {
+      msg = t('order_delivery_msg', lang, { id: orderId });
+    } else if (mode === 'pickup') {
+      const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
+      msg = t('order_pickup_msg', lang, { id: orderId, time: pickupTimeStr });
+    } else {
+      const tableLine = ctx.session.tableNumber
+        ? `🪑 *${t('table_label', lang)}:* ${ctx.session.tableNumber}\n\n`
+        : '';
+      msg = t('order_dinein_msg', lang, { id: orderId, table_line: tableLine });
+    }
 
     await ctx.reply(msg, { parse_mode: 'Markdown' });
     await ctx.reply(t('new_order_prompt', lang), {
@@ -186,12 +192,18 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
     ctx.session.deliveryFee = 0;
 
     const mode = ctx.session.mode;
-    const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
-    const msg = mode === 'delivery'
-      ? t('order_delivery_msg', lang, { id: order.id })
-      : mode === 'pickup'
-      ? t('order_pickup_msg', lang, { id: order.id, time: pickupTimeStr })
-      : t('order_dinein_msg', lang, { id: order.id, table: ctx.session.tableNumber || '?' });
+    let msg: string;
+    if (mode === 'delivery') {
+      msg = t('order_delivery_msg', lang, { id: order.id });
+    } else if (mode === 'pickup') {
+      const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
+      msg = t('order_pickup_msg', lang, { id: order.id, time: pickupTimeStr });
+    } else {
+      const tableLine = ctx.session.tableNumber
+        ? `🪑 *${t('table_label', lang)}:* ${ctx.session.tableNumber}\n\n`
+        : '';
+      msg = t('order_dinein_msg', lang, { id: order.id, table_line: tableLine });
+    }
 
     await ctx.reply(msg, { parse_mode: 'Markdown' });
     await ctx.reply(t('new_order_prompt', lang), {
