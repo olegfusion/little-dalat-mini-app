@@ -20,4 +20,5 @@ export const config = {
     maxRadius: 8, // km
   },
   currency: 'k',
+  goongApiKey: process.env.GOONG_API_KEY || '',
 };

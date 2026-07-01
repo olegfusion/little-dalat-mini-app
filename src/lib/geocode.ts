@@ -1,3 +1,19 @@
+import { config } from '../config';
+
+async function goongGeocode(lat: number, lng: number): Promise<string | null> {
+  if (!config.goongApiKey) return null;
+  const url = `https://rsapi.goong.io/Geocode?latlng=${lat},${lng}&api_key=${config.goongApiKey}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json() as any;
+    if (data.status !== 'OK' || !data.results?.[0]) return null;
+    return data.results[0].formatted_address;
+  } catch {
+    return null;
+  }
+}
+
 async function photonGeocode(lat: number, lng: number): Promise<string | null> {
   const url = `https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}`;
   try {
@@ -44,7 +60,9 @@ async function nominatimGeocode(lat: number, lng: number): Promise<string> {
 }
 
 export async function reverseGeocode(lat: number, lng: number): Promise<string> {
-  const photonResult = await photonGeocode(lat, lng);
-  if (photonResult) return photonResult;
+  const goong = await goongGeocode(lat, lng);
+  if (goong) return goong;
+  const photon = await photonGeocode(lat, lng);
+  if (photon) return photon;
   return nominatimGeocode(lat, lng);
 }
