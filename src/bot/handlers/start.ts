@@ -1,10 +1,17 @@
-import { Bot, InputFile } from 'grammy';
+import { Bot, InlineKeyboard, InputFile } from 'grammy';
 import { BotContext } from '../context';
 import { modeKeyboard, languageKeyboard, categoryKeyboard } from '../keyboards';
 import { t } from '../../locales';
 import { Language } from '../../types';
+import { config } from '../../config';
 
 export function registerStartHandler(bot: Bot<BotContext>): void {
+  bot.api.setMyCommands([
+    { command: 'start', description: '🆕 New Order' },
+    { command: 'contact', description: '📞 Contact Us' },
+    { command: 'map', description: '📍 Our Location' },
+  ]);
+
   bot.command('start', async (ctx) => {
     const raw = ctx.message?.text || '';
     const match = raw.match(/\/start\s+table_(\d+)/i);
@@ -47,6 +54,25 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
       });
     }
     await ctx.answerCallbackQuery();
+  });
+
+  bot.command('contact', async (ctx) => {
+    const lang = ctx.session?.language || 'en';
+    const kb = new InlineKeyboard()
+      .url('💬 WhatsApp', 'https://wa.me/84912066973')
+      .url('💬 Zalo', 'https://zalo.me/84912066973')
+      .row()
+      .url('✈️ Telegram', 'https://t.me/littledalatbot');
+    await ctx.reply(t('contact_msg', lang), { reply_markup: kb });
+  });
+
+  bot.command('map', async (ctx) => {
+    const lang = ctx.session?.language || 'en';
+    const lat = config.shop.lat;
+    const lng = config.shop.lng;
+    await ctx.reply(t('map_msg', lang, { lat, lng }), {
+      reply_markup: new InlineKeyboard().url('🗺️ Google Maps', `https://www.google.com/maps?q=${lat},${lng}`),
+    });
   });
 
   bot.callbackQuery(/^mode_(.+)$/, async (ctx) => {

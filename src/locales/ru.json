@@ -65,5 +65,7 @@
   "back": "◀ Назад",
   "remove_item": "Удалить",
   "new_order": "🆕 Новый заказ",
-  "new_order_prompt": "Хотите оформить ещё один заказ?"
+  "new_order_prompt": "Хотите оформить ещё один заказ?",
+  "contact_msg": "📞 *Свяжитесь с нами*\n\n💬 WhatsApp: wa.me/84912066973\n💬 Zalo: zalo.me/84912066973\n✈️ Telegram: @littledalatbot\n\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00",
+  "map_msg": "📍 *Наше местоположение*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00\n\nНажмите кнопку ниже, чтобы открыть Google Maps."
 }
