@@ -93,6 +93,6 @@
   "contact_msg": "📞 *Contact us*\n\n💬 WhatsApp: wa.me/84912066973\n💬 Zalo: zalo.me/84912066973\n✈️ Telegram: @littledalatbot\n\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30",
   "map_msg": "📍 *Our location*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30\n\nTap the button below to open Google Maps.",
   "new_order": "🆕 New Order",
-  "get_directions": "Get Directions",
+  "get_directions": "🗺️ Get Directions in Google Maps",
   "new_order_prompt": "Would you like to place another order?"
 }

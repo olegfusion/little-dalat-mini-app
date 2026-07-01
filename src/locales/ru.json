@@ -82,7 +82,7 @@
   "back": "◀ Назад",
   "remove_item": "Удалить",
   "new_order": "🆕 Новый заказ",
-  "get_directions": "Построить маршрут",
+  "get_directions": "🗺️ Построить маршрут в Google Maps",
   "new_order_prompt": "Хотите оформить ещё один заказ?",
   "payment_failed": "Ошибка оплаты. Попробуйте снова или выберите Наличные.",
   "confirm_address": "✅ Подтвердить адрес",
