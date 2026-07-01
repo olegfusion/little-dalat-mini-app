@@ -155,7 +155,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     const lang = ctx.session.language;
     await ctx.answerCallbackQuery();
     try {
-      await ctx.editMessageText(`${t('current_address', lang)}: ${ctx.session.deliveryAddress}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
+      await ctx.editMessageText(`${addressWithMapLink(ctx)}\n\n${t('enter_address_edit', lang)}\n\n${t('map_hint', lang)}`, {
         reply_markup: { inline_keyboard: [] },
       });
     } catch { /* ignore */ }
@@ -230,7 +230,19 @@ async function processDeliveryAddress(ctx: BotContext): Promise<void> {
   const dm = ctx.session.deliveryFee === -1
     ? t('delivery_free', lang)
     : t('distance_check', lang, { km: km.toFixed(1), fee: ctx.session.deliveryFee / 1000 });
-  await ctx.reply(`${t('location_received', lang)} ✅\n${dm}\n\n📍 ${t('your_address', lang)}: ${ctx.session.deliveryAddress}\n\n${t('address_edit_hint', lang)}`, {
+  const mapLink = ctx.session.deliveryLat && ctx.session.deliveryLng
+    ? `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}`
+    : '';
+  await ctx.reply(`${t('location_received', lang)} ✅\n${dm}\n\n📍 ${t('your_address', lang)}: ${ctx.session.deliveryAddress}${mapLink}\n\n${t('address_edit_hint', lang)}`, {
     reply_markup: confirmKb,
   });
+}
+
+function addressWithMapLink(ctx: BotContext): string {
+  const lang = ctx.session.language;
+  let text = `${t('current_address', lang)}: ${ctx.session.deliveryAddress}`;
+  if (ctx.session.deliveryLat && ctx.session.deliveryLng) {
+    text += `\n🗺️ https://www.google.com/maps?q=${ctx.session.deliveryLat},${ctx.session.deliveryLng}`;
+  }
+  return text;
 }
