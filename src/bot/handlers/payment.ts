@@ -1,7 +1,7 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../context';
 import { t } from '../../locales';
-import { paymentConfirmKeyboard, confirmOrderKeyboard } from '../keyboards';
+import { paymentConfirmKeyboard, confirmOrderKeyboard, modeKeyboard } from '../keyboards';
 import { generateVietQR } from '../../lib/vietqr';
 import { createOrder, getOrderById, updateOrderStatus } from '../../db/orders';
 import { notifyStaff } from '../../staff/notify';
@@ -80,7 +80,24 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       ? t('order_pickup_msg', lang, { id: orderId })
       : t('order_dinein_msg', lang, { id: orderId, table: ctx.session.tableNumber || '?' });
 
-    await ctx.reply(msg, { reply_markup: { remove_keyboard: true }, parse_mode: 'Markdown' });
+    await ctx.reply(msg, { parse_mode: 'Markdown' });
+    await ctx.reply(t('new_order_prompt', lang), {
+      reply_markup: new InlineKeyboard().text(t('new_order', lang), 'start_new_order'),
+    });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('start_new_order', async (ctx) => {
+    const lang = ctx.session.language;
+    ctx.session.cart = [];
+    ctx.session.mode = null;
+    ctx.session.tableNumber = null;
+    ctx.session.step = 'choosing_mode';
+    ctx.session.currentCategory = null;
+    ctx.session.currentPage = 0;
+    await ctx.editMessageText(t('start_choose_mode', lang), {
+      reply_markup: modeKeyboard(lang),
+    });
     await ctx.answerCallbackQuery();
   });
 
@@ -138,7 +155,10 @@ export function registerPaymentHandlers(bot: Bot<BotContext>): void {
       ? t('order_pickup_msg', lang, { id: order.id })
       : t('order_dinein_msg', lang, { id: order.id, table: ctx.session.tableNumber || '?' });
 
-    await ctx.reply(msg, { reply_markup: { remove_keyboard: true }, parse_mode: 'Markdown' });
+    await ctx.reply(msg, { parse_mode: 'Markdown' });
+    await ctx.reply(t('new_order_prompt', lang), {
+      reply_markup: new InlineKeyboard().text(t('new_order', lang), 'start_new_order'),
+    });
     await ctx.answerCallbackQuery();
   });
 }

@@ -63,5 +63,7 @@
   "prev": "Prev",
   "next": "Next",
   "back": "◀ Back",
-  "remove_item": "Remove"
+  "remove_item": "Remove",
+  "new_order": "🆕 New Order",
+  "new_order_prompt": "Would you like to place another order?"
 }
