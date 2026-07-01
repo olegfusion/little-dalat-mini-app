@@ -71,7 +71,9 @@
   "edit_address": "✏️ Sửa địa chỉ",
   "your_address": "Địa chỉ của bạn",
   "address_edit_hint": "Nếu địa chỉ trên chưa chính xác, hãy gửi địa chỉ đúng hoặc nhấn Xác nhận để tiếp tục.",
-  "enter_address_edit": "✏️ Gửi địa chỉ đã sửa:",
+  "enter_address_edit": "Gửi địa chỉ đã sửa:",
+  "current_address": "📍 Địa chỉ hiện tại",
+  "pick_on_map": "🗺️ Chọn trên bản đồ",
   "contact_msg": "📞 *Liên hệ chúng tôi*\n\n💬 WhatsApp: wa.me/84912066973\n💬 Zalo: zalo.me/84912066973\n✈️ Telegram: @littledalatbot\n\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30",
   "map_msg": "📍 *Vị trí của chúng tôi*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30\n\nNhấn nút bên dưới để mở Google Maps."
 }
