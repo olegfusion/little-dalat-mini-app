@@ -2,8 +2,8 @@ import { MenuItem } from '../types';
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // COFFEE & COCOA
-  { id: 'cc-1', category: 'coffee_cocoa', vietnamese: 'Cà phê đen', english: 'Vietnamese Black Coffee', russian: 'Черный вьетнамский кофе', price: 27000 },
-  { id: 'cc-2', category: 'coffee_cocoa', vietnamese: 'Cà phê sữa', english: 'Vietnamese Coffee with Condensed Milk', russian: 'Вьетнамский кофе со сгущенным молоком', price: 32000 },
+  { id: 'cc-1', category: 'coffee_cocoa', vietnamese: 'Cà phê đen', english: 'Vietnamese Black Coffee', russian: 'Черный вьетнамский кофе', price: 30000 },
+  { id: 'cc-2', category: 'coffee_cocoa', vietnamese: 'Cà phê sữa', english: 'Vietnamese Coffee with Condensed Milk', russian: 'Вьетнамский кофе со сгущенным молоком', price: 35000 },
   { id: 'cc-3', category: 'coffee_cocoa', vietnamese: 'Cà phê kem (Muối/Trứng/Tiramisu)', english: 'Cream Coffee (Salted / Egg / Tiramisu)', russian: 'Кофе с кремом (соленый / яичный / тирамису)', price: 40000, variants: { vn: ['Muối', 'Trứng', 'Tiramisu'], en: ['Salted', 'Egg', 'Tiramisu'], ru: ['Соленый', 'Яичный', 'Тирамису'] } },
   { id: 'cc-4', category: 'coffee_cocoa', vietnamese: 'Cà phê kem 1983', english: '1983 Signature Cream Coffee', russian: 'Фирменный кофе с кремом 1983', price: 40000 },
   { id: 'cc-5', category: 'coffee_cocoa', vietnamese: 'Sữa tươi cà phê sương sáo', english: 'Fresh Milk Coffee with Grass Jelly', russian: 'Кофе с молоком и травяным желе', price: 40000 },
@@ -36,7 +36,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'od-3', category: 'other_drinks', vietnamese: 'Bạc hà kem cheese', english: 'Mint Cheese Cream Drink', russian: 'Мятный напиток с сырной пенкой', price: 37000 },
   { id: 'od-4', category: 'other_drinks', vietnamese: 'Cam vắt hạt chia', english: 'Fresh Orange Juice with Chia Seeds', russian: 'Свежевыжатый апельсиновый сок с семенами чиа', price: 35000 },
   // FRUIT TEA
-  { id: 'ft-1', category: 'fruit_tea', vietnamese: 'Trà trái cây nhiệt đới', english: 'Tropical Fruit Tea', russian: 'Тропический фруктовый чай', price: 40000 },
+  { id: 'ft-1', category: 'fruit_tea', vietnamese: 'Trà trái cây nhiệt đới', english: 'Tropical Fruit Tea', russian: 'Тропический фруктовый чай', price: 45000 },
   { id: 'ft-2', category: 'fruit_tea', vietnamese: 'Trà sen vàng', english: 'Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 40000 },
   { id: 'ft-3', category: 'fruit_tea', vietnamese: 'Trà dâu tằm', english: 'Mulberry Tea', russian: 'Шелковичный чай', price: 37000 },
   { id: 'ft-4', category: 'fruit_tea', vietnamese: 'Chanh dây hoàng kim', english: 'Golden Passion Fruit Tea', russian: 'Золотой чай из маракуйи', price: 37000 },
