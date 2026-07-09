@@ -18,7 +18,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
 
     try {
       await ctx.replyWithPhoto(new InputFile('logo.png'), {
-        caption: `☕ *Little Dalat Coffee & Tea*\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 06:30–21:30 📞 0912066973`,
+        caption: `☕ *Little Dalat Coffee & Tea*\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00 📞 0912066973`,
         parse_mode: 'Markdown',
       });
     } catch { /* fallback: no logo */ }
