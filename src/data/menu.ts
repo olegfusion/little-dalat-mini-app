@@ -7,8 +7,7 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'cc-3', category: 'coffee_cocoa', vietnamese: 'Cà phê kem (Muối/Trứng/Tiramisu)', english: 'Cream Coffee (Salted / Egg / Tiramisu)', russian: 'Кофе с кремом (соленый / яичный / тирамису)', price: 40000, variants: { vn: ['Muối', 'Trứng', 'Tiramisu'], en: ['Salted', 'Egg', 'Tiramisu'], ru: ['Соленый', 'Яичный', 'Тирамису'] } },
   { id: 'cc-4', category: 'coffee_cocoa', vietnamese: 'Cà phê kem 1983', english: '1983 Signature Cream Coffee', russian: 'Фирменный кофе с кремом 1983', price: 40000 },
   { id: 'cc-5', category: 'coffee_cocoa', vietnamese: 'Sữa tươi cà phê sương sáo', english: 'Fresh Milk Coffee with Grass Jelly', russian: 'Кофе с молоком и травяным желе', price: 40000 },
-  { id: 'cc-6', category: 'coffee_cocoa', vietnamese: 'Sữa tươi cà phê sương sáo kem (Muối/Trứng/Tiramisu)', english: 'Grass Jelly Cream Coffee (Salted / Egg / Tiramisu)', russian: 'Кофе с травяным желе и кремом (соленый / яичный / тирамису)', price: 40000, variants: { vn: ['Muối', 'Trứng', 'Tiramisu'], en: ['Salted', 'Egg', 'Tiramisu'], ru: ['Соленый', 'Яичный', 'Тирамису'] } },
-  { id: 'cc-7', category: 'coffee_cocoa', vietnamese: 'Ca cao sữa đá', english: 'Iced Cocoa with Milk', russian: 'Холодное какао с молоком', price: 35000 },
+  { id: 'cc-7', category: 'coffee_cocoa', vietnamese: 'Ca cao sữa đá / nóng', english: 'Iced / Hot Cocoa with Milk', russian: 'Какао с молоком, холодный / горячий', price: 35000 },
   { id: 'cc-8', category: 'coffee_cocoa', vietnamese: 'Ca cao kem (Muối/Trứng/Tiramisu)', english: 'Cocoa Cream (Salted / Egg / Tiramisu)', russian: 'Какао с кремом (соленый / яичный / тирамису)', price: 40000, variants: { vn: ['Muối', 'Trứng', 'Tiramisu'], en: ['Salted', 'Egg', 'Tiramisu'], ru: ['Соленый', 'Яичный', 'Тирамису'] } },
   { id: 'cc-9', category: 'coffee_cocoa', vietnamese: 'Bạc xỉu đá / nóng', english: 'Iced / Hot Bạc Xỉu (Vietnamese White Coffee)', russian: 'Бак Сиу (вьетнамский молочный кофе) — холодный / горячий', price: 35000, variants: { vn: ['Đá', 'Nóng'], en: ['Iced', 'Hot'], ru: ['Холодный', 'Горячий'] } },
   { id: 'cc-10', category: 'coffee_cocoa', vietnamese: 'Bạc xỉu xanh (Hoa đậu biếc)', english: 'Blue Butterfly Pea Bạc Xỉu', russian: 'Голубой Бак Сиу (с анчаном)', price: 40000 },
@@ -21,8 +20,6 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // BEST SELLERS
   { id: 'bs-1', category: 'best_sellers', vietnamese: 'Matcha Latte', english: 'Matcha Latte', russian: 'Матча латте', price: 40000 },
   { id: 'bs-2', category: 'best_sellers', vietnamese: 'Sữa tươi cà phê sương sáo', english: 'Fresh Milk Coffee with Grass Jelly', russian: 'Кофе с молоком и травяным желе', price: 40000 },
-  { id: 'bs-3', category: 'best_sellers', vietnamese: 'Hibiscus đào cam sả', english: 'Hibiscus Peach Orange Lemongrass Tea', russian: 'Чай гибискус с персиком, апельсином и лемонграссом', price: 40000 },
-  { id: 'bs-4', category: 'best_sellers', vietnamese: 'Trà sen vàng', english: 'Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 40000 },
   { id: 'bs-5', category: 'best_sellers', vietnamese: 'Cà phê kem Muối / Tiramisu', english: 'Cream Coffee (Salted / Tiramisu)', russian: 'Кофе с кремом (соленый / тирамису)', price: 40000, variants: { vn: ['Muối', 'Tiramisu'], en: ['Salted', 'Tiramisu'], ru: ['Соленый', 'Тирамису'] } },
   // SPECIAL FLOWER TEA
   { id: 'sft-1', category: 'special_flower_tea', vietnamese: 'Trà mùa xuân', english: 'Spring Tea', russian: 'Весенний чай', price: 37000 },
@@ -37,13 +34,11 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'od-4', category: 'other_drinks', vietnamese: 'Cam vắt hạt chia', english: 'Fresh Orange Juice with Chia Seeds', russian: 'Свежевыжатый апельсиновый сок с семенами чиа', price: 35000 },
   // FRUIT TEA
   { id: 'ft-1', category: 'fruit_tea', vietnamese: 'Trà trái cây nhiệt đới', english: 'Tropical Fruit Tea', russian: 'Тропический фруктовый чай', price: 45000 },
-  { id: 'ft-2', category: 'fruit_tea', vietnamese: 'Trà sen vàng', english: 'Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 40000 },
   { id: 'ft-3', category: 'fruit_tea', vietnamese: 'Trà dâu tằm', english: 'Mulberry Tea', russian: 'Шелковичный чай', price: 37000 },
   { id: 'ft-4', category: 'fruit_tea', vietnamese: 'Chanh dây hoàng kim', english: 'Golden Passion Fruit Tea', russian: 'Золотой чай из маракуйи', price: 37000 },
   { id: 'ft-5', category: 'fruit_tea', vietnamese: 'Trà dâu tây đậu biếc', english: 'Butterfly Pea Strawberry Tea', russian: 'Клубничный чай с анчаном', price: 40000 },
   { id: 'ft-6', category: 'fruit_tea', vietnamese: 'Trà đào', english: 'Peach Tea', russian: 'Персиковый чай', price: 37000 },
   { id: 'ft-7', category: 'fruit_tea', vietnamese: 'Trà đào cam sả', english: 'Peach Orange Lemongrass Tea', russian: 'Персиковый чай с апельсином и лемонграссом', price: 40000 },
-  { id: 'ft-8', category: 'fruit_tea', vietnamese: 'Hibiscus đào cam sả', english: 'Hibiscus Peach Orange Lemongrass Tea', russian: 'Чай гибискус с персиком, апельсином и лемонграссом', price: 40000 },
   { id: 'ft-9', category: 'fruit_tea', vietnamese: 'Trà đào xoài đậu biếc', english: 'Butterfly Pea Peach Mango Tea', russian: 'Чай с персиком, манго и анчаном', price: 40000 },
   { id: 'ft-10', category: 'fruit_tea', vietnamese: 'Olong đào', english: 'Peach Oolong', russian: 'Персиковый улун', price: 37000 },
   { id: 'ft-11', category: 'fruit_tea', vietnamese: 'Olong ổi hồng', english: 'Pink Guava Oolong', russian: 'Улун с розовой гуавой', price: 37000 },
@@ -51,7 +46,6 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'ft-13', category: 'fruit_tea', vietnamese: 'Trà táo xanh bạc hà', english: 'Green Apple Mint Tea', russian: 'Чай с зеленым яблоком и мятой', price: 37000 },
   { id: 'ft-14', category: 'fruit_tea', vietnamese: 'Trà phúc bồn tử', english: 'Raspberry Tea', russian: 'Малиновый чай', price: 37000 },
   // DESSERTS & SNACKS
-  { id: 'ds-1', category: 'desserts_snacks', vietnamese: 'Bánh Mousse (Tiramisu/Passion/Red Velvet)', english: 'Mousse Cake (Tiramisu/Passion/Red Velvet)', russian: 'Муссовый торт (тирамису / маракуйя / красный бархат)', price: 40000, variants: { vn: ['Tiramisu', 'Passion', 'Red Velvet'], en: ['Tiramisu', 'Passion Fruit', 'Red Velvet'], ru: ['Тирамису', 'Маракуйя', 'Красный бархат'] } },
   { id: 'ds-2', category: 'desserts_snacks', vietnamese: 'Khô gà lá chanh', english: 'Dried Chicken with Lime Leaves', russian: 'Сушеная курица с листьями лайма', price: 35000 },
   { id: 'ds-3', category: 'desserts_snacks', vietnamese: 'Khoai lang sấy', english: 'Dried Sweet Potato', russian: 'Сушеный батат', price: 25000 },
   { id: 'ds-4', category: 'desserts_snacks', vietnamese: 'Bánh que chấm kem (Muối/Trứng/Tiramisu)', english: 'Cream Biscuit Sticks (Salted / Egg / Tiramisu)', russian: 'Бисквитные палочки с кремом (соленый / яичный / тирамису)', price: 25000, variants: { vn: ['Muối', 'Trứng', 'Tiramisu'], en: ['Salted', 'Egg', 'Tiramisu'], ru: ['Соленый', 'Яичный', 'Тирамису'] } },
