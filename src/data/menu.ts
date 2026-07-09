@@ -52,6 +52,11 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'ds-5', category: 'desserts_snacks', vietnamese: 'Snack', english: 'Snacks', russian: 'Снеки', price: 20000 },
   { id: 'ds-6', category: 'desserts_snacks', vietnamese: 'Hạt bí', english: 'Pumpkin Seeds', russian: 'Тыквенные семечки', price: 15000 },
   { id: 'ds-7', category: 'desserts_snacks', vietnamese: 'Hạt hướng dương', english: 'Sunflower Seeds', russian: 'Семечки подсолнуха', price: 12000 },
+  // SIGNATURE
+  { id: 'sg-1', category: 'signature', vietnamese: 'Little DaLat Coffee', english: 'Little DaLat Coffee', russian: 'Кофе Little DaLat', price: 45000 },
+  { id: 'sg-2', category: 'signature', vietnamese: 'Hibiscus Đào Cam Sả', english: 'Hibiscus Peach Orange Lemongrass Tea', russian: 'Чай гибискус с персиком, апельсином и лемонграссом', price: 45000 },
+  { id: 'sg-3', category: 'signature', vietnamese: 'Trà Sen Vàng Cao Nguyên', english: 'Highland Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 45000 },
+  { id: 'sg-4', category: 'signature', vietnamese: 'Matcha Mây Đà Lạt', english: 'Dalat Cloud Matcha', russian: 'Матча «Облако Далат»', price: 45000 },
 ];
 
 export function getItemsByCategory(categoryId: string): MenuItem[] {

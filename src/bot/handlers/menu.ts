@@ -143,21 +143,19 @@ async function showItemPage(
 ): Promise<void> {
   const kb = new InlineKeyboard();
 
-  let maxLen = 0;
   for (const item of items) {
     const name = getItemName(item, lang);
     const cartItem = ctx.session.cart.find(c => c.menuItemId === item.id);
     const qty = cartItem ? ` ×${cartItem.quantity}` : '';
-    const label = `${name} \u2014 ${item.price / 1000}${config.currency}${qty}`;
-    if (label.length > maxLen) maxLen = label.length;
-    kb.text(label, `add_${item.id}`).row();
+    kb.text(`${name} \u2014 ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
   }
 
   kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
-  const spacer = '\n\u2800'.repeat(maxLen);
-  const text = `${t('items_in', lang)}:${spacer}`;
+  const cat = CATEGORIES.find(c => c.id === categoryId);
+  const catName = cat ? (cat as any)[lang === 'vn' ? 'vietnamese' : lang === 'ru' ? 'russian' : 'english'] : categoryId;
+  const text = `📋 ${catName}`;
 
   if (ctx.session.itemsMessageId) {
     await ctx.api.editMessageText(ctx.chat!.id, ctx.session.itemsMessageId, text, { reply_markup: kb });

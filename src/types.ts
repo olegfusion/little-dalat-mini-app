@@ -28,7 +28,8 @@ export type MenuCategory =
   | 'other_drinks'
   | 'fruit_tea'
   | 'desserts_snacks'
-  | 'combos';
+  | 'combos'
+  | 'signature';
 
 export interface CategoryInfo {
   id: MenuCategory;
