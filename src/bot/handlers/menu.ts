@@ -150,7 +150,7 @@ async function showItemPage(
     kb.text(`${name} \u2014 ${item.price / 1000}${config.currency}${qty}`, `add_${item.id}`).row();
   }
 
-  kb.text(`🛒 ${t('view_cart', lang)}`, 'view_cart');
+  kb.text(t('view_cart', lang), 'view_cart');
   kb.text(t('back', lang), 'back_categories');
 
   const cat = CATEGORIES.find(c => c.id === categoryId);
