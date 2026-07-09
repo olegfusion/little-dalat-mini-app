@@ -17,10 +17,6 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'ht-3', category: 'hot_tea', vietnamese: 'Trà hồng nụ', english: 'Rosebud Tea', russian: 'Чай из бутонов роз', price: 50000 },
   { id: 'ht-4', category: 'hot_tea', vietnamese: 'Trà sả gừng', english: 'Lemongrass Ginger Tea', russian: 'Имбирно-лемонграссовый чай', price: 50000 },
   { id: 'ht-5', category: 'hot_tea', vietnamese: 'Trà olong trái cây', english: 'Fruit Oolong Tea', russian: 'Фруктовый улун', price: 50000 },
-  // BEST SELLERS
-  { id: 'bs-1', category: 'best_sellers', vietnamese: 'Matcha Latte', english: 'Matcha Latte', russian: 'Матча латте', price: 40000 },
-  { id: 'bs-2', category: 'best_sellers', vietnamese: 'Sữa tươi cà phê sương sáo', english: 'Fresh Milk Coffee with Grass Jelly', russian: 'Кофе с молоком и травяным желе', price: 40000 },
-  { id: 'bs-5', category: 'best_sellers', vietnamese: 'Cà phê kem Muối / Tiramisu', english: 'Cream Coffee (Salted / Tiramisu)', russian: 'Кофе с кремом (соленый / тирамису)', price: 40000, variants: { vn: ['Muối', 'Tiramisu'], en: ['Salted', 'Tiramisu'], ru: ['Соленый', 'Тирамису'] } },
   // SPECIAL FLOWER TEA
   { id: 'sft-1', category: 'special_flower_tea', vietnamese: 'Trà mùa xuân', english: 'Spring Tea', russian: 'Весенний чай', price: 37000 },
   { id: 'sft-2', category: 'special_flower_tea', vietnamese: 'Trà dưỡng nhan', english: 'Herbal Beauty Tea', russian: 'Травяной чай для красоты', price: 37000 },

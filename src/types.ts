@@ -21,15 +21,14 @@ export interface MenuItem {
 }
 
 export type MenuCategory =
+  | 'signature'
   | 'coffee_cocoa'
   | 'hot_tea'
-  | 'best_sellers'
   | 'special_flower_tea'
   | 'other_drinks'
   | 'fruit_tea'
   | 'desserts_snacks'
-  | 'combos'
-  | 'signature';
+  | 'combos';
 
 export interface CategoryInfo {
   id: MenuCategory;
