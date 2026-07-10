@@ -47,9 +47,33 @@ export function registerStaffCallbacks(bot: Bot<BotContext>): void {
     try {
       const updated = getOrderById(orderId);
       if (!updated) return;
-      await ctx.editMessageReplyMarkup({ reply_markup: undefined });
+
+      const remainingKb = new InlineKeyboard();
+      if (updated.mode === 'delivery') {
+        if (status === 'paid' || status === 'created') {
+          remainingKb.text('⏳ Preparing', `staff_status_${orderId}_preparing`).row();
+        }
+        if (status === 'preparing') {
+          remainingKb.text('🚚 Dispatched', `staff_status_${orderId}_dispatched`).row();
+        }
+        if (status === 'dispatched') {
+          remainingKb.text('✅ Done', `staff_status_${orderId}_served`).row();
+        }
+      } else {
+        if (status === 'paid' || status === 'created') {
+          remainingKb.text('⏳ Preparing', `staff_status_${orderId}_preparing`).row();
+        }
+        if (status === 'preparing') {
+          remainingKb.text('🛵 Ready', `staff_status_${orderId}_ready`).row();
+        }
+        if (status === 'ready') {
+          remainingKb.text('✅ Done', `staff_status_${orderId}_served`).row();
+        }
+      }
+
       await ctx.editMessageText(
-        `${formatOrderForStaff(updated)}\n\n✅ Status updated to: ${status} by ${ctx.from?.first_name || 'staff'}`
+        `${formatOrderForStaff(updated)}\n\n✅ Status updated to: ${status} by ${ctx.from?.first_name || 'staff'}`,
+        { reply_markup: remainingKb.inline_keyboard.length > 0 ? remainingKb : undefined }
       );
       if (updated.source?.startsWith('miniapp_telegram') || updated.source === 'bot') {
         const lang = updated.language;
