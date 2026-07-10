@@ -3,3 +3,7 @@ dist/
 .env
 data/
 deploy/ssh/
+*.bat
+bot.log
+.playwright-mcp/
+
