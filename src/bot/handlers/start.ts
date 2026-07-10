@@ -36,7 +36,8 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     if (ctx.session.mode) {
       // Already in dine-in mode from QR scan → show main menu
       const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
-      const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+      const sep = baseUrl.includes('?') ? '&' : '?';
+      const miniAppUrl = `${baseUrl}${sep}chat_id=${ctx.from?.id}&lang=${lang}&mode=${ctx.session.mode || ''}`;
       ctx.session.step = 'main_menu';
       await ctx.deleteMessage().catch(() => {});
       await showMainMenuMsg(ctx, lang, miniAppUrl);
@@ -52,7 +53,8 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
   bot.command('menu', async (ctx) => {
     const lang = ctx.session?.language || 'en';
     const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
-    const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+    const sep = baseUrl.includes('?') ? '&' : '?';
+    const miniAppUrl = `${baseUrl}${sep}chat_id=${ctx.from?.id}&lang=${ctx.session?.language || 'en'}&mode=${ctx.session?.mode || ''}`;
     await ctx.reply('☕', {
       reply_markup: {
         inline_keyboard: [[{
@@ -88,7 +90,8 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     ctx.session.step = 'main_menu';
     await ctx.deleteMessage().catch(() => {});
     const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
-    const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+    const sep = baseUrl.includes('?') ? '&' : '?';
+    const miniAppUrl = `${baseUrl}${sep}chat_id=${ctx.from?.id}&lang=${ctx.session.language}&mode=${mode}`;
     await showMainMenuMsg(ctx, ctx.session.language, miniAppUrl);
     await ctx.answerCallbackQuery();
   });

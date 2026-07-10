@@ -133,7 +133,8 @@ export function registerReorderHandlers(bot: Bot<BotContext>): void {
     const lang = ctx.session.language;
     await ctx.deleteMessage().catch(() => {});
     const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
-    const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+    const sep = baseUrl.includes('?') ? '&' : '?';
+    const miniAppUrl = `${baseUrl}${sep}chat_id=${ctx.from?.id}&lang=${ctx.session.language}&mode=${ctx.session.mode || ''}`;
     ctx.session.step = 'main_menu';
     await showMainMenuMsg(ctx, lang, miniAppUrl);
     await ctx.answerCallbackQuery();

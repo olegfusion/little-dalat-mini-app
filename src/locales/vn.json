@@ -101,8 +101,8 @@
   "map_msg": "📍 *Vị trí của chúng tôi*\n\n02 Thi Sách, Phước Hòa, Nha Trang\n🕐 07:00–22:00\n\nNhấn nút bên dưới để mở Google Maps.",
   "your_orders": "Đơn hàng của bạn",
   "choose_order": "Chọn đơn hàng để đặt lại:",
-  "btn_reorder": "🔄 Đặt lại",
-  "btn_status": "📋 Trạng thái",
-  "btn_open_menu": "🛵 Mở Menu & Đặt hàng",
+"btn_reorder": "Đặt lại",
+"btn_status": "Trạng thái",
+"btn_open_menu": "Mở Menu & Đặt hàng",
   "main_menu": "☕ Menu chính"
 }

@@ -101,8 +101,8 @@
   "new_order_prompt": "Would you like to place another order?",
   "your_orders": "Your Orders",
   "choose_order": "Choose an order to repeat:",
-  "btn_reorder": "🔄 Repeat Last Order",
-  "btn_status": "📋 Order Status",
-  "btn_open_menu": "🛵 Open Menu & Order",
+"btn_reorder": "Repeat Last Order",
+"btn_status": "Order Status",
+"btn_open_menu": "Open Menu & Order",
   "main_menu": "☕ Main Menu"
 }
