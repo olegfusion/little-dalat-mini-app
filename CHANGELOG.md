@@ -69,6 +69,13 @@
 - Larger text for cash payment description
 - Cash view shows maximized items table
 
+### Support Chat (Telegram Bot)
+
+- New `support.ts` handler: forwards user messages to staff chat with reply button
+- `/reply <userId> <text>` — staff command to reply from group chat
+- "📨 Ответить" inline button for quick reply initiation
+- Ignores messages during active order flow to avoid interference
+
 ### Server
 
 - `GET /api/geocode/search` — proxies GoGoDuk → Goong → Nominatim with caching
