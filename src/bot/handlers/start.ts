@@ -51,14 +51,13 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
   });
 
   bot.command('menu', async (ctx) => {
-    const lang = ctx.session?.language || 'en';
     const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
     const sep = baseUrl.includes('?') ? '&' : '?';
     const miniAppUrl = `${baseUrl}${sep}chat_id=${ctx.from?.id}&lang=${ctx.session?.language || 'en'}&mode=${ctx.session?.mode || ''}`;
-    await ctx.reply('☕', {
+    await ctx.reply('☕\n🇻🇳 Mở Menu & Đặt hàng\n🇬🇧 Open Menu & Order\n🇷🇺 Открыть меню и заказать', {
       reply_markup: {
         inline_keyboard: [[{
-          text: '🛵 Open Mini App',
+          text: '🛵 Open Menu & Order',
           web_app: { url: miniAppUrl },
         }]],
       },

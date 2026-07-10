@@ -7,12 +7,9 @@ import { INITIAL_MENU_ITEMS } from '../../data/menu';
 import { paymentKeyboard, languageKeyboard } from '../keyboards';
 
 export async function showMainMenuMsg(ctx: BotContext, lang: string, miniAppUrl: string): Promise<void> {
-  const modeKey = ctx.session.mode ? 'mode_' + ctx.session.mode.replace('-', '_') : null;
-  const modeLabel = modeKey
-    ? `\n${t(modeKey, 'vn')} / ${t(modeKey, 'en')} / ${t(modeKey, 'ru')}` +
-      (ctx.session.tableNumber
-        ? `\n🪑 ${t('table', 'vn')} ${ctx.session.tableNumber} / ${t('table', 'en')} ${ctx.session.tableNumber} / ${t('table', 'ru')} ${ctx.session.tableNumber}`
-        : '')
+  const modeLabel = ctx.session.mode
+    ? `\n${ctx.session.mode === 'dine-in' ? '🍽️' : ctx.session.mode === 'pickup' ? '🛍️' : '🚚'} ${t('mode_' + ctx.session.mode.replace('-', '_'), lang as Language)}` +
+      (ctx.session.tableNumber ? ` | ${t('table', lang as Language)} ${ctx.session.tableNumber}` : '')
     : '';
   await ctx.reply(`☕ *Little Dalat*${modeLabel}`, {
     parse_mode: 'Markdown',
