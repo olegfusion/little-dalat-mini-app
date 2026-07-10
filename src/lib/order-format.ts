@@ -141,6 +141,6 @@ export function formatOrderForUser(order: Order, lang: string): string {
 
   text += `\n━━━━━━━━━━━━━━━━━━\n`;
   text += `📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973\n`;
-  text += `⭐ ${isVn ? 'Đánh giá chúng tôi' : isRu ? 'Оцените нас' : 'Review us'}: https://maps.app.goo.gl/pKx6QFVLn6tbRigk6`;
+  text += `⭐ ${isVn ? 'Viết đánh giá' : isRu ? 'Оставить отзыв' : 'Write a review'}: https://search.google.com/local/writereview?placeid=0x31705d8db852a379:0x5a7d4e69a7b5eb0c`;
   return text;
 }
