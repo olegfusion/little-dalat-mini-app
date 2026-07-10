@@ -2,34 +2,45 @@ import { Order, CartItem } from '../types';
 import { getItemById, getItemVariantName } from '../data/menu';
 import { config } from '../config';
 
+const sourceLabels: Record<string, string> = {
+  bot: '🤖 Telegram Bot',
+  miniapp_telegram: '🌐 Telegram Mini App',
+  miniapp_zalo: '🇻🇳 Zalo Mini App',
+  browser: '🌍 Browser',
+};
+
+const modeLabels: Record<string, string> = {
+  'dine-in': '🍽️ Tại quán (Dine-in)',
+  pickup: '🛍️ Mang đi (Pickup)',
+  delivery: '🚚 Giao hàng (Delivery)',
+};
+
 export function formatOrderForStaff(order: Order): string {
   const cartItems: CartItem[] = JSON.parse(order.items);
 
   let text = `🆕 ĐƠN HÀNG MỚI (NEW ORDER) #${order.id}\n`;
-  text += `─────────────────────\n`;
+  text += `───── ${modeLabels[order.mode] || order.mode} ─────\n`;
 
-  if (order.mode === 'dine-in') {
-    if (order.tableNumber) text += `📍 Bàn (Table) ${order.tableNumber} — Tại quán (Dine-in)\n`;
-  } else if (order.mode === 'pickup') {
-    text += `🛍️ Mang đi (Pickup)\n`;
-    if (order.pickupTime) {
-      text += `⏱ Lấy hàng sau (Pickup in): ${order.pickupTime} phút (min)\n`;
-    }
-  } else {
-    text += `🚚 Giao hàng (Delivery)\n`;
+  if (order.mode === 'dine-in' && order.tableNumber) {
+    text += `🪑 Bàn (Table): ${order.tableNumber}\n`;
+  }
+
+  if (order.mode === 'pickup' && order.pickupTime) {
+    text += `⏱ Lấy hàng sau (Pickup in): ${order.pickupTime} phút (min)\n`;
+  }
+
+  if (order.mode === 'delivery') {
     text += `📍 ${order.deliveryAddress}\n`;
     if (order.deliveryLat && order.deliveryLng) {
       text += `🌐 ${order.deliveryLat.toFixed(5)}, ${order.deliveryLng.toFixed(5)}\n`;
       text += `🗺️ https://www.google.com/maps/dir/?api=1&origin=${config.shop.lat},${config.shop.lng}&destination=${order.deliveryLat},${order.deliveryLng}\n`;
     } else {
-      const q = encodeURIComponent(order.deliveryAddress);
-      text += `🗺️ https://www.google.com/maps?q=${q}\n`;
+      text += `🗺️ https://www.google.com/maps?q=${encodeURIComponent(order.deliveryAddress)}\n`;
     }
-    if (order.customerPhone) text += `📞 ${order.customerPhone}\n`;
-    if (order.deliveryFee > 0) {
+    if (order.deliveryFee === -1) {
+      text += `🎉 Miễn phí giao hàng (Free delivery)\n`;
+    } else if (order.deliveryFee > 0) {
       text += `💵 Phí ship (Delivery fee): ${order.deliveryFee / 1000}k\n`;
-    } else if (order.deliveryFee === -1) {
-      text += `🚚 Giao hàng miễn phí (Free delivery)\n`;
     }
   }
 
@@ -54,20 +65,10 @@ export function formatOrderForStaff(order: Order): string {
   text += `─────────────────────\n`;
   text += `💰 Tổng cộng (Total): ${order.total / 1000}k\n`;
 
-  if (order.paymentMethod === 'qr') {
-    text += `💳 QR — Đã thanh toán (Paid)\n`;
-  } else {
-    text += `💵 Tiền mặt — Chưa thanh toán (Unpaid)\n`;
-  }
+  text += order.paymentMethod === 'qr' ? `💳 QR — Đã thanh toán (Paid)\n` : `💵 Tiền mặt — Chưa thanh toán (Unpaid)\n`;
 
   text += `─────────────────────\n`;
   text += `⏰ ${order.createdAt}\n`;
-  const sourceLabels: Record<string, string> = {
-    bot: '🤖 Telegram Bot',
-    miniapp_telegram: '🌐 Telegram Mini App',
-    miniapp_zalo: '🇻🇳 Zalo Mini App',
-    browser: '🌍 Browser',
-  };
   text += `📱 ${sourceLabels[order.source] || order.source}\n`;
   if (order.customerName) text += `👤 ${order.customerName}\n`;
   if (order.customerPhone) text += `📞 ${order.customerPhone}\n`;
