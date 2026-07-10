@@ -89,7 +89,7 @@ export function registerStaffCallbacks(bot: Bot<BotContext>): void {
         const icon = statusIcons[status] || '📋';
         const statusLabel = t(`status_${status}`, lang);
         await bot.api.sendMessage(updated.chatId,
-          `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n${t('thank_you_ordering', lang)}`,
+          `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n━━━━━━━━━━━━━━━━━━\n👤 ${updated.customerName || '—'}\n📞 ${updated.customerPhone || '—'}\n━━━━━━━━━━━━━━━━━━\n${t('thank_you_ordering', lang)}`,
           { parse_mode: 'Markdown' }
         );
       }

@@ -33,7 +33,7 @@ export function formatOrderForStaff(order: Order): string {
     text += `📍 ${order.deliveryAddress}\n`;
     if (order.deliveryLat && order.deliveryLng) {
       text += `🌐 ${order.deliveryLat.toFixed(5)}, ${order.deliveryLng.toFixed(5)}\n`;
-      text += `🗺️ https://www.google.com/maps/dir/?api=1&origin=${config.shop.lat},${config.shop.lng}&destination=${order.deliveryLat},${order.deliveryLng}\n`;
+      text += `🗺️ https://www.google.com/maps?q=${order.deliveryLat},${order.deliveryLng}\n`;
     } else {
       text += `🗺️ https://www.google.com/maps?q=${encodeURIComponent(order.deliveryAddress)}\n`;
     }
@@ -75,5 +75,67 @@ export function formatOrderForStaff(order: Order): string {
   if (order.notes) text += `📝 ${order.notes}\n`;
   text += `💬 tg://user?id=${order.chatId}\n`;
 
+  return text;
+}
+
+export function formatOrderForUser(order: Order, lang: string): string {
+  const cartItems: CartItem[] = JSON.parse(order.items);
+  const isVn = lang === 'vn';
+  const isRu = lang === 'ru';
+
+  const modeNames: Record<string, string> = {
+    'dine-in': isVn ? 'Tại quán' : isRu ? 'На месте' : 'Dine-in',
+    pickup: isVn ? 'Mang đi' : isRu ? 'С собой' : 'Pickup',
+    delivery: isVn ? 'Giao hàng' : isRu ? 'Доставка' : 'Delivery',
+  };
+
+  let text = `━━━━━━━━━━━━━━━━━━\n`;
+  text += `☕ *LITTLE DALAT*\n`;
+  text += `${modeNames[order.mode] || order.mode}`;
+  if (order.mode === 'dine-in' && order.tableNumber) {
+    text += ` | ${isVn ? 'Bàn' : isRu ? 'Стол' : 'Table'} ${order.tableNumber}`;
+  }
+  text += `\n━━━━━━━━━━━━━━━━━━\n\n`;
+
+  text += `📋 *${isVn ? 'ĐƠN HÀNG' : isRu ? 'ЗАКАЗ' : 'ORDER'} #${order.id}*\n\n`;
+
+  for (const ci of cartItems) {
+    const item = getItemById(ci.menuItemId);
+    if (item) {
+      const name = isVn ? item.vietnamese : isRu ? item.russian : item.english;
+      text += `• ${name}`;
+      if (ci.variantIndex !== undefined && item.variants) {
+        const variantName = getItemVariantName(item, lang as any, ci.variantIndex);
+        text += ` (${variantName})`;
+      }
+      text += ` x${ci.quantity}`;
+      if (ci.comment?.trim()) text += ` — 📝 ${ci.comment.trim()}`;
+      text += `\n`;
+    }
+  }
+
+  text += `\n💰 *${isVn ? 'Tổng cộng' : isRu ? 'Итого' : 'Total'}: ${order.total / 1000}k*\n`;
+
+  if (order.mode === 'delivery' && order.deliveryAddress) {
+    text += `📍 ${isVn ? 'Địa chỉ' : isRu ? 'Адрес' : 'Address'}: ${order.deliveryAddress}\n`;
+    if (order.deliveryLat && order.deliveryLng) {
+      text += `🗺️ https://www.google.com/maps?q=${order.deliveryLat},${order.deliveryLng}\n`;
+    }
+  }
+  if (order.mode === 'pickup' && order.pickupTime) {
+    text += `⏱ ${isVn ? `Lấy hàng sau ${order.pickupTime} phút` : isRu ? `Забрать через ${order.pickupTime} мин` : `Pickup in ${order.pickupTime} min`}\n`;
+  }
+
+  text += `\n👤 ${isVn ? 'Tên' : isRu ? 'Имя' : 'Name'}: ${order.customerName || '—'}\n`;
+  text += `📞 ${isVn ? 'Điện thoại' : isRu ? 'Телефон' : 'Phone'}: ${order.customerPhone || '—'}\n`;
+
+  if (order.paymentMethod === 'qr') {
+    text += `\n✅ ${isVn ? 'Đã thanh toán qua QR' : isRu ? 'Оплачено по QR' : 'Paid via QR'}\n`;
+  } else {
+    text += `\n💵 ${isVn ? 'Thanh toán khi nhận hàng' : isRu ? 'Оплата при получении' : 'Pay on arrival'}\n`;
+  }
+
+  text += `\n━━━━━━━━━━━━━━━━━━\n`;
+  text += `📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973`;
   return text;
 }

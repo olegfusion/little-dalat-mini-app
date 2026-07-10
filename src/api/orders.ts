@@ -5,6 +5,7 @@ import { CartItem, OrderMode, PaymentMethod, Language, OrderSource, OrderStatus 
 import { notifyStaff } from '../staff/notify';
 import { getBot } from '../bot';
 import { t } from '../locales';
+import { formatOrderForUser } from '../lib/order-format';
 
 interface CreateOrderBody {
   chatId: number;
@@ -84,7 +85,7 @@ router.post('/orders/:id/confirm', async (req: Request, res: Response) => {
     await notifyStaff(bot, updated);
     if (updated.source?.startsWith('miniapp_telegram') || updated.source === 'bot') {
       const lang = updated.language;
-      const msg = `${t('order_confirmed', lang, { id: updated.id })}\n${t('thank_you_ordering', lang)}`;
+      const msg = formatOrderForUser(updated, lang);
       await bot.api.sendMessage(updated.chatId, msg, { parse_mode: 'Markdown' });
     }
   } catch (e) {
@@ -114,7 +115,7 @@ router.post('/orders/:id/status', async (req: Request, res: Response) => {
       const icon = statusIcons[status] || '📋';
       const statusLabel = t(`status_${status}`, lang);
       await bot.api.sendMessage(updated.chatId,
-        `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n${t('thank_you_ordering', lang)}`,
+        `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n━━━━━━━━━━━━━━━━━━\n👤 ${updated.customerName || '—'}\n📞 ${updated.customerPhone || '—'}\n━━━━━━━━━━━━━━━━━━\n${t('thank_you_ordering', lang)}`,
         { parse_mode: 'Markdown' }
       );
     }
