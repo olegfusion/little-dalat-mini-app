@@ -7,6 +7,7 @@ import { registerCartHandlers } from './handlers/cart';
 import { registerCheckoutHandlers } from './handlers/checkout';
 import { registerPaymentHandlers } from './handlers/payment';
 import { registerReorderHandlers } from './handlers/reorder';
+import { registerStaffCallbacks } from '../staff/notify';
 
 let _bot: Bot<BotContext> | null = null;
 
@@ -21,6 +22,7 @@ export function createBot(): Bot<BotContext> {
   registerCheckoutHandlers(bot);
   registerPaymentHandlers(bot);
   registerReorderHandlers(bot);
+  registerStaffCallbacks(bot);
 
   _bot = bot;
   return bot;
