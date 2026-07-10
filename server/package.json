@@ -1,0 +1,33 @@
+{
+  "name": "little-dalat-telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for ordering at **Little Dalat Coffee & Tea** (Nha Trang, Vietnam). Supports dine-in (QR per table), pickup, and delivery (up to 8 km). Multilingual: Vietnamese, English, Russian.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "grammy": "^1.44.0",
+    "vietqr": "^1.1.9"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.1",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}

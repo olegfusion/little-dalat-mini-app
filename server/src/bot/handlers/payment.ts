@@ -1,0 +1,214 @@
+import { Bot, InlineKeyboard } from 'grammy';
+import { BotContext } from '../context';
+import { t } from '../../locales';
+import { paymentKeyboard, paymentConfirmKeyboard, confirmOrderKeyboard, modeKeyboard } from '../keyboards';
+import { generateVietQR } from '../../lib/vietqr';
+import { createOrder, getOrderById, updateOrderStatus } from '../../db/orders';
+import { notifyStaff } from '../../staff/notify';
+import { INITIAL_MENU_ITEMS } from '../../data/menu';
+import { Language } from '../../types';
+import { config } from '../../config';
+
+function formatPickupTime(minutes: number | null, lang: Language): string {
+  if (!minutes) return '';
+  return t(`pickup_time_${minutes}`, lang);
+}
+
+function afterOrderKeyboard(mode: string | null, lang: Language) {
+  const kb = new InlineKeyboard().text(t('new_order', lang), 'start_new_order');
+  if (mode === 'pickup') {
+    kb.row().url('🗺️ ' + t('get_directions', lang), config.shop.mapsUrl);
+  }
+  return kb;
+}
+
+export function registerPaymentHandlers(bot: Bot<BotContext>): void {
+  bot.callbackQuery('pay_qr', async (ctx) => {
+    const lang = ctx.session.language;
+    const cart = ctx.session.cart;
+    await ctx.answerCallbackQuery();
+
+    try {
+      const subtotal = cart.reduce((sum, ci) => {
+        const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
+        return sum + (item?.price || 0) * ci.quantity;
+      }, 0);
+      const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
+
+      const order = createOrder({
+        chatId: ctx.chat!.id,
+        tableNumber: ctx.session.tableNumber,
+        mode: ctx.session.mode || 'dine-in',
+        items: cart,
+        total,
+        deliveryFee: ctx.session.deliveryFee || 0,
+        paymentMethod: 'qr',
+        customerName: ctx.session.customerName || '',
+        customerPhone: ctx.session.customerPhone || '',
+        deliveryAddress: ctx.session.deliveryAddress || '',
+        deliveryLat: ctx.session.deliveryLat || null,
+        deliveryLng: ctx.session.deliveryLng || null,
+        pickupTime: ctx.session.pickupTime,
+        language: lang,
+      });
+
+      ctx.session.pendingOrderId = order.id;
+
+      const qr = generateVietQR(order.id, total);
+
+      await ctx.editMessageText(t('payment_qr_info', lang, { amount: total / 1000 })).catch(() =>
+        ctx.reply(t('payment_qr_info', lang, { amount: total / 1000 }))
+      );
+
+      await ctx.replyWithPhoto(qr.imageUrl, {
+        caption: t('payment_qr_waiting', lang),
+        reply_markup: paymentConfirmKeyboard(lang),
+      }).catch(() =>
+        ctx.reply(t('payment_qr_waiting', lang), {
+          reply_markup: paymentConfirmKeyboard(lang),
+        }).catch(() => {})
+      );
+    } catch (e) {
+      console.error('pay_qr error:', e);
+      await ctx.reply('⚠️ ' + t('payment_failed', lang)).catch(() => {});
+    }
+  });
+
+  bot.callbackQuery('pay_cash', async (ctx) => {
+    const lang = ctx.session.language;
+    const mode = ctx.session.mode || 'dine-in';
+    const key = mode === 'delivery' ? 'payment_cash_delivery' : mode === 'pickup' ? 'payment_cash_pickup' : 'payment_cash_dinein';
+    await ctx.editMessageText(t(key, lang), {
+      reply_markup: confirmOrderKeyboard(lang),
+    });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('confirm_paid', async (ctx) => {
+    const lang = ctx.session.language;
+    const orderId = ctx.session.pendingOrderId;
+    if (!orderId) {
+      await ctx.answerCallbackQuery('No pending order');
+      return;
+    }
+
+    updateOrderStatus(orderId, 'paid');
+    const order = getOrderById(orderId);
+    if (order) {
+      await notifyStaff(bot, order);
+    }
+
+    ctx.session.cart = [];
+    ctx.session.pendingOrderId = undefined;
+    ctx.session.deliveryFee = 0;
+
+    const mode = ctx.session.mode;
+    let msg: string;
+    if (mode === 'delivery') {
+      msg = t('order_delivery_msg', lang, { id: orderId });
+    } else if (mode === 'pickup') {
+      const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
+      msg = t('order_pickup_msg', lang, { id: orderId, time: pickupTimeStr });
+    } else {
+      const tableLine = ctx.session.tableNumber
+        ? `🪑 *${t('table_label', lang)}:* ${ctx.session.tableNumber}\n\n`
+        : '';
+      msg = t('order_dinein_msg', lang, { id: orderId, table_line: tableLine });
+    }
+
+    await ctx.reply(msg, { parse_mode: 'Markdown' });
+    await ctx.reply(t('new_order_prompt', lang), {
+      reply_markup: afterOrderKeyboard(ctx.session.mode, lang),
+    });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('start_new_order', async (ctx) => {
+    const lang = ctx.session.language;
+    ctx.session.cart = [];
+    ctx.session.mode = null;
+    ctx.session.tableNumber = null;
+    ctx.session.step = 'choosing_mode';
+    ctx.session.currentCategory = null;
+    ctx.session.currentPage = 0;
+    ctx.session.itemsMessageId = null;
+    await ctx.editMessageText(t('start_choose_mode', lang), {
+      reply_markup: modeKeyboard(lang),
+    });
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('back_payment', async (ctx) => {
+    const lang = ctx.session.language;
+    const cart = ctx.session.cart;
+    const subtotal = cart.reduce((sum, ci) => {
+      const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
+      return sum + (item?.price || 0) * ci.quantity;
+    }, 0);
+    const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
+    const text = `${t('total', lang)}: ${total / 1000}k`;
+    try {
+      await ctx.editMessageText(`${text}\n\n${t('choose_payment', lang)}`, {
+        reply_markup: paymentKeyboard(lang, ctx.session.mode),
+      });
+    } catch {
+      await ctx.deleteMessage().catch(() => {});
+      await ctx.reply(`${text}\n\n${t('choose_payment', lang)}`, {
+        reply_markup: paymentKeyboard(lang, ctx.session.mode),
+      });
+    }
+    await ctx.answerCallbackQuery();
+  });
+
+  bot.callbackQuery('confirm_order', async (ctx) => {
+    const lang = ctx.session.language;
+    const cart = ctx.session.cart;
+    const subtotal = cart.reduce((sum, ci) => {
+      const item = INITIAL_MENU_ITEMS.find(i => i.id === ci.menuItemId);
+      return sum + (item?.price || 0) * ci.quantity;
+    }, 0);
+    const total = subtotal + Math.max(0, ctx.session.deliveryFee || 0);
+
+    const order = createOrder({
+      chatId: ctx.chat!.id,
+      tableNumber: ctx.session.tableNumber,
+      mode: ctx.session.mode || 'dine-in',
+      items: cart,
+      total,
+      deliveryFee: ctx.session.deliveryFee || 0,
+      paymentMethod: 'cash',
+      customerName: ctx.session.customerName || '',
+      customerPhone: ctx.session.customerPhone || '',
+      deliveryAddress: ctx.session.deliveryAddress || '',
+      deliveryLat: ctx.session.deliveryLat || null,
+      deliveryLng: ctx.session.deliveryLng || null,
+      pickupTime: ctx.session.pickupTime,
+      language: lang,
+    });
+
+    await notifyStaff(bot, order);
+
+    ctx.session.cart = [];
+    ctx.session.deliveryFee = 0;
+
+    const mode = ctx.session.mode;
+    let msg: string;
+    if (mode === 'delivery') {
+      msg = t('order_delivery_msg', lang, { id: order.id });
+    } else if (mode === 'pickup') {
+      const pickupTimeStr = formatPickupTime(ctx.session.pickupTime, lang);
+      msg = t('order_pickup_msg', lang, { id: order.id, time: pickupTimeStr });
+    } else {
+      const tableLine = ctx.session.tableNumber
+        ? `🪑 *${t('table_label', lang)}:* ${ctx.session.tableNumber}\n\n`
+        : '';
+      msg = t('order_dinein_msg', lang, { id: order.id, table_line: tableLine });
+    }
+
+    await ctx.reply(msg, { parse_mode: 'Markdown' });
+    await ctx.reply(t('new_order_prompt', lang), {
+      reply_markup: afterOrderKeyboard(ctx.session.mode, lang),
+    });
+    await ctx.answerCallbackQuery();
+  });
+}
