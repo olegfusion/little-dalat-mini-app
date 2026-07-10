@@ -65,7 +65,7 @@
   "status_paid": "Оплачен",
   "status_preparing": "Готовится",
   "status_ready": "Готов",
-  "status_served": "Подан",
+  "status_served": "Доставлен",
   "status_picked_up": "Забран",
   "status_dispatched": "Отправлен",
   "cancel_order": "❌ Отменить заказ",
