@@ -1,4 +1,4 @@
-import { Bot, InlineKeyboard } from 'grammy';
+import { Bot, InlineKeyboard, NextFunction } from 'grammy';
 import { BotContext } from '../context';
 import { t } from '../../locales';
 import { paymentKeyboard, pickupTimeKeyboard } from '../keyboards';
@@ -37,7 +37,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
     await ctx.answerCallbackQuery();
   });
 
-  bot.on('message:text', async (ctx) => {
+  bot.on('message:text', async (ctx, next) => {
     if (ctx.session.step === 'checkout_name') {
       ctx.session.customerName = ctx.message.text;
       ctx.session.step = 'checkout_phone';
@@ -105,6 +105,7 @@ export function registerCheckoutHandlers(bot: Bot<BotContext>): void {
       });
       return;
     }
+    await next();
   });
 
   bot.callbackQuery(/^pickup_time_\d+$/, async (ctx) => {

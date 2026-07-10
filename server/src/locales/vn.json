@@ -107,5 +107,11 @@
 "btn_status": "Trạng thái",
 "btn_open_menu": "Mở Menu & Đặt hàng",
   "main_menu": "☕ Menu chính",
-"btn_change_lang": "🌐 Đổi ngôn ngữ"
+  "btn_change_lang": "🌐 Đổi ngôn ngữ",
+  "support_reply_sent": "✅ Đã gửi phản hồi tới người dùng {userId}",
+  "support_reply_failed": "❌ Không thể gửi tới người dùng {userId}. Có thể họ đã chặn bot.",
+  "support_message_forwarded": "📩 Tin nhắn của bạn đã được gửi tới quản trị viên. Chúng tôi sẽ trả lời sớm!",
+  "support_reply_instruction": "✏️ Để trả lời người dùng {userId}, hãy gửi:\n/reply {userId} nội dung",
+  "support_reply_header": "📬 *Phản hồi từ Little Dalat:*",
+  "support_new_message": "💬 *Tin nhắn mới từ người dùng*"
 }

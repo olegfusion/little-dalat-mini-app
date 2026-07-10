@@ -107,5 +107,11 @@
 "btn_status": "Статус",
 "btn_open_menu": "Открыть меню и заказать",
   "main_menu": "☕ Главное меню",
-"btn_change_lang": "🌐 Сменить язык"
+  "btn_change_lang": "🌐 Сменить язык",
+  "support_reply_sent": "✅ Ответ отправлен пользователю {userId}",
+  "support_reply_failed": "❌ Не удалось отправить пользователю {userId}. Возможно, он заблокировал бота.",
+  "support_message_forwarded": "📩 Ваше сообщение отправлено администратору. Мы ответим в ближайшее время!",
+  "support_reply_instruction": "✏️ Чтобы ответить пользователю {userId}, отправьте:\n/reply {userId} ваш текст",
+  "support_reply_header": "📬 *Ответ от Little Dalat:*",
+  "support_new_message": "💬 *Новое сообщение от пользователя*"
 }

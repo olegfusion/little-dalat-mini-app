@@ -107,5 +107,11 @@
 "btn_status": "Order Status",
 "btn_open_menu": "Open Menu & Order",
   "main_menu": "☕ Main Menu",
-"btn_change_lang": "🌐 Change Language"
+  "btn_change_lang": "🌐 Change Language",
+  "support_reply_sent": "✅ Reply sent to user {userId}",
+  "support_reply_failed": "❌ Failed to send to user {userId}. They may have blocked the bot.",
+  "support_message_forwarded": "📩 Your message has been sent to the administrator. We will reply shortly!",
+  "support_reply_instruction": "✏️ To reply to user {userId}, send:\n/reply {userId} your message",
+  "support_reply_header": "📬 *Reply from Little Dalat:*",
+  "support_new_message": "💬 *New message from user*"
 }
