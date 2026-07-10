@@ -13,10 +13,10 @@ bot.catch((err) => {
 });
 
 bot.api.setMyCommands([
-  { command: 'start', description: '🆕 New Order' },
-  { command: 'menu', description: '☕ Open Menu' },
-  { command: 'contact', description: '📞 Contact Us' },
-  { command: 'map', description: '📍 Our Location' },
+  { command: 'start', description: '🆕 New Order / Đặt hàng / Заказать' },
+  { command: 'menu', description: '☕ Open Menu / Mở Menu / Меню' },
+  { command: 'contact', description: '📞 Contact Us / Liên hệ / Контакты' },
+  { command: 'map', description: '📍 Our Location / Vị trí / Наше местоположение' },
 ]);
 
 bot.start({
