@@ -9,13 +9,13 @@ import { t } from '../locales';
 function staffStatusKeyboard(orderId: number, mode: string): InlineKeyboard {
   const kb = new InlineKeyboard();
   if (mode === 'delivery') {
-    kb.text('⏳ Preparing', `staff_status_${orderId}_preparing`).row();
-    kb.text('🚚 Dispatched', `staff_status_${orderId}_dispatched`).row();
-    kb.text('✅ Done', `staff_status_${orderId}_served`).row();
+    kb.text('⏳ Preparing (Đang chuẩn bị)', `staff_status_${orderId}_preparing`).row();
+    kb.text('🚚 Dispatched (Đã giao)', `staff_status_${orderId}_dispatched`).row();
+    kb.text('✅ Done (Hoàn thành)', `staff_status_${orderId}_served`).row();
   } else {
-    kb.text('⏳ Preparing', `staff_status_${orderId}_preparing`).row();
-    kb.text('🛵 Ready', `staff_status_${orderId}_ready`).row();
-    kb.text('✅ Done', `staff_status_${orderId}_served`).row();
+    kb.text('⏳ Preparing (Đang chuẩn bị)', `staff_status_${orderId}_preparing`).row();
+    kb.text('🛵 Ready (Sẵn sàng)', `staff_status_${orderId}_ready`).row();
+    kb.text('✅ Done (Hoàn thành)', `staff_status_${orderId}_served`).row();
   }
   return kb;
 }
@@ -52,23 +52,23 @@ export function registerStaffCallbacks(bot: Bot<BotContext>): void {
       const remainingKb = new InlineKeyboard();
       if (updated.mode === 'delivery') {
         if (status === 'paid' || status === 'created') {
-          remainingKb.text('⏳ Preparing', `staff_status_${orderId}_preparing`).row();
+          remainingKb.text('⏳ Preparing (Đang chuẩn bị)', `staff_status_${orderId}_preparing`).row();
         }
         if (status === 'preparing') {
-          remainingKb.text('🚚 Dispatched', `staff_status_${orderId}_dispatched`).row();
+          remainingKb.text('🚚 Dispatched (Đã giao)', `staff_status_${orderId}_dispatched`).row();
         }
         if (status === 'dispatched') {
-          remainingKb.text('✅ Done', `staff_status_${orderId}_served`).row();
+          remainingKb.text('✅ Done (Hoàn thành)', `staff_status_${orderId}_served`).row();
         }
       } else {
         if (status === 'paid' || status === 'created') {
-          remainingKb.text('⏳ Preparing', `staff_status_${orderId}_preparing`).row();
+          remainingKb.text('⏳ Preparing (Đang chuẩn bị)', `staff_status_${orderId}_preparing`).row();
         }
         if (status === 'preparing') {
-          remainingKb.text('🛵 Ready', `staff_status_${orderId}_ready`).row();
+          remainingKb.text('🛵 Ready (Sẵn sàng)', `staff_status_${orderId}_ready`).row();
         }
         if (status === 'ready') {
-          remainingKb.text('✅ Done', `staff_status_${orderId}_served`).row();
+          remainingKb.text('✅ Done (Hoàn thành)', `staff_status_${orderId}_served`).row();
         }
       }
 
