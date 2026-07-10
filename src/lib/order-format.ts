@@ -19,6 +19,7 @@ export function formatOrderForStaff(order: Order): string {
     text += `🚚 Giao hàng (Delivery)\n`;
     text += `📍 ${order.deliveryAddress}\n`;
     if (order.deliveryLat && order.deliveryLng) {
+      text += `🌐 ${order.deliveryLat.toFixed(5)}, ${order.deliveryLng.toFixed(5)}\n`;
       text += `🗺️ https://www.google.com/maps/dir/?api=1&origin=${config.shop.lat},${config.shop.lng}&destination=${order.deliveryLat},${order.deliveryLng}\n`;
     } else {
       const q = encodeURIComponent(order.deliveryAddress);
@@ -44,6 +45,9 @@ export function formatOrderForStaff(order: Order): string {
         enName += ` (${getItemVariantName(menuItem, 'en', ci.variantIndex)})`;
       }
       text += `${vnName} / ${enName} x${ci.quantity} — ${menuItem.price / 1000}k\n`;
+      if (ci.comment?.trim()) {
+        text += `  📝 ${ci.comment.trim()}\n`;
+      }
     }
   }
 
@@ -58,8 +62,16 @@ export function formatOrderForStaff(order: Order): string {
 
   text += `─────────────────────\n`;
   text += `⏰ ${order.createdAt}\n`;
+  const sourceLabels: Record<string, string> = {
+    bot: '🤖 Telegram Bot',
+    miniapp_telegram: '🌐 Telegram Mini App',
+    miniapp_zalo: '🇻🇳 Zalo Mini App',
+    browser: '🌍 Browser',
+  };
+  text += `📱 ${sourceLabels[order.source] || order.source}\n`;
   if (order.customerName) text += `👤 ${order.customerName}\n`;
   if (order.customerPhone) text += `📞 ${order.customerPhone}\n`;
+  if (order.notes) text += `📝 ${order.notes}\n`;
   text += `💬 tg://user?id=${order.chatId}\n`;
 
   return text;

@@ -1,6 +1,7 @@
 import { Bot, InlineKeyboard, InputFile } from 'grammy';
 import { BotContext } from '../context';
 import { modeKeyboard, languageKeyboard, categoryKeyboard } from '../keyboards';
+import { showMainMenuMsg } from './reorder';
 import { t } from '../../locales';
 import { Language } from '../../types';
 import { config } from '../../config';
@@ -33,14 +34,12 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     ctx.session.language = lang;
 
     if (ctx.session.mode) {
-      // Already in dine-in mode from QR scan → go straight to menu
-      ctx.session.step = 'browsing';
-      const tableInfo = ctx.session.tableNumber
-        ? `\n📍 ${t('table', lang)}: ${ctx.session.tableNumber} | ${t('mode_dine_in', lang)}`
-        : '';
-      await ctx.editMessageText(`${t('select_category', lang)}${tableInfo}`, {
-        reply_markup: categoryKeyboard(lang),
-      });
+      // Already in dine-in mode from QR scan → show main menu
+      const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+      const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+      ctx.session.step = 'main_menu';
+      await ctx.deleteMessage().catch(() => {});
+      await showMainMenuMsg(ctx, lang, miniAppUrl);
     } else {
       ctx.session.step = 'choosing_mode';
       await ctx.editMessageText(t('start_choose_mode', lang), {
@@ -48,6 +47,20 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
       });
     }
     await ctx.answerCallbackQuery();
+  });
+
+  bot.command('menu', async (ctx) => {
+    const lang = ctx.session?.language || 'en';
+    const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+    const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+    await ctx.reply('☕', {
+      reply_markup: {
+        inline_keyboard: [[{
+          text: '🛵 Open Mini App',
+          web_app: { url: miniAppUrl },
+        }]],
+      },
+    });
   });
 
   bot.command('contact', async (ctx) => {
@@ -72,10 +85,11 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
   bot.callbackQuery(/^mode_(.+)$/, async (ctx) => {
     const mode = ctx.match[1] as 'dine-in' | 'pickup' | 'delivery';
     ctx.session.mode = mode;
-    ctx.session.step = 'browsing';
-    await ctx.editMessageText(t('select_category', ctx.session.language), {
-      reply_markup: categoryKeyboard(ctx.session.language),
-    });
+    ctx.session.step = 'main_menu';
+    await ctx.deleteMessage().catch(() => {});
+    const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+    const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
+    await showMainMenuMsg(ctx, ctx.session.language, miniAppUrl);
     await ctx.answerCallbackQuery();
   });
 }

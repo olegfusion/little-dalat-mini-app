@@ -4,6 +4,8 @@ export type OrderMode = 'dine-in' | 'pickup' | 'delivery';
 
 export type PaymentMethod = 'qr' | 'cash';
 
+export type OrderSource = 'bot' | 'miniapp_telegram' | 'miniapp_zalo' | 'browser';
+
 export type OrderStatus = 'created' | 'paid' | 'preparing' | 'ready' | 'served' | 'picked_up' | 'dispatched';
 
 export interface MenuItem {
@@ -42,6 +44,7 @@ export interface CartItem {
   menuItemId: string;
   quantity: number;
   variantIndex?: number;
+  comment?: string;
 }
 
 export interface Order {
@@ -61,6 +64,8 @@ export interface Order {
   deliveryLng: number | null;
   pickupTime: number | null;
   language: Language;
+  source: OrderSource;
+  notes: string;
   createdAt: string;
 }
 

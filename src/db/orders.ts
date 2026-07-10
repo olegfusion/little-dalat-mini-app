@@ -1,5 +1,5 @@
 import { getDb } from './schema';
-import { CartItem, Order, OrderStatus, PaymentMethod, OrderMode, Language } from '../types';
+import { CartItem, Order, OrderStatus, PaymentMethod, OrderMode, Language, OrderSource } from '../types';
 
 export function createOrder(data: {
   chatId: number;
@@ -16,11 +16,13 @@ export function createOrder(data: {
   deliveryLng: number | null;
   pickupTime: number | null;
   language: Language;
+  source?: OrderSource;
+  notes?: string;
 }): Order {
   const db = getDb();
   const stmt = db.prepare(`
-    INSERT INTO orders (chat_id, table_number, mode, items, total, delivery_fee, payment_method, customer_name, customer_phone, delivery_address, delivery_lat, delivery_lng, pickup_time, language)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO orders (chat_id, table_number, mode, items, total, delivery_fee, payment_method, customer_name, customer_phone, delivery_address, delivery_lat, delivery_lng, pickup_time, language, source, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const result = stmt.run(
     data.chatId,
@@ -36,7 +38,9 @@ export function createOrder(data: {
     data.deliveryLat,
     data.deliveryLng,
     data.pickupTime,
-    data.language
+    data.language,
+    data.source || 'bot',
+    data.notes || ''
   );
   return getOrderById(result.lastInsertRowid as number)!;
 }
@@ -76,6 +80,8 @@ function mapRow(row: any): Order {
     deliveryLng: row.delivery_lng,
     pickupTime: row.pickup_time ?? null,
     language: row.language,
+    source: row.source || 'bot',
+    notes: row.notes || '',
     createdAt: row.created_at,
   };
 }

@@ -6,6 +6,9 @@ import { registerMenuHandlers } from './handlers/menu';
 import { registerCartHandlers } from './handlers/cart';
 import { registerCheckoutHandlers } from './handlers/checkout';
 import { registerPaymentHandlers } from './handlers/payment';
+import { registerReorderHandlers } from './handlers/reorder';
+
+let _bot: Bot<BotContext> | null = null;
 
 export function createBot(): Bot<BotContext> {
   const bot = new Bot<BotContext>(config.botToken);
@@ -17,6 +20,13 @@ export function createBot(): Bot<BotContext> {
   registerCartHandlers(bot);
   registerCheckoutHandlers(bot);
   registerPaymentHandlers(bot);
+  registerReorderHandlers(bot);
 
+  _bot = bot;
   return bot;
+}
+
+export function getBot(): Bot<BotContext> {
+  if (!_bot) throw new Error('Bot not initialized');
+  return _bot;
 }

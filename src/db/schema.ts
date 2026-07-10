@@ -37,4 +37,6 @@ function initSchema(): void {
     );
   `);
   try { db.exec('ALTER TABLE orders ADD COLUMN pickup_time INTEGER'); } catch { /* column already exists */ }
+  try { db.exec("ALTER TABLE orders ADD COLUMN notes TEXT NOT NULL DEFAULT ''"); } catch { /* column already exists */ }
+  try { db.exec("ALTER TABLE orders ADD COLUMN source TEXT NOT NULL DEFAULT 'bot'"); } catch { /* column already exists */ }
 }
