@@ -106,5 +106,6 @@
 "btn_reorder": "Repeat Last Order",
 "btn_status": "Order Status",
 "btn_open_menu": "Open Menu & Order",
-  "main_menu": "☕ Main Menu"
+  "main_menu": "☕ Main Menu",
+"btn_change_lang": "🌐 Change Language"
 }

@@ -4,7 +4,7 @@ import { t } from '../../locales';
 import { getOrdersByChatId, getOrderById } from '../../db/orders';
 import { Order, CartItem, Language } from '../../types';
 import { INITIAL_MENU_ITEMS } from '../../data/menu';
-import { paymentKeyboard } from '../keyboards';
+import { paymentKeyboard, languageKeyboard } from '../keyboards';
 
 export async function showMainMenuMsg(ctx: BotContext, lang: string, miniAppUrl: string): Promise<void> {
   const modeLabel = ctx.session.mode
@@ -18,6 +18,7 @@ export async function showMainMenuMsg(ctx: BotContext, lang: string, miniAppUrl:
         [{ text: '🛵 ' + t('btn_open_menu', lang as Language), web_app: { url: miniAppUrl } }],
         [{ text: '🔄 ' + t('btn_reorder', lang as Language), callback_data: 'reorder_last' }],
         [{ text: '📋 ' + t('btn_status', lang as Language), callback_data: 'status_show' }],
+        [{ text: t('btn_change_lang', lang as Language), callback_data: 'change_lang' }],
       ],
     },
   });
@@ -182,5 +183,12 @@ export function registerReorderHandlers(bot: Bot<BotContext>): void {
         reply_markup: paymentKeyboard(lang, ctx.session.mode),
       });
     });
+  });
+
+  bot.callbackQuery('change_lang', async (ctx) => {
+    await ctx.editMessageReplyMarkup({
+      reply_markup: languageKeyboard(),
+    });
+    await ctx.answerCallbackQuery();
   });
 }
