@@ -12,12 +12,17 @@ bot.catch((err) => {
   console.error('Bot error:', (err.error as any).message || err.error);
 });
 
-bot.api.setMyCommands([
-  { command: 'start', description: '🆕 New Order / Đặt hàng / Заказать' },
-  { command: 'menu', description: '☕ Open Menu / Mở Menu / Меню' },
-  { command: 'contact', description: '📞 Contact Us / Liên hệ / Контакты' },
-  { command: 'map', description: '📍 Our Location / Vị trí / Наше местоположение' },
-]);
+const commands = [
+  { command: 'start' as const, en: '🆕 New Order', vn: '🆕 Đặt hàng', ru: '🆕 Заказать' },
+  { command: 'menu' as const, en: '☕ Open Menu', vn: '☕ Mở Menu', ru: '☕ Меню' },
+  { command: 'contact' as const, en: '📞 Contact Us', vn: '📞 Liên hệ', ru: '📞 Контакты' },
+  { command: 'map' as const, en: '📍 Our Location', vn: '📍 Vị trí của chúng tôi', ru: '📍 Наше местоположение' },
+];
+
+bot.api.setMyCommands(commands.map(c => ({ command: c.command, description: `${c.en} / ${c.vn} / ${c.ru}` })));
+bot.api.setMyCommands(commands.map(c => ({ command: c.command, description: c.vn })), { language_code: 'vi' });
+bot.api.setMyCommands(commands.map(c => ({ command: c.command, description: c.en })), { language_code: 'en' });
+bot.api.setMyCommands(commands.map(c => ({ command: c.command, description: c.ru })), { language_code: 'ru' });
 
 bot.start({
   onStart: (info) => {
