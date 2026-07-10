@@ -4,6 +4,7 @@ import { config } from '../config';
 import { formatOrderForStaff } from '../lib/order-format';
 import { Order } from '../types';
 import { updateOrderStatus, getOrderById } from '../db/orders';
+import { t } from '../locales';
 
 function staffStatusKeyboard(orderId: number, mode: string): InlineKeyboard {
   const kb = new InlineKeyboard();
@@ -71,8 +72,12 @@ export function registerStaffCallbacks(bot: Bot<BotContext>): void {
         }
       }
 
+      const statusLabelVn: Record<string, string> = {
+        paid: 'Đã thanh toán', preparing: 'Đang chuẩn bị', ready: 'Sẵn sàng',
+        dispatched: 'Đã giao', served: 'Hoàn thành', picked_up: 'Đã lấy',
+      };
       await ctx.editMessageText(
-        `${formatOrderForStaff(updated)}\n\n✅ Status updated to: ${status} by ${ctx.from?.first_name || 'staff'}`,
+        `${formatOrderForStaff(updated)}\n\n✅ Cập nhật: ${statusLabelVn[status] || status} — ${ctx.from?.first_name || 'staff'}`,
         { reply_markup: remainingKb.inline_keyboard.length > 0 ? remainingKb : undefined }
       );
       if (updated.source?.startsWith('miniapp_telegram') || updated.source === 'bot') {
@@ -82,8 +87,9 @@ export function registerStaffCallbacks(bot: Bot<BotContext>): void {
           served: '✅', picked_up: '✅',
         };
         const icon = statusIcons[status] || '📋';
+        const statusLabel = t(`status_${status}`, lang);
         await bot.api.sendMessage(updated.chatId,
-          `${icon} *Order #${updated.id}: ${status}*\n` +
+          `${icon} *Order #${updated.id}: ${statusLabel}*\n` +
           (lang === 'vn' ? 'Cảm ơn bạn đã đặt hàng tại Little Dalat!' :
            lang === 'en' ? 'Thank you for ordering at Little Dalat!' :
            'Спасибо за заказ в Little Dalat!'),
