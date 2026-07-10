@@ -58,6 +58,8 @@
   "pickup_time_240": "4 часа",
   "order_delivery_msg": "━━━━━━━━━━━━━━━━━━\n☕ *ЗАКАЗ #%id% ПОДТВЕРЖДЁН*\n━━━━━━━━━━━━━━━━━━\n\n🚚 *Доставка*\n\nЗаказ готовится. Доставим в ближайшее время.\n\nСпасибо, что выбрали Little Dalat! 💚\n\n━━━━━━━━━━━━━━━━━━\n📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973",
   "order_not_found": "Заказ не найден.",
+"order_number_short": "Заказ #%id%",
+"thank_you_ordering": "Спасибо за заказ в Little Dalat!",
   "order_status_title": "📋 Заказ #%id%",
   "status_created": "Создан",
   "status_paid": "Оплачен",

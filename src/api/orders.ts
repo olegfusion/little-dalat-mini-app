@@ -4,6 +4,7 @@ import { INITIAL_MENU_ITEMS } from '../data/menu';
 import { CartItem, OrderMode, PaymentMethod, Language, OrderSource, OrderStatus } from '../types';
 import { notifyStaff } from '../staff/notify';
 import { getBot } from '../bot';
+import { t } from '../locales';
 
 interface CreateOrderBody {
   chatId: number;
@@ -83,10 +84,7 @@ router.post('/orders/:id/confirm', async (req: Request, res: Response) => {
     await notifyStaff(bot, updated);
     if (updated.source?.startsWith('miniapp_telegram') || updated.source === 'bot') {
       const lang = updated.language;
-      const msg = `✅ *Order #${updated.id} Confirmed!*\n` +
-        (lang === 'vn' ? 'Cảm ơn bạn đã đặt hàng tại Little Dalat!' :
-         lang === 'en' ? 'Thank you for ordering at Little Dalat!' :
-         'Спасибо за заказ в Little Dalat!');
+      const msg = `${t('order_confirmed', lang, { id: updated.id })}\n${t('thank_you_ordering', lang)}`;
       await bot.api.sendMessage(updated.chatId, msg, { parse_mode: 'Markdown' });
     }
   } catch (e) {
@@ -114,11 +112,9 @@ router.post('/orders/:id/status', async (req: Request, res: Response) => {
         served: '✅', picked_up: '✅',
       };
       const icon = statusIcons[status] || '📋';
+      const statusLabel = t(`status_${status}`, lang);
       await bot.api.sendMessage(updated.chatId,
-        `${icon} *Order #${updated.id}: ${status}*\n` +
-        (lang === 'vn' ? 'Cảm ơn bạn đã đặt hàng tại Little Dalat!' :
-         lang === 'en' ? 'Thank you for ordering at Little Dalat!' :
-         'Спасибо за заказ в Little Dalat!'),
+        `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n${t('thank_you_ordering', lang)}`,
         { parse_mode: 'Markdown' }
       );
     }
