@@ -135,8 +135,12 @@ export function formatOrderForUser(order: Order, lang: string): string {
     text += `\n💵 ${isVn ? 'Thanh toán khi nhận hàng' : isRu ? 'Оплата при получении' : 'Pay on arrival'}\n`;
   }
 
+  if (order.mode === 'pickup') {
+    text += `\n🗺️ ${isVn ? 'Đường đến quán' : isRu ? 'Как добраться' : 'Get directions'}: https://www.google.com/maps/dir/?api=1&destination=${config.shop.lat},${config.shop.lng}\n`;
+  }
+
   text += `\n━━━━━━━━━━━━━━━━━━\n`;
   text += `📍 02 Thi Sách, Phước Hòa, Nha Trang\n📞 0912066973\n`;
-  text += `⭐ ${isVn ? 'Đánh giá chúng tôi' : isRu ? 'Оцените нас' : 'Review us'}: https://maps.app.goo.gl/CyV7Ueuy29Nka9BdA`;
+  text += `⭐ ${isVn ? 'Đánh giá chúng tôi' : isRu ? 'Оцените нас' : 'Review us'}: https://maps.app.goo.gl/pKx6QFVLn6tbRigk6`;
   return text;
 }
