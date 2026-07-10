@@ -5,7 +5,7 @@ import { CartItem, OrderMode, PaymentMethod, Language, OrderSource, OrderStatus 
 import { notifyStaff } from '../staff/notify';
 import { getBot } from '../bot';
 import { t } from '../locales';
-import { formatOrderForUser } from '../lib/order-format';
+import { formatOrderForUser, formatStatusMessage } from '../lib/order-format';
 
 interface CreateOrderBody {
   chatId: number;
@@ -107,17 +107,8 @@ router.post('/orders/:id/status', async (req: Request, res: Response) => {
   try {
     if (updated.source?.startsWith('miniapp_telegram') || updated.source === 'bot') {
       const bot = getBot();
-      const lang = updated.language;
-      const statusIcons: Record<string, string> = {
-        paid: '✅', preparing: '⏳', ready: '🛵', dispatched: '🚚',
-        served: '✅', picked_up: '✅',
-      };
-      const icon = statusIcons[status] || '📋';
-      const statusLabel = t(`status_${status}`, lang);
-      await bot.api.sendMessage(updated.chatId,
-        `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n━━━━━━━━━━━━━━━━━━\n👤 ${updated.customerName || '—'}\n📞 ${updated.customerPhone || '—'}\n━━━━━━━━━━━━━━━━━━\n${t('thank_you_ordering', lang)}`,
-        { parse_mode: 'Markdown' }
-      );
+      const msg = formatStatusMessage(updated, status);
+      await bot.api.sendMessage(updated.chatId, msg, { parse_mode: 'Markdown' });
     }
   } catch (e) {
     console.error('Status notification failed:', e);

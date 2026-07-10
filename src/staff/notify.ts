@@ -1,7 +1,7 @@
 import { Bot, InlineKeyboard } from 'grammy';
 import { BotContext } from '../bot/context';
 import { config } from '../config';
-import { formatOrderForStaff } from '../lib/order-format';
+import { formatOrderForStaff, formatStatusMessage } from '../lib/order-format';
 import { Order } from '../types';
 import { updateOrderStatus, getOrderById } from '../db/orders';
 import { t } from '../locales';
@@ -82,14 +82,8 @@ export function registerStaffCallbacks(bot: Bot<BotContext>): void {
       );
       if (updated.source?.startsWith('miniapp_telegram') || updated.source === 'bot') {
         const lang = updated.language;
-        const statusIcons: Record<string, string> = {
-          paid: '✅', preparing: '⏳', ready: '🛵', dispatched: '🚚',
-          served: '✅', picked_up: '✅',
-        };
-        const icon = statusIcons[status] || '📋';
-        const statusLabel = t(`status_${status}`, lang);
         await bot.api.sendMessage(updated.chatId,
-          `${icon} *${t('order_number_short', lang, { id: updated.id })}: ${statusLabel}*\n━━━━━━━━━━━━━━━━━━\n👤 ${updated.customerName || '—'}\n📞 ${updated.customerPhone || '—'}\n━━━━━━━━━━━━━━━━━━\n${t('thank_you_ordering', lang)}`,
+          formatStatusMessage(updated, status),
           { parse_mode: 'Markdown' }
         );
       }

@@ -1,6 +1,7 @@
 import { Order, CartItem } from '../types';
 import { getItemById, getItemVariantName } from '../data/menu';
 import { config } from '../config';
+import { t } from '../locales';
 
 const sourceLabels: Record<string, string> = {
   bot: '🤖 Telegram Bot',
@@ -78,6 +79,42 @@ export function formatOrderForStaff(order: Order): string {
   return text;
 }
 
+export function formatStatusMessage(order: Order, status: string): string {
+  const lang = order.language;
+  const isVn = lang === 'vn';
+  const isRu = lang === 'ru';
+  const statusIcons: Record<string, string> = {
+    paid: '✅', preparing: '⏳', ready: '🛵', dispatched: '🚚',
+    served: '✅', picked_up: '✅',
+  };
+  const icon = statusIcons[status] || '📋';
+  const statusLabel = t(`status_${status}`, lang);
+  let text = `${icon} *${t('order_number_short', lang, { id: order.id })}: ${statusLabel}*\n`;
+
+  if (status === 'preparing') {
+    return text;
+  }
+
+  if (status === 'ready') {
+    if (order.mode === 'delivery') {
+      text += isVn ? '🛵 Đơn hàng sẽ sớm được giao đi!\n' : isRu ? '🛵 Заказ скоро будет отправлен!\n' : '🛵 Order will be dispatched soon!\n';
+    } else if (order.mode === 'pickup') {
+      text += isVn ? '🏪 Vui lòng đến quầy lấy hàng!\n' : isRu ? '🏪 Заберите заказ у стойки!\n' : '🏪 Please pick up your order at the counter!\n';
+    } else {
+      text += isVn ? '☕ Đồ uống sẽ được mang ra bàn!\n' : isRu ? '☕ Напитки будут поданы к столу!\n' : '☕ Your drinks will be brought to your table!\n';
+    }
+    return text;
+  }
+
+  if (status === 'served' || status === 'dispatched' || status === 'picked_up') {
+    text += `${isVn ? '✅ Cảm ơn bạn đã đặt hàng tại Little Dalat!' : isRu ? '✅ Спасибо за заказ в Little Dalat!' : '✅ Thank you for ordering at Little Dalat!'}\n\n🆕 ${isVn ? 'Đặt hàng mới' : isRu ? 'Новый заказ' : 'New order'}: /start`;
+    return text;
+  }
+
+  text += `━━━━━━━━━━━━━━━━━━\n👤 ${order.customerName || '—'}\n📞 ${order.customerPhone || '—'}\n━━━━━━━━━━━━━━━━━━\n${isVn ? 'Cảm ơn bạn đã đặt hàng tại Little Dalat!' : isRu ? 'Спасибо за заказ в Little Dalat!' : 'Thank you for ordering at Little Dalat!'}`;
+  return text;
+}
+
 export function formatOrderForUser(order: Order, lang: string): string {
   const cartItems: CartItem[] = JSON.parse(order.items);
   const isVn = lang === 'vn';
@@ -90,7 +127,7 @@ export function formatOrderForUser(order: Order, lang: string): string {
   };
 
   let text = `━━━━━━━━━━━━━━━━━━\n`;
-  text += `☕ *LITTLE DALAT*\n`;
+  text += `☕ *Little Dalat Coffee & Tea*\n`;
   text += `${modeNames[order.mode] || order.mode}`;
   if (order.mode === 'dine-in' && order.tableNumber) {
     text += ` | ${isVn ? 'Bàn' : isRu ? 'Стол' : 'Table'} ${order.tableNumber}`;
