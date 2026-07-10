@@ -8,19 +8,22 @@ export const config = {
   bankAccountNumber: process.env.BANK_ACCOUNT_NUMBER || '',
   bankBeneficiaryName: process.env.BANK_BENEFICIARY_NAME || 'Little Dalat',
   shop: {
-    lat: Number(process.env.SHOP_LAT) || 12.245566,
-    lng: Number(process.env.SHOP_LNG) || 109.192793,
+    lat: Number(process.env.SHOP_LAT) || 12.2408331,
+    lng: Number(process.env.SHOP_LNG) || 109.1845723,
     address: process.env.SHOP_ADDRESS || '02 Thi Sách, Phước Hòa, Nha Trang',
     phone: process.env.SHOP_PHONE || '0912066973',
-    mapsUrl: process.env.SHOP_MAPS_URL || 'https://maps.app.goo.gl/KNe9dhQ7hBeztfmP7',
+    mapsUrl: process.env.SHOP_MAPS_URL || 'https://maps.app.goo.gl/u3dTQRes79XSisrk9',
   },
   delivery: {
-    feeWithin4km: 15000,
-    fee4to6km: 25000,
-    fee6to8km: 38000,
-    maxRadius: 8, // km
+    feeWithin1km: 10000,
+    fee1to3km: 15000,
+    fee3to5km: 25000,
+    fee5to7km: 35000,
+    fee7to9km: 45000,
+    maxRadius: 9, // km
   },
   currency: 'k',
   goongApiKey: process.env.GOONG_API_KEY || '',
+  gogodukKey: process.env.GOGODUK_API_KEY || '',
   locationIqKey: process.env.LOCATIONIQ_API_KEY || '',
 };

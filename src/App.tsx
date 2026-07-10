@@ -1,6 +1,6 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Language, MenuItem, OrderMode } from './types';
-import { detectPlatform } from './platforms/usePlatform';
+import { detectPlatform, PlatformProvider } from './platforms/usePlatform';
 import { TelegramProvider } from './platforms/TelegramProvider';
 import { ZaloProvider } from './platforms/ZaloProvider';
 import { CartProvider, useCart } from './context/CartContext';
@@ -22,6 +22,7 @@ function getUrlParam(name: string): string | null {
 function AppContent() {
   const urlLang = getUrlParam('lang') as Language | null;
   const urlMode = getUrlParam('mode') as OrderMode | null;
+  const urlTable = getUrlParam('table');
 
   const [language, setLanguage] = useState<Language>(() => {
     if (urlLang === 'vn' || urlLang === 'en' || urlLang === 'ru') return urlLang;
@@ -29,12 +30,47 @@ function AppContent() {
     if (saved === 'vn' || saved === 'en' || saved === 'ru') return saved;
     return 'vn';
   });
-  const [page, setPage] = useState<Page>(() => urlMode ? 'home' : 'language');
+  const [page, setPage] = useState<Page>(() => {
+    if (urlMode) return 'home';
+    const savedLang = localStorage.getItem('ld_lang');
+    const savedCart = (() => { try { return JSON.parse(localStorage.getItem('ld_cart') || '{}'); } catch { return {}; } })();
+    if (savedLang && savedCart.mode) return 'home';
+    return 'language';
+  });
+  const pageRef = useRef(page);
+  pageRef.current = page;
+  const pageStack = useRef<Page[]>([]);
+
+  const goForward = useCallback((to: Page, extra?: () => void) => {
+    pageStack.current.push(pageRef.current);
+    if (extra) extra();
+    setPage(to);
+    window.history.pushState(null, '');
+  }, []);
+
+  const goBack = useCallback(() => {
+    const prev = pageStack.current.pop();
+    if (prev) setPage(prev);
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '');
+  }, []);
+
+  useEffect(() => {
+    const handlePop = () => {
+      const prev = pageStack.current.pop();
+      if (prev) setPage(prev);
+    };
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
+  }, []);
   const [categoryId, setCategoryId] = useState<string>('');
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const prevCount = useRef(0);
+  useEffect(() => { prevCount.current = cartCount; }, []);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const { state, dispatch } = useCart();
 
@@ -46,11 +82,14 @@ function AppContent() {
     if (urlMode) {
       dispatch({ type: 'SET_MODE', payload: urlMode });
     }
+    if (urlTable) {
+      dispatch({ type: 'SET_TABLE', payload: urlTable });
+    }
   }, []);
 
   const handleModeSelect = (mode: OrderMode) => {
     dispatch({ type: 'SET_MODE', payload: mode });
-    setPage('home');
+    goForward('home');
   };
 
   useEffect(() => {
@@ -97,7 +136,7 @@ function AppContent() {
                'Выберите язык'}
             </h2>
             <div className="w-full max-w-xs space-y-3">
-              <button onClick={() => { setLanguage('vn'); setPage('mode'); }}
+              <button onClick={() => { setLanguage('vn'); goForward('mode'); }}
                 className="w-full flex items-center gap-4 bg-white rounded-xl border border-[#C5B5A5]/20 p-4 text-left transition hover:border-[#5A2C11]/40 hover:shadow-sm">
                 <span className="text-3xl">🇻🇳</span>
                 <div>
@@ -105,7 +144,7 @@ function AppContent() {
                   <p className="text-[10px] text-[#8B7355]">Vietnamese</p>
                 </div>
               </button>
-              <button onClick={() => { setLanguage('en'); setPage('mode'); }}
+              <button onClick={() => { setLanguage('en'); goForward('mode'); }}
                 className="w-full flex items-center gap-4 bg-white rounded-xl border border-[#C5B5A5]/20 p-4 text-left transition hover:border-[#5A2C11]/40 hover:shadow-sm">
                 <span className="text-3xl">🇬🇧</span>
                 <div>
@@ -113,7 +152,7 @@ function AppContent() {
                   <p className="text-[10px] text-[#8B7355]">English</p>
                 </div>
               </button>
-              <button onClick={() => { setLanguage('ru'); setPage('mode'); }}
+              <button onClick={() => { setLanguage('ru'); goForward('mode'); }}
                 className="w-full flex items-center gap-4 bg-white rounded-xl border border-[#C5B5A5]/20 p-4 text-left transition hover:border-[#5A2C11]/40 hover:shadow-sm">
                 <span className="text-3xl">🇷🇺</span>
                 <div>
@@ -138,7 +177,7 @@ function AppContent() {
         return (
           <Home
             language={language}
-            onSelectCategory={(id) => { setCategoryId(id); setPage('category'); }}
+            onSelectCategory={(id) => { setCategoryId(id); goForward('category'); }}
           />
         );
       case 'category':
@@ -146,7 +185,7 @@ function AppContent() {
           <Category
             categoryId={categoryId}
             language={language}
-            onBack={() => setPage('home')}
+            onBack={goBack}
           />
         );
       case 'checkout':
@@ -154,8 +193,9 @@ function AppContent() {
           <Checkout
             language={language}
             menuItems={menuItems}
-            onBack={() => setPage('home')}
-            onOrderPlaced={() => setPage('home')}
+            onBack={goBack}
+            onOrderPlaced={() => { pageStack.current = []; setPage('home'); }}
+            onGoToCategory={(catId) => { goForward('category', () => setCategoryId(catId)); }}
           />
         );
       default:
@@ -174,7 +214,7 @@ function AppContent() {
         onLanguageChange={setLanguage}
         cartItemCount={cartCount}
         onCartClick={() => setCartOpen(true)}
-        onCheckout={page === 'checkout' ? undefined : () => setPage('checkout')}
+        onCheckout={page === 'checkout' ? undefined : () => goForward('checkout')}
         cartTotal={subtotal}
       >
         <div className="flex items-center gap-2 mb-3">
@@ -182,7 +222,7 @@ function AppContent() {
             {state.mode === 'dine-in' ? '🍽️' : state.mode === 'pickup' ? '🛍️' : '🚚'} {modeLabel}
           </span>
           <button
-            onClick={() => setPage('mode')}
+            onClick={() => goForward('mode')}
             className="text-[10px] text-[#5A2C11] underline"
           >
             ({language === 'vn' ? 'Đổi' : language === 'en' ? 'Change' : 'Изменить'})
@@ -207,7 +247,8 @@ function AppContent() {
           onUpdateQty={(id, qty, vi) => dispatch({ type: 'UPDATE_QTY', payload: { menuItemId: id, quantity: qty, variantIndex: vi } })}
           onUpdateComment={(id, comment, vi) => dispatch({ type: 'UPDATE_COMMENT', payload: { menuItemId: id, comment, variantIndex: vi } })}
           onRemove={(id, vi) => dispatch({ type: 'REMOVE_ITEM', payload: { menuItemId: id, variantIndex: vi } })}
-          onCheckout={() => { setCartOpen(false); setPage('checkout'); }}
+          onClearCart={() => dispatch({ type: 'CLEAR' })}
+          onCheckout={() => { setCartOpen(false); goForward('checkout'); }}
         />
       )}
     </>
@@ -219,7 +260,9 @@ export default function App() {
 
   const wrapped = (
     <CartProvider>
-      <AppContent />
+      <PlatformProvider>
+        <AppContent />
+      </PlatformProvider>
     </CartProvider>
   );
 

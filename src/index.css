@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@keyframes loading-bar {
+  0% { left: -40%; width: 40%; }
+  50% { left: 60%; width: 60%; }
+  100% { left: 110%; width: 40%; }
+}
+@utility animate-loading-bar {
+  animation: loading-bar 1.5s ease-in-out infinite;
+}

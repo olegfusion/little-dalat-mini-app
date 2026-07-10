@@ -24,7 +24,7 @@ const MODES: { key: OrderMode; icon: React.ReactNode; labelVn: string; labelEn: 
     key: 'delivery',
     icon: <Bike className="w-6 h-6" />,
     labelVn: 'Giao hàng', labelEn: 'Delivery', labelRu: 'Доставка',
-    descVn: 'Giao tận nơi trong 8km', descEn: 'Delivery within 8km', descRu: 'Доставка до 8км',
+    descVn: 'Giao tận nơi trong 8km', descEn: 'Delivery within 8km', descRu: 'Доставка домой и в офис',
   },
 ];
 

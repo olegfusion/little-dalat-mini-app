@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, ReactNode, Dispatch } from 'react';
+import { createContext, useContext, useReducer, useEffect, ReactNode, Dispatch } from 'react';
 import { CartItem, OrderMode } from '../types';
 
 interface CartState {
@@ -100,7 +100,18 @@ const CartContext = createContext<{
 } | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [state, dispatch] = useReducer(cartReducer, initialState, () => {
+    try {
+      const saved = localStorage.getItem('ld_cart');
+      if (saved) return { ...initialState, ...JSON.parse(saved) };
+    } catch {}
+    return initialState;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('ld_cart', JSON.stringify(state));
+  }, [state]);
+
   return (
     <CartContext.Provider value={{ state, dispatch }}>
       {children}

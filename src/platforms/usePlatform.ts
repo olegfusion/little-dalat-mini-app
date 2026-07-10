@@ -63,3 +63,23 @@ export function getUserId(): number {
   if (tgId) return tgId;
   return 0;
 }
+
+export function getPlatformUserName(): string | null {
+  try {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg?.initDataUnsafe?.user) {
+      const u = tg.initDataUnsafe.user;
+      return [u.first_name, u.last_name].filter(Boolean).join(' ') || null;
+    }
+  } catch {}
+  try {
+    const zmp = (window as any).ZaloMiniApp;
+    if (zmp?.getUser) {
+      const u = zmp.getUser();
+      if (u?.name) return u.name;
+    }
+  } catch {}
+  return null;
+}
+
+export { PlatformProvider, usePlatform } from './PlatformProvider';

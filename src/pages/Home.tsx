@@ -29,7 +29,7 @@ export default function Home({ language, onSelectCategory }: HomeProps) {
         <img src="/logo.png" alt="Little Dalat" className="w-20 h-20 mx-auto rounded-full object-cover border-2 border-[#C5B5A5]/30" />
         <h1 className="font-serif text-2xl font-black italic text-[#5A2C11]">Little Dalat</h1>
         <p className="text-xs text-[#8B7355]">02 Thi Sách, Phước Hòa, Nha Trang</p>
-        <p className="text-[10px] text-[#8B7355]">🕐 07:00–22:00 | 📞 0912 066 973</p>
+        <p className="text-[10px] text-[#8B7355]">🕐 07:00–22:00 (GMT+7) | 📞 0912 066 973</p>
       </div>
       <CategoryGrid categories={categories} language={language} onSelect={onSelectCategory} />
     </div>

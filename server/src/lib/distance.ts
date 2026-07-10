@@ -18,8 +18,10 @@ function toRad(deg: number): number {
 }
 
 export function getDeliveryFee(km: number): number | null {
-  if (km <= 4) return config.delivery.feeWithin4km;
-  if (km <= 6) return config.delivery.fee4to6km;
-  if (km <= 8) return config.delivery.fee6to8km;
+  if (km <= 1) return config.delivery.feeWithin1km;
+  if (km <= 3) return config.delivery.fee1to3km;
+  if (km <= 5) return config.delivery.fee3to5km;
+  if (km <= 7) return config.delivery.fee5to7km;
+  if (km <= 9) return config.delivery.fee7to9km;
   return null;
 }

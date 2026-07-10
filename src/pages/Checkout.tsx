@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Language, PaymentMethod, MenuItem, OrderMode } from '../types';
 import { useCart } from '../context/CartContext';
 import { createOrderApi, generateQr, confirmOrder } from '../api/client';
-import { getUserId, getPlatformSource, detectPlatform } from '../platforms/usePlatform';
+import { getUserId, getPlatformSource, usePlatform } from '../platforms/usePlatform';
 import CheckoutForm from '../components/CheckoutForm';
 import PaymentScreen from '../components/PaymentScreen';
 import ModeSelector from '../components/ModeSelector';
@@ -13,20 +13,27 @@ interface CheckoutProps {
   menuItems: MenuItem[];
   onBack: () => void;
   onOrderPlaced: (orderId: number) => void;
+  onGoToCategory?: (categoryId: string) => void;
 }
 
-export default function Checkout({ language, menuItems, onBack, onOrderPlaced }: CheckoutProps) {
+export default function Checkout({ language, menuItems, onBack, onOrderPlaced, onGoToCategory }: CheckoutProps) {
   const { state, dispatch } = useCart();
+  const { platform } = usePlatform();
   const [step, setStep] = useState<'mode' | 'form' | 'payment' | 'done'>(state.mode ? 'form' : 'mode');
   const [customerInfo, setCustomerInfo] = useState<{ name: string; phone: string; address?: string } | null>(null);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
   const [qrImage, setQrImage] = useState<string | undefined>();
   const [orderId, setOrderId] = useState<number | undefined>();
+  const [createdAt, setCreatedAt] = useState<string | undefined>();
 
   const subtotal = state.items.reduce((sum, ci) => {
     const item = menuItems.find(i => i.id === ci.menuItemId);
     return sum + (item?.price || 0) * ci.quantity;
+  }, 0);
+  const drinkCount = state.items.reduce((sum, ci) => {
+    const item = menuItems.find(i => i.id === ci.menuItemId);
+    return sum + (item?.category === 'desserts_snacks' ? 0 : ci.quantity);
   }, 0);
   const total = subtotal + deliveryFee;
 
@@ -69,6 +76,7 @@ export default function Checkout({ language, menuItems, onBack, onOrderPlaced }:
       });
 
       setOrderId(order.id);
+      setCreatedAt(order.createdAt);
 
       if (method === 'qr') {
         const qr = await generateQr(order.id, order.total);
@@ -132,8 +140,10 @@ export default function Checkout({ language, menuItems, onBack, onOrderPlaced }:
       <CheckoutForm
         language={language}
         mode={state.mode || 'dine-in'}
+        drinkCount={drinkCount}
         onBack={() => state.mode ? setStep('mode') : onBack}
         onBackToMenu={onBack}
+        onGoToCategory={onGoToCategory}
         onSubmit={handleSubmitInfo}
       />
     );
@@ -152,9 +162,14 @@ export default function Checkout({ language, menuItems, onBack, onOrderPlaced }:
       paymentMethod={paymentMethod}
       isPlaced={step === 'done'}
       orderId={orderId}
+      createdAt={createdAt}
       onBack={paymentMethod ? () => setPaymentMethod(null) : () => setStep('form')}
-      onNewOrder={onBack}
-      onClose={handleCloseMiniApp}
+      onNewOrder={() => onOrderPlaced(orderId || 0)}
+      onClose={platform !== 'browser' ? handleCloseMiniApp : undefined}
+      customerName={customerInfo?.name}
+      customerPhone={customerInfo?.phone}
+      items={state.items}
+      menuItems={menuItems}
     />
   );
 }

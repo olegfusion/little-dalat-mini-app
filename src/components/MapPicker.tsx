@@ -18,6 +18,7 @@ export default function MapPicker({ language, onConfirm, onClose }: MapPickerPro
     lat: 12.245566,
     lng: 109.192793,
   });
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!mapRef.current || mapInstance.current) return;
@@ -77,6 +78,8 @@ export default function MapPicker({ language, onConfirm, onClose }: MapPickerPro
 
     mapInstance.current = map;
     markerRef.current = marker;
+    setTimeout(() => map.invalidateSize(), 100);
+    setLoaded(true);
   }
 
   return (
@@ -91,7 +94,21 @@ export default function MapPicker({ language, onConfirm, onClose }: MapPickerPro
            'Выберите место на карте'}
         </p>
       </div>
-      <div ref={mapRef} className="flex-1" />
+      <div className="flex-1 relative">
+        {!loaded && (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#FAF5EC] z-10">
+            <div className="text-center">
+              <div className="w-8 h-8 border-2 border-[#5A2C11] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <p className="text-xs text-[#8B7355]">
+                {language === 'vn' ? 'Đang tải bản đồ...' :
+                 language === 'en' ? 'Loading map...' :
+                 'Загрузка карты...'}
+              </p>
+            </div>
+          </div>
+        )}
+        <div ref={mapRef} className="absolute inset-0" />
+      </div>
       <div className="px-6 py-4 border-t border-[#C5B5A5]/20">
         <p className="text-[10px] text-[#8B7355] text-center mb-3">
           <MapPin className="w-3 h-3 inline" />

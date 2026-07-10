@@ -78,7 +78,7 @@ export default function Layout({ children, language, onLanguageChange, cartItemC
             >
               {language === 'vn' ? 'Đặt hàng' :
                language === 'en' ? 'Checkout' :
-               'Оформить'}
+               'Оформить заказ'}
             </button>
           </div>
         </div>

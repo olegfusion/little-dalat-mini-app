@@ -41,7 +41,7 @@ const translations: Translations = {
   checkout: {
     vn: 'Thanh toán',
     en: 'Checkout',
-    ru: 'Оформление',
+    ru: 'Оформить заказ',
   },
   add_to_cart: {
     vn: 'Thêm vào giỏ',
