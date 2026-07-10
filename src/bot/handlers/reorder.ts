@@ -142,7 +142,7 @@ export function registerReorderHandlers(bot: Bot<BotContext>): void {
   bot.callbackQuery('main_menu', async (ctx) => {
     const lang = ctx.session.language;
     await ctx.deleteMessage().catch(() => {});
-    const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+    const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
     const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
     ctx.session.step = 'main_menu';
     await showMainMenuMsg(ctx, lang, miniAppUrl);

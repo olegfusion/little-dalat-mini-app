@@ -35,7 +35,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
 
     if (ctx.session.mode) {
       // Already in dine-in mode from QR scan → show main menu
-      const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+      const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
       const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
       ctx.session.step = 'main_menu';
       await ctx.deleteMessage().catch(() => {});
@@ -51,7 +51,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
 
   bot.command('menu', async (ctx) => {
     const lang = ctx.session?.language || 'en';
-    const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+    const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
     const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
     await ctx.reply('☕', {
       reply_markup: {
@@ -87,7 +87,7 @@ export function registerStartHandler(bot: Bot<BotContext>): void {
     ctx.session.mode = mode;
     ctx.session.step = 'main_menu';
     await ctx.deleteMessage().catch(() => {});
-    const baseUrl = process.env.MINI_APP_URL || 'https://cruise-lanes-taylor-heel.trycloudflare.com';
+    const baseUrl = process.env.MINI_APP_URL || 'https://littledalat.nillkin.org';
     const miniAppUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + 'chat_id=' + ctx.from?.id;
     await showMainMenuMsg(ctx, ctx.session.language, miniAppUrl);
     await ctx.answerCallbackQuery();
