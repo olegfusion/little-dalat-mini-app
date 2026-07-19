@@ -28,6 +28,7 @@ export type MenuCategory =
   | 'hot_tea'
   | 'special_flower_tea'
   | 'other_drinks'
+  | 'juices'
   | 'fruit_tea'
   | 'desserts_snacks'
   | 'combos';
