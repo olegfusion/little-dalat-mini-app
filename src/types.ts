@@ -25,6 +25,12 @@ export interface MenuItem {
     vn: string[];
     en: string[];
     ru: string[];
+    photos?: string[];
+    descriptions?: {
+      vn?: string[];
+      en?: string[];
+      ru?: string[];
+    };
   };
 }
 
