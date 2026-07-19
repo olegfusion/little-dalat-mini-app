@@ -15,6 +15,12 @@ export interface MenuItem {
   english: string;
   russian: string;
   price: number; // in VND (e.g. 25000)
+  photo?: string;
+  descriptions?: {
+    vn: string;
+    en: string;
+    ru: string;
+  };
   variants?: {
     vn: string[];
     en: string[];

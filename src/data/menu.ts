@@ -2,10 +2,9 @@ import { MenuItem } from '../types';
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // SIGNATURE
-  { id: 'sg-1', category: 'signature', vietnamese: 'Little DaLat Coffee', english: 'Little DaLat Coffee', russian: 'Кофе Little DaLat', price: 45000 },
-  { id: 'sg-2', category: 'signature', vietnamese: 'Hibiscus Đào Cam Sả', english: 'Hibiscus Peach Orange Lemongrass Tea', russian: 'Чай гибискус с персиком, апельсином и лемонграссом', price: 45000 },
-  { id: 'sg-3', category: 'signature', vietnamese: 'Trà Sen Vàng Cao Nguyên', english: 'Highland Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 45000 },
-  { id: 'sg-4', category: 'signature', vietnamese: 'Matcha Mây Đà Lạt', english: 'Dalat Cloud Matcha', russian: 'Матча «Облако Далат»', price: 45000 },
+  { id: 'sg-2', category: 'signature', vietnamese: 'Hibiscus Đào Cam Sả', english: 'Hibiscus Peach Orange Lemongrass Tea', russian: 'Чай гибискус с персиком, апельсином и лемонграссом', price: 45000, photo: 'Ảnh Menu/SIGNATURE/Hibiscus Đào Cam Sả.png' },
+  { id: 'sg-3', category: 'signature', vietnamese: 'Trà Sen Vàng Cao Nguyên', english: 'Highland Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 45000, photo: 'Ảnh Menu/SIGNATURE/Trà Sen Vàng Cao Nguyên.png' },
+  { id: 'sg-4', category: 'signature', vietnamese: 'Matcha Mây Đà Lạt', english: 'Dalat Cloud Matcha', russian: 'Матча «Облако Далат»', price: 45000, photo: 'Ảnh Menu/SIGNATURE/Matcha Mây Đà Lạt.png' },
   // COFFEE & COCOA
   { id: 'cc-1', category: 'coffee_cocoa', vietnamese: 'Cà phê đen', english: 'Vietnamese Black Coffee', russian: 'Черный вьетнамский кофе', price: 30000 },
   { id: 'cc-2', category: 'coffee_cocoa', vietnamese: 'Cà phê sữa', english: 'Vietnamese Coffee with Condensed Milk', russian: 'Вьетнамский кофе со сгущенным молоком', price: 35000 },
