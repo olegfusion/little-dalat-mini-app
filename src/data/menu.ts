@@ -2,7 +2,7 @@ import { MenuItem } from '../types';
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   // SIGNATURE
-  { id: 'sg-5', category: 'signature', vietnamese: 'Cà phê kem 1983', english: '1983 Signature Cream Coffee', russian: 'Фирменный кофе с кремом 1983', price: 45000 },
+  { id: 'sg-5', category: 'signature', vietnamese: 'Cà phê kem 1893', english: '1893 Signature Cream Coffee', russian: 'Фирменный кофе с кремом 1893', price: 45000, photo: 'Ảnh Menu/SIGNATURE/Cà phê kem 1893.jpg' },
   { id: 'sg-2', category: 'signature', vietnamese: 'Hibiscus Đào Cam Sả', english: 'Hibiscus Peach Orange Lemongrass Tea', russian: 'Чай гибискус с персиком, апельсином и лемонграссом', price: 45000 },
   { id: 'sg-3', category: 'signature', vietnamese: 'Trà Sen Vàng Cao Nguyên', english: 'Highland Golden Lotus Tea', russian: 'Чай «Золотой лотос»', price: 45000 },
   { id: 'sg-4', category: 'signature', vietnamese: 'Matcha Mây Đà Lạt', english: 'Dalat Cloud Matcha', russian: 'Матча «Облако Далат»', price: 45000 },
@@ -34,17 +34,17 @@ export const INITIAL_MENU_ITEMS: MenuItem[] = [
   { id: 'od-2', category: 'other_drinks', vietnamese: 'Sữa chua (Việt quất/Xoài/Dâu tây)', english: 'Yogurt (Blueberry/Mango/Strawberry)', russian: 'Йогурт (черника/манго/клубника)', price: 37000, variants: { vn: ['Việt quất', 'Xoài', 'Dâu tây'], en: ['Blueberry', 'Mango', 'Strawberry'], ru: ['Черника', 'Манго', 'Клубника'] } },
   { id: 'od-3', category: 'other_drinks', vietnamese: 'Bạc hà kem cheese', english: 'Mint Cheese Cream Drink', russian: 'Мятный напиток с сырной пенкой', price: 39000 },
   // FRESH JUICE
-  { id: 'fj-1', category: 'juices', vietnamese: 'Nước ép Cam', english: 'Fresh Orange Juice', russian: 'Свежевыжатый апельсиновый сок', price: 40000 },
-  { id: 'fj-2', category: 'juices', vietnamese: 'Nước ép Thơm', english: 'Fresh Pineapple Juice', russian: 'Свежевыжатый ананасовый сок', price: 40000 },
-  { id: 'fj-3', category: 'juices', vietnamese: 'Nước ép Dưa hấu', english: 'Fresh Watermelon Juice', russian: 'Свежевыжатый арбузный сок', price: 40000 },
-  { id: 'fj-4', category: 'juices', vietnamese: 'Nước ép Chanh dây', english: 'Fresh Passion Fruit Juice', russian: 'Свежевыжатый сок маракуйи', price: 40000 },
-  { id: 'fj-5', category: 'juices', vietnamese: 'Nước ép Ổi', english: 'Fresh Guava Juice', russian: 'Свежевыжатый сок гуавы', price: 45000 },
-  { id: 'fj-6', category: 'juices', vietnamese: 'Nước ép Táo', english: 'Fresh Apple Juice', russian: 'Свежевыжатый яблочный сок', price: 45000 },
-  { id: 'sb-1', category: 'juices', vietnamese: 'Sunrise (Cam + Thơm)', english: 'Sunrise (Orange + Pineapple)', russian: 'Санрайз (Апельсин + Ананас)', price: 50000 },
-  { id: 'sb-2', category: 'juices', vietnamese: 'Vitamin Boost (Cam + Cà rốt)', english: 'Vitamin Boost (Orange + Carrot)', russian: 'Витамин Буст (Апельсин + Морковь)', price: 50000 },
-  { id: 'sb-3', category: 'juices', vietnamese: 'Golden (Ổi + Thơm)', english: 'Golden (Guava + Pineapple)', russian: 'Голден (Гуава + Ананас)', price: 50000 },
-  { id: 'sb-4', category: 'juices', vietnamese: 'Fresh Day (Táo + Cam)', english: 'Fresh Day (Apple + Orange)', russian: 'Фреш Дей (Яблоко + Апельсин)', price: 50000 },
-  { id: 'sb-5', category: 'juices', vietnamese: 'Tropical (Táo + Thơm)', english: 'Tropical (Apple + Pineapple)', russian: 'Тропикал (Яблоко + Ананас)', price: 50000 },
+  { id: 'fj-1', category: 'juices', vietnamese: 'Nước ép Cam (ép lạnh)', english: 'Cold-Pressed Orange Juice', russian: 'Свежевыжатый апельсиновый сок холодного отжима', price: 40000 },
+  { id: 'fj-2', category: 'juices', vietnamese: 'Nước ép Thơm (ép lạnh)', english: 'Cold-Pressed Pineapple Juice', russian: 'Свежевыжатый ананасовый сок холодного отжима', price: 40000 },
+  { id: 'fj-3', category: 'juices', vietnamese: 'Nước ép Dưa hấu (ép lạnh)', english: 'Cold-Pressed Watermelon Juice', russian: 'Свежевыжатый арбузный сок холодного отжима', price: 40000 },
+  { id: 'fj-4', category: 'juices', vietnamese: 'Nước ép Chanh dây (ép lạnh)', english: 'Cold-Pressed Passion Fruit Juice', russian: 'Свежевыжатый сок маракуйи холодного отжима', price: 40000 },
+  { id: 'fj-5', category: 'juices', vietnamese: 'Nước ép Ổi (ép lạnh)', english: 'Cold-Pressed Guava Juice', russian: 'Свежевыжатый сок гуавы холодного отжима', price: 45000 },
+  { id: 'fj-6', category: 'juices', vietnamese: 'Nước ép Táo (ép lạnh)', english: 'Cold-Pressed Apple Juice', russian: 'Свежевыжатый яблочный сок холодного отжима', price: 45000 },
+  { id: 'sb-1', category: 'juices', vietnamese: 'Sunrise (Cam + Thơm ép lạnh)', english: 'Sunrise Cold-Pressed (Orange + Pineapple)', russian: 'Санрайз холодного отжима (Апельсин + Ананас)', price: 50000 },
+  { id: 'sb-2', category: 'juices', vietnamese: 'Vitamin Boost (Cam + Cà rốt ép lạnh)', english: 'Vitamin Boost Cold-Pressed (Orange + Carrot)', russian: 'Витамин Буст холодного отжима (Апельсин + Морковь)', price: 50000 },
+  { id: 'sb-3', category: 'juices', vietnamese: 'Golden (Ổi + Thơm ép lạnh)', english: 'Golden Cold-Pressed (Guava + Pineapple)', russian: 'Голден холодного отжима (Гуава + Ананас)', price: 50000 },
+  { id: 'sb-4', category: 'juices', vietnamese: 'Fresh Day (Táo + Cam ép lạnh)', english: 'Fresh Day Cold-Pressed (Apple + Orange)', russian: 'Фреш Дей холодного отжима (Яблоко + Апельсин)', price: 50000 },
+  { id: 'sb-5', category: 'juices', vietnamese: 'Tropical (Táo + Thơm ép lạnh)', english: 'Tropical Cold-Pressed (Apple + Pineapple)', russian: 'Тропикал холодного отжима (Яблоко + Ананас)', price: 50000 },
   // FRUIT TEA
   { id: 'ft-1', category: 'fruit_tea', vietnamese: 'Trà trái cây nhiệt đới', english: 'Tropical Fruit Tea', russian: 'Тропический фруктовый чай', price: 45000 },
   { id: 'ft-3', category: 'fruit_tea', vietnamese: 'Trà dâu tằm', english: 'Mulberry Tea', russian: 'Шелковичный чай', price: 39000 },
