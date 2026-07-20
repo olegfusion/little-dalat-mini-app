@@ -1,0 +1,264 @@
+{
+  "communities": {
+    "0": [
+      "api_delivery",
+      "api_delivery_router",
+      "api_index",
+      "api_index_apirouter",
+      "api_menu",
+      "api_menu_router",
+      "api_orders_router",
+      "api_payment",
+      "api_payment_router",
+      "config",
+      "config_config",
+      "index",
+      "index_app",
+      "index_port",
+      "lib_distance",
+      "lib_distance_getdeliveryfee",
+      "lib_distance_haversinedistance",
+      "lib_distance_torad",
+      "lib_vietqr",
+      "lib_vietqr_buildnapasstring",
+      "lib_vietqr_generatevietqr",
+      "lib_vietqr_qrdata"
+    ],
+    "1": [
+      "bot_handlers_cart",
+      "bot_handlers_cart_buildcarttext",
+      "bot_handlers_cart_registercarthandlers",
+      "bot_handlers_checkout",
+      "bot_handlers_checkout_applyfreedelivery",
+      "bot_handlers_checkout_carttotalqty",
+      "bot_handlers_checkout_feeline",
+      "bot_handlers_checkout_processdeliveryaddress",
+      "bot_handlers_checkout_registercheckouthandlers",
+      "bot_keyboards",
+      "bot_keyboards_cartkeyboard",
+      "bot_keyboards_categorykeyboard",
+      "bot_keyboards_itemactionkeyboard",
+      "bot_keyboards_lang_field",
+      "bot_keyboards_langfield",
+      "bot_keyboards_paymentkeyboard",
+      "bot_keyboards_pickup_times",
+      "bot_keyboards_pickuptimekeyboard",
+      "locales_index",
+      "locales_index_locales",
+      "locales_index_t"
+    ],
+    "2": [
+      "api_orders",
+      "api_orders_createorderbody",
+      "bot_context",
+      "bot_context_sessiondata",
+      "bot_index_getbot",
+      "types",
+      "types_cartitem",
+      "types_categoryinfo",
+      "types_deliverydistance",
+      "types_language",
+      "types_menucategory",
+      "types_menuitem",
+      "types_ordermode",
+      "types_ordersource",
+      "types_orderstatus",
+      "types_paymentmethod"
+    ],
+    "3": [
+      "bot_handlers_payment",
+      "bot_handlers_payment_afterorderkeyboard",
+      "bot_handlers_payment_formatpickuptime",
+      "bot_handlers_payment_registerpaymenthandlers",
+      "bot_keyboards_confirmorderkeyboard",
+      "bot_keyboards_paymentconfirmkeyboard",
+      "db_orders_updateorderstatus",
+      "lib_order_format",
+      "lib_order_format_formatorderforstaff",
+      "lib_order_format_modelabels",
+      "lib_order_format_sourcelabels",
+      "staff_notify",
+      "staff_notify_notifystaff",
+      "staff_notify_registerstaffcallbacks",
+      "staff_notify_staffstatuskeyboard"
+    ],
+    "4": [
+      "bot_context_botcontext",
+      "bot_context_initialsession",
+      "bot_handlers_menu",
+      "bot_handlers_menu_registermenuhandlers",
+      "bot_handlers_menu_showitempage",
+      "bot_handlers_reorder_showmainmenumsg",
+      "bot_handlers_start",
+      "bot_handlers_start_registerstarthandler",
+      "bot_index",
+      "bot_index_createbot",
+      "bot_keyboards_languagekeyboard",
+      "bot_keyboards_modekeyboard",
+      "index_bot"
+    ],
+    "5": [
+      "bot_handlers_reorder",
+      "bot_handlers_reorder_formatorderstatus",
+      "bot_handlers_reorder_registerreorderhandlers",
+      "db_orders",
+      "db_orders_createorder",
+      "db_orders_getorderbyid",
+      "db_orders_getordersbychatid",
+      "db_orders_maprow",
+      "db_schema",
+      "db_schema_db_path",
+      "db_schema_getdb",
+      "db_schema_initschema",
+      "types_order"
+    ],
+    "6": [
+      "lib_geocode",
+      "lib_geocode_goonggeocode",
+      "lib_geocode_locationiqgeocode",
+      "lib_geocode_nominatimgeocode",
+      "lib_geocode_photongeocode",
+      "lib_geocode_reversegeocode"
+    ]
+  },
+  "cohesion": {
+    "0": 0.16017316017316016,
+    "1": 0.2523809523809524,
+    "2": 0.25833333333333336,
+    "3": 0.2571428571428571,
+    "4": 0.3333333333333333,
+    "5": 0.3333333333333333,
+    "6": 0.6
+  },
+  "gods": [
+    {
+      "id": "locales_index_t",
+      "label": "t()",
+      "degree": 33
+    },
+    {
+      "id": "bot_context_botcontext",
+      "label": "BotContext",
+      "degree": 15
+    },
+    {
+      "id": "bot_handlers_payment_registerpaymenthandlers",
+      "label": "registerPaymentHandlers()",
+      "degree": 15
+    },
+    {
+      "id": "config_config",
+      "label": "config",
+      "degree": 14
+    },
+    {
+      "id": "types_language",
+      "label": "Language",
+      "degree": 14
+    },
+    {
+      "id": "bot_handlers_checkout_registercheckouthandlers",
+      "label": "registerCheckoutHandlers()",
+      "degree": 13
+    },
+    {
+      "id": "bot_handlers_reorder_registerreorderhandlers",
+      "label": "registerReorderHandlers()",
+      "degree": 11
+    },
+    {
+      "id": "bot_index_createbot",
+      "label": "createBot()",
+      "degree": 11
+    },
+    {
+      "id": "db_orders_getorderbyid",
+      "label": "getOrderById()",
+      "degree": 11
+    },
+    {
+      "id": "types_cartitem",
+      "label": "CartItem",
+      "degree": 10
+    }
+  ],
+  "surprises": [
+    {
+      "source": "registerCheckoutHandlers()",
+      "target": "reverseGeocode()",
+      "source_files": [
+        "bot/handlers/checkout.ts",
+        "lib/geocode.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "processDeliveryAddress()",
+      "target": "getDeliveryFee()",
+      "source_files": [
+        "bot/handlers/checkout.ts",
+        "lib/distance.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "processDeliveryAddress()",
+      "target": "haversineDistance()",
+      "source_files": [
+        "bot/handlers/checkout.ts",
+        "lib/distance.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "registerMenuHandlers()",
+      "target": "t()",
+      "source_files": [
+        "bot/handlers/menu.ts",
+        "locales/index.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "showItemPage()",
+      "target": "t()",
+      "source_files": [
+        "bot/handlers/menu.ts",
+        "locales/index.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `t()` connect `Community 1` to `Community 2`, `Community 3`, `Community 4`, `Community 5`?",
+      "why": "High betweenness centrality (0.137) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `config` connect `Community 0` to `Community 1`, `Community 3`, `Community 4`, `Community 6`?",
+      "why": "High betweenness centrality (0.066) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `createBot()` connect `Community 4` to `Community 0`, `Community 1`, `Community 3`, `Community 5`?",
+      "why": "High betweenness centrality (0.025) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `LANG_FIELD`, `PICKUP_TIMES`, `DB_PATH` to the rest of the system?",
+      "why": "12 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}

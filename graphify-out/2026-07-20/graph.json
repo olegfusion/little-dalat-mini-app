@@ -378,7 +378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_api_delivery",
-      "community": 11,
+      "community": 4,
       "norm_label": "delivery.ts"
     },
     {
@@ -508,7 +508,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_bot_context_botcontext",
-      "community": 11,
+      "community": 0,
       "norm_label": "botcontext"
     },
     {
@@ -518,7 +518,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_bot_context_initialsession",
-      "community": 4,
+      "community": 0,
       "norm_label": "initialsession()"
     },
     {
@@ -528,7 +528,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_bot_handlers_cart",
-      "community": 11,
+      "community": 0,
       "norm_label": "cart.ts"
     },
     {
@@ -538,7 +538,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_bot_handlers_cart_registercarthandlers",
-      "community": 11,
+      "community": 0,
       "norm_label": "registercarthandlers()"
     },
     {
@@ -548,7 +548,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_bot_handlers_cart_buildcarttext",
-      "community": 11,
+      "community": 0,
       "norm_label": "buildcarttext()"
     },
     {
@@ -558,7 +558,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_bot_handlers_checkout",
-      "community": 11,
+      "community": 0,
       "norm_label": "checkout.ts"
     },
     {
@@ -568,7 +568,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_bot_handlers_checkout_applyfreedelivery",
-      "community": 11,
+      "community": 0,
       "norm_label": "applyfreedelivery()"
     },
     {
@@ -578,7 +578,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_bot_handlers_checkout_carttotalqty",
-      "community": 11,
+      "community": 0,
       "norm_label": "carttotalqty()"
     },
     {
@@ -588,7 +588,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_bot_handlers_checkout_feeline",
-      "community": 11,
+      "community": 0,
       "norm_label": "feeline()"
     },
     {
@@ -598,7 +598,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_bot_handlers_checkout_registercheckouthandlers",
-      "community": 11,
+      "community": 0,
       "norm_label": "registercheckouthandlers()"
     },
     {
@@ -608,7 +608,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_bot_handlers_checkout_processdeliveryaddress",
-      "community": 11,
+      "community": 0,
       "norm_label": "processdeliveryaddress()"
     },
     {
@@ -705,7 +705,7 @@
       "label": "formatOrderStatus()",
       "file_type": "code",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L33",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "src_bot_handlers_reorder_formatorderstatus",
       "community": 0,
@@ -715,7 +715,7 @@
       "label": "registerReorderHandlers()",
       "file_type": "code",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L50",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "src_bot_handlers_reorder_registerreorderhandlers",
       "community": 0,
@@ -748,7 +748,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_bot_index",
-      "community": 11,
+      "community": 0,
       "norm_label": "index.ts"
     },
     {
@@ -758,7 +758,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_bot_index_createbot",
-      "community": 4,
+      "community": 0,
       "norm_label": "createbot()"
     },
     {
@@ -848,7 +848,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_bot_keyboards_cartkeyboard",
-      "community": 11,
+      "community": 0,
       "norm_label": "cartkeyboard()"
     },
     {
@@ -878,7 +878,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_bot_keyboards_pickuptimekeyboard",
-      "community": 11,
+      "community": 0,
       "norm_label": "pickuptimekeyboard()"
     },
     {
@@ -908,7 +908,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_config",
-      "community": 11,
+      "community": 4,
       "norm_label": "config.ts"
     },
     {
@@ -918,7 +918,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_config_config",
-      "community": 11,
+      "community": 4,
       "norm_label": "config"
     },
     {
@@ -1048,7 +1048,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_db_orders_getorderbyid",
-      "community": 0,
+      "community": 2,
       "norm_label": "getorderbyid()"
     },
     {
@@ -1058,7 +1058,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_db_orders_getordersbychatid",
-      "community": 0,
+      "community": 2,
       "norm_label": "getordersbychatid()"
     },
     {
@@ -1078,7 +1078,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_db_orders_maprow",
-      "community": 0,
+      "community": 2,
       "norm_label": "maprow()"
     },
     {
@@ -1138,7 +1138,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_index_bot",
-      "community": 4,
+      "community": 0,
       "norm_label": "bot"
     },
     {
@@ -1178,7 +1178,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_distance",
-      "community": 11,
+      "community": 4,
       "norm_label": "distance.ts"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_lib_distance_haversinedistance",
-      "community": 11,
+      "community": 4,
       "norm_label": "haversinedistance()"
     },
     {
@@ -1198,7 +1198,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_lib_distance_torad",
-      "community": 11,
+      "community": 4,
       "norm_label": "torad()"
     },
     {
@@ -1208,7 +1208,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_lib_distance_getdeliveryfee",
-      "community": 11,
+      "community": 4,
       "norm_label": "getdeliveryfee()"
     },
     {
@@ -1378,7 +1378,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_locales_index",
-      "community": 0,
+      "community": 3,
       "norm_label": "index.ts"
     },
     {
@@ -1388,7 +1388,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_locales_index_locales",
-      "community": 0,
+      "community": 3,
       "norm_label": "locales"
     },
     {
@@ -3642,7 +3642,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L53",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_bot_context_botcontext"
@@ -3653,7 +3653,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L18",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_showmainmenumsg",
       "target": "src_bot_context_botcontext"
@@ -5245,7 +5245,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L33",
+      "source_location": "L27",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder",
       "target": "src_bot_handlers_reorder_formatorderstatus",
@@ -5255,7 +5255,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L50",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder",
       "target": "src_bot_handlers_reorder_registerreorderhandlers",
@@ -5452,22 +5452,11 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L146",
+      "source_location": "L140",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_bot_handlers_reorder_showmainmenumsg",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "source": "src_bot_handlers_reorder_showmainmenumsg",
-      "target": "src_db_orders_getordersbychatid"
     },
     {
       "relation": "calls",
@@ -5507,7 +5496,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L35",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_formatorderstatus",
       "target": "src_locales_index_t",
@@ -5518,7 +5507,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L128",
+      "source_location": "L122",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_bot_handlers_reorder_formatorderstatus",
@@ -5530,7 +5519,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L196",
+      "source_location": "L190",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_bot_keyboards_languagekeyboard"
@@ -5541,7 +5530,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L94",
+      "source_location": "L88",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_bot_keyboards_paymentkeyboard"
@@ -5552,7 +5541,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L62",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_data_menu_initial_menu_items"
@@ -5563,7 +5552,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L123",
+      "source_location": "L117",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_db_orders_getorderbyid"
@@ -5574,7 +5563,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L54",
+      "source_location": "L48",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_db_orders_getordersbychatid"
@@ -5585,7 +5574,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/bot/handlers/reorder.ts",
-      "source_location": "L57",
+      "source_location": "L51",
       "weight": 1.0,
       "source": "src_bot_handlers_reorder_registerreorderhandlers",
       "target": "src_locales_index_t"
@@ -8338,5 +8327,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5794bf6eeaab0b8b481055ca14c8beb6c0749ede"
+  "built_at_commit": "7f2bbfaef5f61986dd150bef3ad9ba727617493e"
 }
