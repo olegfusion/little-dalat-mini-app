@@ -26,6 +26,13 @@ export default function CartDrawer({
   const getItem = (id: string) => menuItems.find(i => i.id === id);
   const itemKey = (ci: CartItemType) => `${ci.menuItemId}_${ci.variantIndex ?? ''}`;
 
+  function getCartThumb(item: MenuItem, vi?: number): string | null {
+    const path = vi !== undefined ? item.variants?.photos?.[vi] : null;
+    const p = path || item.photo || null;
+    if (!p) return null;
+    return '/' + p.split('/').map(s => encodeURIComponent(s)).join('/');
+  }
+
   return (
     <>
       {isOpen && (
@@ -67,7 +74,15 @@ export default function CartDrawer({
                 : null;
               return (
                 <div key={itemKey(ci)} className="bg-[#FAF5EC] rounded-xl p-3 space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {(() => {
+                      const url = getCartThumb(item, ci.variantIndex);
+                      return url ? (
+                        <div className="w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-white border border-[#C5B5A5]/20">
+                          <img src={url} alt="" className="w-full h-full object-contain" />
+                        </div>
+                      ) : null;
+                    })()}
                     <div className="flex-1 min-w-0 mr-2">
                       <p className="font-bold text-sm text-[#261308]">
                         {getItemName(item, language)}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Language, OrderMode } from '../types';
-import { t, formatPrice } from '../i18n';
+import { t, formatPrice, ruPluralize } from '../i18n';
 import { estimateDelivery } from '../api/client';
 import { useCart } from '../context/CartContext';
 import { getPlatformUserName } from '../platforms/usePlatform';
@@ -496,7 +496,7 @@ export default function CheckoutForm({ language, mode, drinkCount, onBack, onBac
                             ? `🚚 Trong giỏ: ${drinkCount} đồ uống. Thêm ${Math.max(0, 5 - drinkCount)} để được freeship!`
                             : language === 'en'
                               ? `🚚 Cart: ${drinkCount} drink${drinkCount !== 1 ? 's' : ''}. Add ${Math.max(0, 5 - drinkCount)} more for free delivery!`
-                              : `🚚 В корзине: ${drinkCount} напитков. Добавьте ещё ${Math.max(0, 5 - drinkCount)} для бесплатной доставки!`))}
+                               : `🚚 В корзине: ${drinkCount} ${ruPluralize(drinkCount, ['напиток', 'напитка', 'напитков'])}. Добавьте ещё ${Math.max(0, 5 - drinkCount)} для бесплатной доставки!`))}
                 </p>
               {deliveryFee === 0 && drinkCount >= 5 && onGoToCategory && (
                 <button

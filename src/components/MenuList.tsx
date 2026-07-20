@@ -3,6 +3,7 @@ import { MenuItem, Language, CategoryInfo } from '../types';
 import { getItemName, formatPrice, t } from '../i18n';
 import { Plus, Minus, Image } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useFlyToCart } from './FlyToCart';
 import ItemDetailModal from './ItemDetailModal';
 
 interface MenuListProps {
@@ -35,7 +36,9 @@ export default function MenuList({
   onSelectVariant, selectedVariantItem, onVariantPick, onBackFromVariants,
 }: MenuListProps) {
   const { state } = useCart();
+  const { fly } = useFlyToCart();
   const [detailItem, setDetailItem] = useState<MenuItem | null>(null);
+  const [detailVariant, setDetailVariant] = useState(0);
   const catName = (category as any)[language === 'vn' ? 'vietnamese' : language === 'ru' ? 'russian' : 'english'];
   const cartKey = (item: MenuItem, vi?: number) => `${item.id}_${vi ?? ''}`;
 
@@ -64,11 +67,11 @@ export default function MenuList({
 
           return (
             <div key={item.id}>
-              <div className="bg-white rounded-xl border border-[#C5B5A5]/20 p-3.5 flex items-center gap-3">
+              <div className="bg-white rounded-xl border border-[#C5B5A5]/20 p-3.5 flex items-center gap-3" data-item-row={item.id}>
                 <div className="flex-1 flex items-center gap-3 min-w-0 cursor-pointer" onClick={() => setDetailItem(item)}>
                   {thumbUrl && (
                     <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-[#FAF5EC] border border-[#C5B5A5]/20">
-                      <img src={thumbUrl} alt={name} className="w-full h-full object-contain bg-[#FAF5EC]" />
+                      <img src={thumbUrl} alt={name} data-thumb className="w-full h-full object-contain bg-[#FAF5EC]" />
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
@@ -94,7 +97,16 @@ export default function MenuList({
                   ) : null}
                   {!isPickingVariant && (
                     <button
-                      onClick={() => item.variants ? onSelectVariant(item) : onAdd(item)}
+                      onClick={(e) => {
+                        if (!item.variants) {
+                          const row = (e.currentTarget as HTMLElement).closest('[data-item-row]');
+                          const thumb = row?.querySelector<HTMLElement>('[data-thumb]');
+                          if (thumb && thumb.getAttribute('src')) fly(thumb.getAttribute('src')!, thumb, true);
+                          onAdd(item);
+                        } else {
+                          onSelectVariant(item);
+                        }
+                      }}
                       className={`w-7 h-7 rounded-full flex items-center justify-center transition ${
                         qty > 0
                           ? 'bg-[#5A2C11] text-white'
@@ -119,11 +131,11 @@ export default function MenuList({
                     const vQty = cartQuantities[vKey] || 0;
                     const vThumb = getVariantThumbUrl(item, i);
                     return (
-                      <div key={i} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 gap-2">
-                        <div className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => setDetailItem(item)}>
+                      <div key={i} data-variant-row className="flex items-center justify-between bg-white rounded-lg px-3 py-2 gap-2">
+                        <div className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => { setDetailItem(item); setDetailVariant(i); }}>
                           {vThumb && (
                             <div className="w-9 h-9 shrink-0 rounded-lg overflow-hidden bg-white border border-[#C5B5A5]/20">
-                              <img src={vThumb} alt={v} className="w-full h-full object-contain bg-white" />
+                              <img src={vThumb} alt={v} data-thumb className="w-full h-full object-contain bg-white" />
                             </div>
                           )}
                           <div className="min-w-0">
@@ -144,7 +156,12 @@ export default function MenuList({
                             </>
                           ) : null}
                           <button
-                            onClick={() => onVariantPick(item, i)}
+                            onClick={(e) => {
+                              const variantRow = (e.currentTarget as HTMLElement).closest('[data-variant-row]');
+                              const thumb = variantRow?.querySelector<HTMLElement>('[data-thumb]');
+                              if (thumb && thumb.getAttribute('src')) fly(thumb.getAttribute('src')!, thumb, true);
+                              onVariantPick(item, i);
+                            }}
                             className={`w-7 h-7 rounded-full flex items-center justify-center transition ${
                               vQty > 0 ? 'bg-[#5A2C11] text-white' : 'bg-white border border-[#5A2C11] text-[#5A2C11] hover:bg-[#5A2C11] hover:text-white'
                             }`}
@@ -171,8 +188,9 @@ export default function MenuList({
           cartQuantities={cartQuantities}
           onAdd={onAdd}
           onRemove={onRemove}
-          onNavigate={(idx) => setDetailItem(items[idx])}
-          onClose={() => setDetailItem(null)}
+          onNavigate={(idx) => { setDetailItem(items[idx]); setDetailVariant(0); }}
+          onClose={() => { setDetailItem(null); setDetailVariant(0); }}
+          initialVariant={detailVariant}
         />
       )}
     </div>

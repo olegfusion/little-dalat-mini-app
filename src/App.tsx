@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { Language, MenuItem, OrderMode } from './types';
+import { Language, MenuItem, OrderMode, CartItem } from './types';
 import { detectPlatform, PlatformProvider } from './platforms/usePlatform';
 import { TelegramProvider } from './platforms/TelegramProvider';
 import { ZaloProvider } from './platforms/ZaloProvider';
 import { CartProvider, useCart } from './context/CartContext';
-import { fetchMenu } from './api/client';
+import { fetchMenu, getOrder } from './api/client';
+import { FlyToCartProvider } from './components/FlyToCart';
 import Layout from './components/Layout';
 import CartDrawer from './components/CartDrawer';
 import ModeSelector from './components/ModeSelector';
@@ -92,8 +93,26 @@ function AppContent() {
     goForward('home');
   };
 
+  const repeatOrderId = getUrlParam('repeat');
+
   useEffect(() => {
-    fetchMenu().then(setMenuItems).catch(console.error);
+    fetchMenu().then((items) => {
+      setMenuItems(items);
+      if (repeatOrderId) {
+        const id = parseInt(repeatOrderId);
+        if (!isNaN(id)) {
+          getOrder(id).then(order => {
+            const items: CartItem[] = JSON.parse(order.items);
+            for (const ci of items) {
+              for (let i = 0; i < ci.quantity; i++) {
+                dispatch({ type: 'ADD_ITEM', payload: { menuItemId: ci.menuItemId, variantIndex: ci.variantIndex, quantity: 1 } as CartItem });
+              }
+            }
+            setCartOpen(true);
+          }).catch(console.error);
+        }
+      }
+    }).catch(console.error);
   }, []);
 
   const cartCount = state.items.reduce((sum, i) => sum + i.quantity, 0);
@@ -127,7 +146,7 @@ function AppContent() {
       case 'language':
         return (
           <div className="min-h-screen bg-[#FAF5EC] flex flex-col items-center justify-center px-6 py-12">
-            <img src="/logo.png" alt="Little Dalat" className="w-24 h-24 rounded-full object-cover border-2 border-[#C5B5A5]/30 mb-6" />
+            <img src="/logo.avif" alt="Little Dalat" className="w-24 h-24 rounded-full object-cover border-2 border-[#C5B5A5]/30 mb-6" />
             <h1 className="font-serif text-2xl font-black italic text-[#5A2C11] mb-6">Little Dalat Coffee & Tea</h1>
             <h2 className="font-black text-sm text-[#261308] mb-5 uppercase tracking-wider">
               {language === 'vn' ? 'Chọn ngôn ngữ' :
@@ -165,7 +184,7 @@ function AppContent() {
       case 'mode':
         return (
           <div className="min-h-screen bg-[#FAF5EC] flex flex-col items-center justify-center px-6 py-12">
-            <img src="/logo.png" alt="Little Dalat" className="w-24 h-24 rounded-full object-cover border-2 border-[#C5B5A5]/30 mb-4" />
+            <img src="/logo.avif" alt="Little Dalat" className="w-24 h-24 rounded-full object-cover border-2 border-[#C5B5A5]/30 mb-4" />
             <h1 className="font-serif text-2xl font-black italic text-[#5A2C11] mb-6">Little Dalat Coffee & Tea</h1>
             <h2 className="font-black text-lg text-[#261308] mb-4">{t('choose_mode', language)}</h2>
             <ModeSelector language={language} selected={null} onSelect={handleModeSelect} />
@@ -213,7 +232,7 @@ function AppContent() {
         cartItemCount={cartCount}
         onCartClick={() => setCartOpen(true)}
         onHomeClick={() => { pageStack.current = []; setPage('home'); }}
-        onCheckout={page === 'checkout' ? undefined : () => goForward('checkout')}
+        onCheckout={page === 'checkout' ? undefined : () => setCartOpen(true)}
         cartTotal={subtotal}
       >
         <div className="flex items-center gap-2 mb-3">
@@ -245,7 +264,7 @@ function AppContent() {
           onUpdateQty={(id, qty, vi) => dispatch({ type: 'UPDATE_QTY', payload: { menuItemId: id, quantity: qty, variantIndex: vi } })}
           onUpdateComment={(id, comment, vi) => dispatch({ type: 'UPDATE_COMMENT', payload: { menuItemId: id, comment, variantIndex: vi } })}
           onRemove={(id, vi) => dispatch({ type: 'REMOVE_ITEM', payload: { menuItemId: id, variantIndex: vi } })}
-          onClearCart={() => dispatch({ type: 'CLEAR' })}
+          onClearCart={() => { dispatch({ type: 'CLEAR' }); setCartOpen(false); }}
           onCheckout={() => { setCartOpen(false); goForward('checkout'); }}
         />
     </>
@@ -257,9 +276,11 @@ export default function App() {
 
   const wrapped = (
     <CartProvider>
-      <PlatformProvider>
-        <AppContent />
-      </PlatformProvider>
+      <FlyToCartProvider>
+        <PlatformProvider>
+          <AppContent />
+        </PlatformProvider>
+      </FlyToCartProvider>
     </CartProvider>
   );
 

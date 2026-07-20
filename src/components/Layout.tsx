@@ -46,6 +46,7 @@ export default function Layout({ children, language, onLanguageChange, cartItemC
             </div>
             <button
               onClick={onCartClick}
+              data-cart-icon
               className="relative p-2 text-[#5A2C11] hover:bg-[#F4EDE0] rounded-lg transition"
             >
               <ShoppingCart className="w-5 h-5" />

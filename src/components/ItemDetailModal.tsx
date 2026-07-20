@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { MenuItem, Language } from '../types';
 import { getItemName, formatPrice } from '../i18n';
 import { X, ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
+import { useFlyToCart } from './FlyToCart';
 
 interface ItemDetailModalProps {
   item: MenuItem;
@@ -13,14 +14,16 @@ interface ItemDetailModalProps {
   onRemove: (item: MenuItem, variantIndex?: number) => void;
   onNavigate: (index: number) => void;
   onClose: () => void;
+  initialVariant?: number;
 }
 
 export default function ItemDetailModal({
   item, allItems, itemIndex, language, cartQuantities,
-  onAdd, onRemove, onNavigate, onClose
+  onAdd, onRemove, onNavigate, onClose, initialVariant = 0
 }: ItemDetailModalProps) {
   const name = getItemName(item, language);
-  const [variantIdx, setVariantIdx] = useState(0);
+  const { fly } = useFlyToCart();
+  const [variantIdx, setVariantIdx] = useState(initialVariant);
   const hasVariants = !!item.variants;
   const varCount = item.variants?.vn.length || 0;
   const touchStart = useRef<number | null>(null);
@@ -82,7 +85,7 @@ export default function ItemDetailModal({
         {/* Image */}
         {photoUrl && (
           <div className="relative shrink-0 bg-[#FAF5EC] flex items-center justify-center">
-            <img src={photoUrl} alt={name} className="w-full max-h-[40vh] object-contain" />
+            <img src={photoUrl} alt={name} data-modal-thumb className="w-full max-h-[40vh] object-contain" />
             <button onClick={onClose} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 flex items-center justify-center text-white hover:bg-black/60">
               <X className="w-5 h-5" />
             </button>
@@ -184,6 +187,8 @@ export default function ItemDetailModal({
               </button>
             </div>
             <button onClick={() => {
+                const thumb = document.querySelector<HTMLElement>('[data-modal-thumb]');
+                if (thumb && thumb.getAttribute('src')) fly(thumb.getAttribute('src')!, thumb);
                 for (let i = 0; i < addQty; i++) onAdd(item, hasVariants ? variantIdx : undefined);
                 setAddQty(1);
                 onClose();
