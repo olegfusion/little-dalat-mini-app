@@ -1,0 +1,264 @@
+{
+  "communities": {
+    "0": [
+      "app",
+      "app_app",
+      "app_appcontent",
+      "app_geturlparam",
+      "app_page",
+      "main",
+      "platforms_telegramprovider",
+      "platforms_telegramprovider_telegramcontext",
+      "platforms_telegramprovider_telegramcontextvalue",
+      "platforms_telegramprovider_telegramprovider",
+      "platforms_telegramprovider_usetelegram",
+      "platforms_useplatform_detectplatform",
+      "platforms_zaloprovider",
+      "platforms_zaloprovider_usezalo",
+      "platforms_zaloprovider_zalocontext",
+      "platforms_zaloprovider_zalocontextvalue",
+      "platforms_zaloprovider_zaloprovider"
+    ],
+    "1": [
+      "api_client",
+      "api_client_deliveryestimate",
+      "api_client_fetchcategories",
+      "api_client_fetchmenu",
+      "api_client_fetchmenubycategory",
+      "api_client_get",
+      "api_client_getorder",
+      "context_cartcontext_usecart",
+      "pages_category",
+      "pages_category_category",
+      "pages_category_categoryprops",
+      "pages_home",
+      "pages_home_home",
+      "pages_home_homeprops"
+    ],
+    "2": [
+      "components_cartdrawer",
+      "components_cartdrawer_cartdrawer",
+      "components_layout",
+      "components_layout_languages",
+      "components_layout_layout",
+      "components_layout_layoutprops",
+      "components_menulist",
+      "components_menulist_menulist",
+      "components_paymentscreen_paymentscreen",
+      "i18n_index",
+      "i18n_index_formatprice",
+      "i18n_index_getitemname",
+      "i18n_index_t",
+      "i18n_index_translations"
+    ],
+    "3": [
+      "api_client_confirmorder",
+      "api_client_createorderapi",
+      "api_client_generateqr",
+      "api_client_post",
+      "pages_checkout",
+      "pages_checkout_checkout",
+      "platforms_useplatform",
+      "platforms_useplatform_getplatformsource",
+      "platforms_useplatform_gettelegramuserid",
+      "platforms_useplatform_getuserid",
+      "platforms_useplatform_getzalouserid",
+      "types_ordersource",
+      "types_platform"
+    ],
+    "4": [
+      "components_categorygrid",
+      "components_categorygrid_category_icons",
+      "components_categorygrid_categorygrid",
+      "components_categorygrid_categorygridprops",
+      "components_menulist_menulistprops",
+      "i18n_index_getcategoryname",
+      "pages_checkout_checkoutprops",
+      "types",
+      "types_categoryinfo",
+      "types_menucategory",
+      "types_menuitem",
+      "types_order",
+      "types_orderstatus"
+    ],
+    "5": [
+      "api_client_createorderinput",
+      "components_checkoutform_checkoutformprops",
+      "components_modeselector",
+      "components_modeselector_modes",
+      "components_modeselector_modeselector",
+      "components_modeselector_modeselectorprops",
+      "components_paymentscreen",
+      "components_paymentscreen_paymentscreenprops",
+      "types_language",
+      "types_ordermode",
+      "types_paymentmethod"
+    ],
+    "6": [
+      "components_cartdrawer_cartdrawerprops",
+      "context_cartcontext",
+      "context_cartcontext_cartaction",
+      "context_cartcontext_cartcontext",
+      "context_cartcontext_cartprovider",
+      "context_cartcontext_cartreducer",
+      "context_cartcontext_cartstate",
+      "context_cartcontext_initialstate",
+      "types_cartitem"
+    ],
+    "7": [
+      "api_client_estimatedelivery",
+      "components_checkoutform",
+      "components_checkoutform_checkoutform",
+      "components_checkoutform_reversegeocode",
+      "components_mappicker",
+      "components_mappicker_mappicker",
+      "components_mappicker_mappickerprops"
+    ]
+  },
+  "cohesion": {
+    "0": 0.14705882352941177,
+    "1": 0.26373626373626374,
+    "2": 0.3076923076923077,
+    "3": 0.28205128205128205,
+    "4": 0.20512820512820512,
+    "5": 0.34545454545454546,
+    "6": 0.2777777777777778,
+    "7": 0.42857142857142855
+  },
+  "gods": [
+    {
+      "id": "types_language",
+      "label": "Language",
+      "degree": 27
+    },
+    {
+      "id": "i18n_index_t",
+      "label": "t()",
+      "degree": 15
+    },
+    {
+      "id": "types_ordermode",
+      "label": "OrderMode",
+      "degree": 13
+    },
+    {
+      "id": "i18n_index_formatprice",
+      "label": "formatPrice()",
+      "degree": 12
+    },
+    {
+      "id": "context_cartcontext_usecart",
+      "label": "useCart()",
+      "degree": 11
+    },
+    {
+      "id": "types_menuitem",
+      "label": "MenuItem",
+      "degree": 10
+    },
+    {
+      "id": "pages_checkout_checkout",
+      "label": "Checkout()",
+      "degree": 8
+    },
+    {
+      "id": "types_categoryinfo",
+      "label": "CategoryInfo",
+      "degree": 8
+    },
+    {
+      "id": "platforms_useplatform_detectplatform",
+      "label": "detectPlatform()",
+      "degree": 7
+    },
+    {
+      "id": "types_cartitem",
+      "label": "CartItem",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "LayoutProps",
+      "target": "Language",
+      "source_files": [
+        "components/Layout.tsx",
+        "types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `LayoutProps` unexpectedly reaches hub `Language`"
+    },
+    {
+      "source": "MapPickerProps",
+      "target": "Language",
+      "source_files": [
+        "components/MapPicker.tsx",
+        "types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `MapPickerProps` unexpectedly reaches hub `Language`"
+    },
+    {
+      "source": "CategoryProps",
+      "target": "Language",
+      "source_files": [
+        "pages/Category.tsx",
+        "types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `CategoryProps` unexpectedly reaches hub `Language`"
+    },
+    {
+      "source": "HomeProps",
+      "target": "Language",
+      "source_files": [
+        "pages/Home.tsx",
+        "types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `HomeProps` unexpectedly reaches hub `Language`"
+    },
+    {
+      "source": "AppContent()",
+      "target": "fetchMenu()",
+      "source_files": [
+        "App.tsx",
+        "api/client.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `Language` connect `Community 5` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 6`, `Community 7`?",
+      "why": "High betweenness centrality (0.155) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `t()` connect `Community 2` to `Community 0`, `Community 1`, `Community 3`, `Community 5`, `Community 7`?",
+      "why": "High betweenness centrality (0.035) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `OrderMode` connect `Community 5` to `Community 0`, `Community 1`, `Community 3`, `Community 4`, `Community 6`, `Community 7`?",
+      "why": "High betweenness centrality (0.033) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Page`, `DeliveryEstimate`, `CATEGORY_ICONS` to the rest of the system?",
+      "why": "15 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.14705882352941177 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

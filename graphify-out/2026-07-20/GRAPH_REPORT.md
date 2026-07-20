@@ -1,16 +1,16 @@
 # Graph Report - little-dalat-mini-app  (2026-07-20)
 
 ## Corpus Check
-- 83 files · ~5,269,834 words
+- 81 files · ~5,260,654 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 597 nodes · 1101 edges · 31 communities (28 shown, 3 thin omitted)
+- 583 nodes · 1075 edges · 29 communities (26 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.6)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5794bf6e`
+- Built from commit: `8b892226`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,8 +43,6 @@
 - opencode.json
 - graphify.js
 - graphify.js
-- convert-to-avif.mjs
-- geocode.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `t()` - 36 edges
@@ -59,37 +57,37 @@
 10. `formatPrice()` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `createBot()` --references--> `bot`  [EXTRACTED]
-  server/src/bot/index.ts → server/src/index.ts
 - `initCache()` --calls--> `getDb()`  [EXTRACTED]
   server/src/api/geocode.ts → server/src/db/schema.ts
+- `createBot()` --references--> `bot`  [EXTRACTED]
+  server/src/bot/index.ts → server/src/index.ts
 - `createBot()` --indirect_call--> `initialSession()`  [INFERRED]
   server/src/bot/index.ts → server/src/bot/context.ts
-- `registerCheckoutHandlers()` --calls--> `reverseGeocode()`  [EXTRACTED]
-  server/src/bot/handlers/checkout.ts → server/src/lib/geocode.ts
 - `processDeliveryAddress()` --calls--> `getDeliveryFee()`  [EXTRACTED]
+  server/src/bot/handlers/checkout.ts → server/src/lib/distance.ts
+- `processDeliveryAddress()` --calls--> `haversineDistance()`  [EXTRACTED]
   server/src/bot/handlers/checkout.ts → server/src/lib/distance.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (31 total, 3 thin omitted)
+## Communities (29 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.06
-Nodes (83): confirmOrder(), createOrderApi(), CreateOrderInput, DeliveryEstimate, estimateDelivery(), fetchCategories(), fetchMenu(), fetchMenuByCategory() (+75 more)
+Nodes (81): confirmOrder(), createOrderApi(), CreateOrderInput, DeliveryEstimate, estimateDelivery(), fetchCategories(), fetchMenu(), fetchMenuByCategory() (+73 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.10
-Nodes (62): CreateOrderBody, BotContext, initialSession(), SessionData, buildCartText(), registerCartHandlers(), applyFreeDelivery(), cartTotalQty() (+54 more)
+Cohesion: 0.09
+Nodes (68): CreateOrderBody, BotContext, initialSession(), SessionData, buildCartText(), registerCartHandlers(), applyFreeDelivery(), cartTotalQty() (+60 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.06
 Nodes (32): 10. Known Issues / TODOs, 1. Projects Consolidated, 2. Infrastructure & Deploy, 3. Telegram Bot — Hybrid Integration, 4. Menu Data (55+1 = 56 items), 5. Photos & Descriptions, 6. Mini App UI Components, 7. Key Files Modified (+24 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.09
-Nodes (20): router, initCache(), router, apiRouter, router, router, router, DB_PATH (+12 more)
+Cohesion: 0.08
+Nodes (19): router, initCache(), router, apiRouter, router, router, router, DB_PATH (+11 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.07
@@ -105,7 +103,7 @@ Nodes (24): API Layer (`src/api/`), Architecture, Cart State (CartContext), Cart
 
 ### Community 7 - "Community 7"
 Cohesion: 0.08
-Nodes (24): dependencies, leaflet, lucide-react, motion, react, react-dom, @types/leaflet, devDependencies (+16 more)
+Nodes (23): dependencies, leaflet, lucide-react, motion, react, react-dom, @types/leaflet, devDependencies (+15 more)
 
 ### Community 8 - "File Structure"
 Cohesion: 0.09
@@ -172,19 +170,11 @@ Cohesion: 0.40
 Nodes (4): Public key (добавить на сервер), SSH deploy keys, Добавление публичного ключа на сервер, Как использовать
 
 ### Community 24 - "ZaloProvider.tsx"
-Cohesion: 0.18
-Nodes (6): TelegramContext, TelegramContextValue, TelegramProvider(), ZaloContext, ZaloContextValue, ZaloProvider()
-
-### Community 29 - "convert-to-avif.mjs"
-Cohesion: 0.38
-Nodes (6): anhMenuDir, convertFile(), EXTENSIONS, logoFile, ROOT, walkDir()
-
-### Community 30 - "geocode.ts"
-Cohesion: 0.60
-Nodes (5): goongGeocode(), locationIqGeocode(), nominatimGeocode(), photonGeocode(), reverseGeocode()
+Cohesion: 0.40
+Nodes (3): ZaloContext, ZaloContextValue, ZaloProvider()
 
 ## Knowledge Gaps
-- **303 isolated node(s):** `$schema`, `plugin`, `name`, `private`, `version` (+298 more)
+- **297 isolated node(s):** `$schema`, `plugin`, `name`, `private`, `version` (+292 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -192,16 +182,16 @@ Nodes (5): goongGeocode(), locationIqGeocode(), nominatimGeocode(), photonGeocod
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `vietqr` connect `Community 4` to `Community 3`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
-- **Why does `config` connect `Community 1` to `Community 3`, `geocode.ts`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `config` connect `Community 1` to `Community 3`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `$schema`, `plugin`, `IMPORTANT: keep the reminder string free of backticks and $(...) constructs.` to the rest of the system?**
-  _305 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _299 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.05793408086986069 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05711318795430945 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.10418695228821812 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09302325581395349 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.0855614973262032 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08143939393939394 - nodes in this community are weakly interconnected._

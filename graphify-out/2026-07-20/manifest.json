@@ -90,8 +90,8 @@
     "semantic_hash": ""
   },
   "src/bot/handlers/reorder.ts": {
-    "mtime": 1784538292.225534,
-    "ast_hash": "34c3e5448cceb0ccf0a06ea1e466e8e5",
+    "mtime": 1783656947.775033,
+    "ast_hash": "2a50d0b664cb4ca6c4620c43e5da2f3d",
     "semantic_hash": ""
   },
   "src/bot/handlers/start.ts": {
@@ -120,8 +120,8 @@
     "semantic_hash": ""
   },
   "src/data/menu.ts": {
-    "mtime": 1784534965.2386322,
-    "ast_hash": "b621dc8078f157c035605f3b91d10efc",
+    "mtime": 1784524623.8212628,
+    "ast_hash": "fd5c3e99f8959649eec0ec8addb210b3",
     "semantic_hash": ""
   },
   "src/db/orders.ts": {
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "src/locales/en.json": {
-    "mtime": 1784538271.364376,
-    "ast_hash": "40d025eb7959dfc8095d9060b6ae0383",
+    "mtime": 1783656741.8592982,
+    "ast_hash": "4d32fcd31524dc6e02d4f6e4ffd7e946",
     "semantic_hash": ""
   },
   "src/locales/index.ts": {
@@ -170,13 +170,13 @@
     "semantic_hash": ""
   },
   "src/locales/ru.json": {
-    "mtime": 1784538561.1947417,
-    "ast_hash": "bb3a9783593bd82f788013950211d6e7",
+    "mtime": 1783659180.314674,
+    "ast_hash": "fdadc0c36917d1745905bbc0c73c5a7f",
     "semantic_hash": ""
   },
   "src/locales/vn.json": {
-    "mtime": 1784538277.8785076,
-    "ast_hash": "c36e71d70c50a7ecc9a3ee19810fbb67",
+    "mtime": 1783656745.584439,
+    "ast_hash": "2cc6c0f6527a15e8b3d04fd275dbaf6a",
     "semantic_hash": ""
   },
   "src/staff/notify.ts": {
