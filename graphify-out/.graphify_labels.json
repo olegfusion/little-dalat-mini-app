@@ -1,1 +1,18 @@
-{"0": "Community 0", "1": "Community 1", "2": "Community 2", "3": "Community 3", "4": "Community 4", "5": "Community 5", "6": "Community 6"}
+{
+  "0": "Community 0",
+  "1": "Community 1",
+  "2": "Community 2",
+  "3": "Community 3",
+  "4": "Community 4",
+  "5": "Community 5",
+  "6": "Community 6",
+  "7": "compilerOptions",
+  "8": "Little Dalat Telegram Bot — Implementation Plan",
+  "9": "Product Variants",
+  "10": "Little Dalat — Telegram Bot & Backend",
+  "11": "geocode.ts",
+  "12": "SSH deploy keys",
+  "13": "opencode.json",
+  "14": "graphify.js",
+  "15": "setup-tunnel.sh"
+}
