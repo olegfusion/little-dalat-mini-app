@@ -97,8 +97,8 @@ export default function PaymentScreen({
           )}
           <p className="text-sm font-bold text-[#261308]">Thanh toán</p>
         </div>
-        <div className="flex-1 flex flex-col justify-center px-6">
-          <div className="mb-4 px-4 py-3 bg-[#F4EDE0] rounded-xl space-y-1 max-h-48 overflow-y-auto">
+        <div className="flex-1 flex flex-col px-6 min-h-0">
+          <div className="flex-1 mb-4 px-4 py-3 bg-[#F4EDE0] rounded-xl space-y-1 overflow-y-auto">
             {items && menuItems && items.map(ci => {
               const item = menuItems.find(i => i.id === ci.menuItemId);
               if (!item) return null;

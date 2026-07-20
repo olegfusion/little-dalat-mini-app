@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { MenuItem, Language, CategoryInfo } from '../types';
 import { getItemName, formatPrice, t } from '../i18n';
-import { Plus, Minus } from 'lucide-react';
+import { Plus, Minus, Image } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import ItemDetailModal from './ItemDetailModal';
 
 interface MenuListProps {
   items: MenuItem[];
@@ -16,17 +18,34 @@ interface MenuListProps {
   onBackFromVariants: () => void;
 }
 
+function getThumbUrl(item: MenuItem): string | null {
+  const path = item.variants?.photos?.[0] || item.photo || null;
+  if (!path) return null;
+  return '/' + path.split('/').map(s => encodeURIComponent(s)).join('/');
+}
+
+function getVariantThumbUrl(item: MenuItem, idx: number): string | null {
+  const path = item.variants?.photos?.[idx] || null;
+  if (!path) return null;
+  return '/' + path.split('/').map(s => encodeURIComponent(s)).join('/');
+}
+
 export default function MenuList({
   items, category, language, cartQuantities, onAdd, onRemove,
   onSelectVariant, selectedVariantItem, onVariantPick, onBackFromVariants,
 }: MenuListProps) {
   const { state } = useCart();
+  const [detailItem, setDetailItem] = useState<MenuItem | null>(null);
   const catName = (category as any)[language === 'vn' ? 'vietnamese' : language === 'ru' ? 'russian' : 'english'];
   const cartKey = (item: MenuItem, vi?: number) => `${item.id}_${vi ?? ''}`;
 
   const variantItem = selectedVariantItem
     ? items.find(i => i.id === selectedVariantItem)
     : null;
+
+  const moreLabel = language === 'vn' ? 'Chi tiết' :
+                    language === 'en' ? 'Details' :
+                    'Подробнее';
 
   return (
     <div>
@@ -41,20 +60,27 @@ export default function MenuList({
           const name = getItemName(item, language);
           const hasVariantInCart = item.variants && state.items.some(ci => ci.menuItemId === item.id);
           const isPickingVariant = item.variants && (selectedVariantItem === item.id || hasVariantInCart);
+          const thumbUrl = getThumbUrl(item);
 
           return (
             <div key={item.id}>
-              <div className="bg-white rounded-xl border border-[#C5B5A5]/20 p-3.5 flex items-center justify-between">
-                <div className="flex-1 min-w-0 mr-3">
-                  <h3 className="font-bold text-sm text-[#261308]">{name}</h3>
-                  <p className="text-[#9E3618] font-black text-sm mt-0.5">{formatPrice(item.price)}</p>
-                  {item.variants && (
-                    <p className="text-[10px] text-[#8B7355] mt-0.5">
-                      {item.variants[language === 'vn' ? 'vn' : language === 'ru' ? 'ru' : 'en'].join(' / ')}
-                    </p>
+              <div className="bg-white rounded-xl border border-[#C5B5A5]/20 p-3.5 flex items-center gap-3">
+                <div className="flex-1 flex items-center gap-3 min-w-0 cursor-pointer" onClick={() => setDetailItem(item)}>
+                  {thumbUrl && (
+                    <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-[#FAF5EC] border border-[#C5B5A5]/20">
+                      <img src={thumbUrl} alt={name} className="w-full h-full object-contain bg-[#FAF5EC]" />
+                    </div>
                   )}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-bold text-sm text-[#261308] leading-tight">{name}</h3>
+                    <p className="text-[#9E3618] font-black text-sm">{formatPrice(item.price)}</p>
+                    <span className="text-[10px] text-[#8B7355] underline mt-0.5 inline-flex items-center gap-1 hover:text-[#5A2C11]">
+                      <Image className="w-3 h-3" />
+                      {moreLabel}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0" onClick={e => e.stopPropagation()}>
                   {qty > 0 ? (
                     <>
                       <button
@@ -91,10 +117,21 @@ export default function MenuList({
                   {item.variants[language === 'vn' ? 'vn' : language === 'ru' ? 'ru' : 'en'].map((v, i) => {
                     const vKey = cartKey(item, i);
                     const vQty = cartQuantities[vKey] || 0;
+                    const vThumb = getVariantThumbUrl(item, i);
                     return (
-                      <div key={i} className="flex items-center justify-between bg-white rounded-lg px-3 py-2">
-                        <span className="text-sm font-medium text-[#261308]">{v}</span>
-                        <div className="flex items-center gap-2">
+                      <div key={i} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 gap-2">
+                        <div className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => setDetailItem(item)}>
+                          {vThumb && (
+                            <div className="w-9 h-9 shrink-0 rounded-lg overflow-hidden bg-white border border-[#C5B5A5]/20">
+                              <img src={vThumb} alt={v} className="w-full h-full object-contain bg-white" />
+                            </div>
+                          )}
+                          <div className="min-w-0">
+                            <span className="text-sm font-medium text-[#261308] block leading-tight">{v}</span>
+                            <span className="text-[10px] text-[#8B7355] underline mt-0.5 inline-flex items-center gap-1">{moreLabel}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0" onClick={e => e.stopPropagation()}>
                           {vQty > 0 ? (
                             <>
                               <button
@@ -125,6 +162,19 @@ export default function MenuList({
           );
         })}
       </div>
+      {detailItem && (
+        <ItemDetailModal
+          item={detailItem}
+          allItems={items}
+          itemIndex={items.indexOf(detailItem)}
+          language={language}
+          cartQuantities={cartQuantities}
+          onAdd={onAdd}
+          onRemove={onRemove}
+          onNavigate={(idx) => setDetailItem(items[idx])}
+          onClose={() => setDetailItem(null)}
+        />
+      )}
     </div>
   );
 }

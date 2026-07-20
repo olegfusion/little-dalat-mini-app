@@ -8,3 +8,18 @@
 @utility animate-loading-bar {
   animation: loading-bar 1.5s ease-in-out infinite;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #C5B5A5 #F4EDE0;
+}
+*::-webkit-scrollbar {
+  width: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: #F4EDE0;
+}
+*::-webkit-scrollbar-thumb {
+  background: #C5B5A5;
+  border-radius: 2px;
+}

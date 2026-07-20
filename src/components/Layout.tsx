@@ -9,6 +9,7 @@ interface LayoutProps {
   onLanguageChange: (lang: Language) => void;
   cartItemCount: number;
   onCartClick: () => void;
+  onHomeClick?: () => void;
   onCheckout?: () => void;
   cartTotal?: number;
 }
@@ -19,15 +20,14 @@ const LANGUAGES: { key: Language; label: string }[] = [
   { key: 'ru', label: 'RU' },
 ];
 
-export default function Layout({ children, language, onLanguageChange, cartItemCount, onCartClick, onCheckout, cartTotal }: LayoutProps) {
+export default function Layout({ children, language, onLanguageChange, cartItemCount, onCartClick, onHomeClick, onCheckout, cartTotal }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-[#FAF5EC] text-[#261308] pb-24">
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#C5B5A5]">
+    <div className="h-screen flex flex-col bg-[#FAF5EC] text-[#261308]">
+      <header className="shrink-0 bg-white/90 backdrop-blur-md border-b border-[#C5B5A5]">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <div>
-            <h1 className="font-serif text-lg font-black italic text-[#5A2C11]">Little Dalat</h1>
-            <p className="text-[10px] text-[#8B7355] font-medium">Coffee & Tea</p>
-          </div>
+          <button onClick={onHomeClick} className="text-left">
+            <h1 className="font-serif text-base font-black italic text-[#5A2C11]">Little Dalat Coffee & Tea</h1>
+          </button>
           <div className="flex items-center gap-2">
             <div className="flex bg-[#F4EDE0] rounded-lg p-0.5">
               {LANGUAGES.map(l => (
@@ -58,11 +58,11 @@ export default function Layout({ children, language, onLanguageChange, cartItemC
           </div>
         </div>
       </header>
-      <main className="max-w-lg mx-auto px-4 py-4">
+      <main className="flex-1 overflow-y-auto max-w-lg mx-auto w-full px-4 py-4">
         {children}
       </main>
       {cartItemCount > 0 && onCheckout && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#C5B5A5]/30 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        <div className="shrink-0 bg-white border-t border-[#C5B5A5]/30 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
           <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-[10px] text-[#8B7355]">

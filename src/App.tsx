@@ -128,8 +128,7 @@ function AppContent() {
         return (
           <div className="min-h-screen bg-[#FAF5EC] flex flex-col items-center justify-center px-6 py-12">
             <img src="/logo.png" alt="Little Dalat" className="w-24 h-24 rounded-full object-cover border-2 border-[#C5B5A5]/30 mb-6" />
-            <h1 className="font-serif text-3xl font-black italic text-[#5A2C11] mb-1">Little Dalat</h1>
-            <p className="text-xs text-[#8B7355] mb-10">Coffee & Tea</p>
+            <h1 className="font-serif text-2xl font-black italic text-[#5A2C11] mb-6">Little Dalat Coffee & Tea</h1>
             <h2 className="font-black text-sm text-[#261308] mb-5 uppercase tracking-wider">
               {language === 'vn' ? 'Chọn ngôn ngữ' :
                language === 'en' ? 'Choose language' :
@@ -167,8 +166,7 @@ function AppContent() {
         return (
           <div className="min-h-screen bg-[#FAF5EC] flex flex-col items-center justify-center px-6 py-12">
             <img src="/logo.png" alt="Little Dalat" className="w-24 h-24 rounded-full object-cover border-2 border-[#C5B5A5]/30 mb-4" />
-            <h1 className="font-serif text-3xl font-black italic text-[#5A2C11] mb-1">Little Dalat</h1>
-            <p className="text-xs text-[#8B7355] mb-8">Coffee & Tea</p>
+            <h1 className="font-serif text-2xl font-black italic text-[#5A2C11] mb-6">Little Dalat Coffee & Tea</h1>
             <h2 className="font-black text-lg text-[#261308] mb-4">{t('choose_mode', language)}</h2>
             <ModeSelector language={language} selected={null} onSelect={handleModeSelect} />
           </div>
@@ -193,7 +191,7 @@ function AppContent() {
           <Checkout
             language={language}
             menuItems={menuItems}
-            onBack={goBack}
+            onBack={() => { pageStack.current = []; setPage('home'); }}
             onOrderPlaced={() => { pageStack.current = []; setPage('home'); }}
             onGoToCategory={(catId) => { goForward('category', () => setCategoryId(catId)); }}
           />
@@ -214,6 +212,7 @@ function AppContent() {
         onLanguageChange={setLanguage}
         cartItemCount={cartCount}
         onCartClick={() => setCartOpen(true)}
+        onHomeClick={() => { pageStack.current = []; setPage('home'); }}
         onCheckout={page === 'checkout' ? undefined : () => goForward('checkout')}
         cartTotal={subtotal}
       >
@@ -237,7 +236,6 @@ function AppContent() {
         </div>
       )}
 
-      {page !== 'checkout' && (
         <CartDrawer
           isOpen={cartOpen}
           onClose={() => setCartOpen(false)}
@@ -250,7 +248,6 @@ function AppContent() {
           onClearCart={() => dispatch({ type: 'CLEAR' })}
           onCheckout={() => { setCartOpen(false); goForward('checkout'); }}
         />
-      )}
     </>
   );
 }

@@ -82,35 +82,35 @@ export default function CheckoutForm({ language, mode, drinkCount, onBack, onBac
   const addressRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (step !== 'address' || mode !== 'delivery') return;
-    if (geoTimer.current) clearTimeout(geoTimer.current);
-    if (!address.trim()) return;
-    if (showSuggestions) return;
-    if (addressSource !== 'geo' && addressSource !== 'map') {
-      try {
-        const cached = JSON.parse(localStorage.getItem('ld_delivery') || '{}');
-        if (cached.address === address.trim() && cached.fee !== undefined) {
-          if (cached.lat) setDeliveryLat(cached.lat);
-          if (cached.lng) setDeliveryLng(cached.lng);
-          if (cached.fee === -1) { setDeliveryFee(0); } else if (cached.fee === null) { setDeliveryFee(undefined); } else { setDeliveryFee(cached.fee); }
-          return;
-        }
-      } catch {}
-    } else {
+    const run = async () => {
+      if (step !== 'address' || mode !== 'delivery') return;
+      if (geoTimer.current) clearTimeout(geoTimer.current);
+      if (!address.trim()) return;
+      if (showSuggestions) return;
       let cached: any = {};
       try { cached = JSON.parse(localStorage.getItem('ld_delivery') || '{}'); } catch {}
-      if (cached.address === address.trim() && cached.fee !== undefined) {
+      if (cached.address === address.trim() && cached.fee !== undefined && cached.drinkCount === drinkCount) {
         if (cached.lat) setDeliveryLat(cached.lat);
         if (cached.lng) setDeliveryLng(cached.lng);
         if (cached.fee === -1) { setDeliveryFee(0); } else if (cached.fee === null) { setDeliveryFee(undefined); } else { setDeliveryFee(cached.fee); }
         return;
       }
-      setAddressSource('manual');
-    }
-    setCheckingDelivery(true);
-    setDeliveryFee(undefined);
-    setDeliveryError(null);
-    geoTimer.current = setTimeout(async () => {
+      if (addressSource === 'geo' || addressSource === 'map') setAddressSource('manual');
+      setCheckingDelivery(true);
+      setDeliveryFee(undefined);
+      setDeliveryError(null);
+      if (cached.address === address.trim() && (cached.drinkCount !== drinkCount || cached.fee === undefined)) {
+        const lat = deliveryLat || cached.lat;
+        const lng = deliveryLng || cached.lng;
+        if (lat && lng) {
+          const est = await estimateDelivery(lat, lng, drinkCount);
+          if (!est.available) { setDeliveryError(t('delivery_not_available', language)); setDeliveryFee(undefined); }
+          else { const fee = est.fee === -1 ? 0 : est.fee || 0; setDeliveryFee(fee); saveDeliveryToCache(address, lat, lng, fee); }
+          setCheckingDelivery(false);
+          return;
+        }
+      }
+      geoTimer.current = setTimeout(async () => {
       try {
         const res = await fetch(`/api/geocode/search?q=${encodeURIComponent(address)}`);
         const data = await res.json();
@@ -131,10 +131,12 @@ export default function CheckoutForm({ language, mode, drinkCount, onBack, onBac
           setDeliveryFee(undefined);
         }
       } catch { setDeliveryFee(undefined); }
-      setCheckingDelivery(false);
-    }, 2000);
+        setCheckingDelivery(false);
+      }, 2000);
+    };
+    run();
     return () => { if (geoTimer.current) clearTimeout(geoTimer.current); };
-  }, [address, step, mode, language, showSuggestions, addressSource]);
+  }, [address, step, mode, language, showSuggestions, addressSource, drinkCount]);
 
   useEffect(() => {
     if (step !== 'address') return;
@@ -242,7 +244,8 @@ export default function CheckoutForm({ language, mode, drinkCount, onBack, onBac
     if (!addr.trim()) return;
     try {
       localStorage.setItem('ld_delivery', JSON.stringify({
-        address: addr.trim(), lat, lng, fee: fee === undefined ? null : (fee === 0 ? -1 : fee),
+        address: addr.trim(), lat, lng, drinkCount,
+        fee: fee === undefined ? null : (fee === 0 ? -1 : fee),
       }));
     } catch {}
   };
@@ -508,7 +511,7 @@ export default function CheckoutForm({ language, mode, drinkCount, onBack, onBac
               {deliveryFee > 0 && (
                 <div className="flex gap-2 mt-2">
                   <button
-                    onClick={onBackToMenu || onBack}
+                    onClick={() => onBackToMenu ? onBackToMenu() : onBack?.()}
                     className="flex-1 py-2 rounded-lg border border-[#5A2C11] text-[#5A2C11] font-bold text-xs hover:bg-[#5A2C11] hover:text-white transition"
                   >
                     {language === 'vn' ? '+ Đồ uống' :

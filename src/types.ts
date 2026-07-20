@@ -8,7 +8,7 @@ export type OrderStatus = 'created' | 'paid' | 'preparing' | 'ready' | 'served' 
 
 export type MenuCategory =
   | 'signature' | 'coffee_cocoa' | 'hot_tea' | 'special_flower_tea'
-  | 'other_drinks' | 'fruit_tea' | 'desserts_snacks' | 'combos';
+  | 'other_drinks' | 'juices' | 'fruit_tea' | 'desserts_snacks' | 'combos';
 
 export interface MenuItem {
   id: string;
@@ -17,10 +17,22 @@ export interface MenuItem {
   english: string;
   russian: string;
   price: number;
+  photo?: string;
+  descriptions?: {
+    vn: string;
+    en: string;
+    ru: string;
+  };
   variants?: {
     vn: string[];
     en: string[];
     ru: string[];
+    photos?: string[];
+    descriptions?: {
+      vn?: string[];
+      en?: string[];
+      ru?: string[];
+    };
   };
 }
 
