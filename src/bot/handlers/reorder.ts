@@ -8,15 +8,21 @@ import { paymentKeyboard, languageKeyboard } from '../keyboards';
 
 export async function showMainMenuMsg(ctx: BotContext, lang: string, miniAppUrl: string): Promise<void> {
   const modeLabel = ctx.session.mode
-    ? `\n${ctx.session.mode === 'dine-in' ? '🍽️' : ctx.session.mode === 'pickup' ? '🛍️' : '🚚'} ${t('mode_' + ctx.session.mode.replace('-', '_'), lang as Language)}` +
+    ? `\n*${t('mode', lang as Language)}:* ${ctx.session.mode === 'dine-in' ? '🍽️' : ctx.session.mode === 'pickup' ? '🛍️' : '🚚'} ${t('mode_' + ctx.session.mode.replace('-', '_'), lang as Language)}` +
       (ctx.session.tableNumber ? ` | ${t('table', lang as Language)} ${ctx.session.tableNumber}` : '')
     : '';
-  await ctx.reply(`☕ *Little Dalat*${modeLabel}`, {
+  const orders = getOrdersByChatId(ctx.chat!.id);
+  const lastOrder = orders.find(o => (o as any).status !== 'cancelled');
+  const sep = miniAppUrl.includes('?') ? '&' : '?';
+  const reorderUrl = lastOrder ? `${miniAppUrl}${sep}repeat=${lastOrder.id}` : undefined;
+  await ctx.reply(`*Little Dalat Coffee & Tea*${modeLabel}`, {
     parse_mode: 'Markdown',
     reply_markup: {
       inline_keyboard: [
         [{ text: '🛵 ' + t('btn_open_menu', lang as Language), web_app: { url: miniAppUrl } }],
-        [{ text: '🔄 ' + t('btn_reorder', lang as Language), callback_data: 'reorder_last' }],
+        ...(reorderUrl
+          ? [[{ text: '🔄 ' + t('btn_reorder', lang as Language), web_app: { url: reorderUrl } }]]
+          : [[{ text: '🔄 ' + t('btn_reorder', lang as Language), callback_data: 'reorder_last' }]]),
         [{ text: '📋 ' + t('btn_status', lang as Language), callback_data: 'status_show' }],
         [{ text: t('btn_change_lang', lang as Language), callback_data: 'change_lang' }],
       ],
