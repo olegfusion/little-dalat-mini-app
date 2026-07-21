@@ -108,5 +108,12 @@
 "btn_status": "Order Status",
 "btn_open_menu": "Open Menu & Order",
   "main_menu": "☕ Main Menu",
-"btn_change_lang": "🌐 Change Language"
+"btn_change_lang": "🌐 Change Language",
+  "support_new_message": "📩 New message from customer",
+  "support_message_forwarded": "✅ Your message has been sent to the staff. We'll reply soon!",
+  "support_reply_btn": "Reply",
+  "support_reply_header": "✏️ *Reply from Little Dalat staff:*",
+  "support_reply_instruction": "To reply, use:\n/reply {userId} your message here",
+  "support_reply_sent": "✅ Reply sent to user {userId}",
+  "support_reply_failed": "❌ Failed to send reply to user {userId}"
 }

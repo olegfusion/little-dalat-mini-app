@@ -108,5 +108,12 @@
 "btn_status": "Статус",
 "btn_open_menu": "Открыть меню и заказать",
   "main_menu": "☕ Главное меню",
-"btn_change_lang": "🌐 Сменить язык"
+"btn_change_lang": "🌐 Сменить язык",
+  "support_new_message": "📩 Новое сообщение от клиента",
+  "support_message_forwarded": "✅ Ваше сообщение передано сотрудникам. Мы ответим в ближайшее время!",
+  "support_reply_btn": "Ответить",
+  "support_reply_header": "✏️ *Ответ от сотрудника Little Dalat:*",
+  "support_reply_instruction": "Чтобы ответить, отправьте:\n/reply {userId} текст сообщения",
+  "support_reply_sent": "✅ Ответ отправлен пользователю {userId}",
+  "support_reply_failed": "❌ Не удалось отправить ответ пользователю {userId}"
 }
